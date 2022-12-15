@@ -12,21 +12,17 @@ generates:
       enumsAsTypes: true
       immutableTypes: true
       useImplementingTypes: true
-  ./src/schema/generated:
-    preset: near-operation-file
-    presetConfig:
-      baseTypesPath: types.d.ts
-      extension: .generated.ts
-    config:
-      addDocBlocks: false
-      pureMagicComment: true
-      documentMode: external
-      importDocumentNodeExternallyFrom: near-operation-file
-      addOperationExport: true
-      vueCompositionApiImportFrom: vue
+  ./src/schema/generated/apollo.ts:
     plugins:
       - typescript-operations
+      - typescript-apollo-client-helpers
       - typescript-vue-apollo
+      - named-operations-object
+    config:
+      enumsAsTypes: true
+      withCompositionFunctions: true
+      vueApolloComposableImportFrom: '@vue/apollo-composable'
+      vueCompositionApiImportFrom: vue
   ./src/schema/generated/graphql.schema.json:
     plugins:
       - 'introspection'

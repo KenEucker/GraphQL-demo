@@ -1,8 +1,9 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client/core'
 
 // HTTP connection to the API
-const httpLink = createHttpLink({
+const link = createHttpLink({
   // You should use an absolute URL here
+  /// TODO: grab from env
   uri: 'http://localhost:4000/graphql',
 })
 
@@ -11,12 +12,12 @@ const cache = new InMemoryCache()
 
 // Create the apollo client
 const apolloClient = new ApolloClient({
-  link: httpLink,
+  link,
   cache,
+  /// TODO: grab from env
+  connectToDevTools: true,
 })
 
 export default {
     apolloClient
 }
-
-// Storing users, posts, and comments

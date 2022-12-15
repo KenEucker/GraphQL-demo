@@ -1,12 +1,10 @@
 <script setup lang="ts">
-  import { reactive } from 'vue'
+  import { computed } from 'vue'
   import { useQuery } from '@vue/apollo-composable'
-  // import { useAllAuthorsQuery } from '../schema/graphql'
   import { gql } from '@apollo/client/core'
 
-  const authors = reactive([])
-  // const { loading, result, error } = useAllAuthorsQuery()
-  const { loading } = useQuery(gql`
+  // Call the gql function with the GraphQL query
+  const query = gql`
     query allAuthors {
       allAuthors {
         id
@@ -14,13 +12,17 @@
         lastName
       }
     }
-  `, authors)
+  `
+
+  const { result, loading, error } = useQuery(query)
+  const list = computed(() => result.value?.authors ?? [])
 </script>
 <template>
   <div v-if="loading">Loading query...</div>
+  <div v-else-if="error">Error: {{ error.message }}</div>
   <div v-else>
     <ul>
-      <li v-for="author in authors">{{ author.firstName }}</li>
+      <li v-for="author in list">{{ author.firstName }}</li>
     </ul>
   </div>
 </template>

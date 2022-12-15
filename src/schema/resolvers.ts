@@ -1,5 +1,7 @@
 import { Resolvers } from './generated/types'
 import { posts, comments, authors } from './db'
+import { v4 as uuidv4 } from 'uuid'
+import { GraphQLError } from 'graphql'
 
 /// IGNORE REASON: resolvers, defined below, for each of the 
 /// different types can produce the author, post, comments, or 
@@ -77,4 +79,76 @@ export const resolvers: Resolvers = {
         return comments
       },
     },
+    Mutation: {
+        createAuthor(parent, args) {
+            const emailTaken = authors.some(a => args.author.email === a.email)
+            if (emailTaken) {
+                throw new GraphQLError(`Email is already in use.`)
+            }
+
+            const newAuthor = {
+                id: uuidv4(),
+                ...args.author,
+                comments: [],
+                posts: [],
+            }
+            authors.push(newAuthor)
+
+            return newAuthor
+        },
+        // @ts-ignore
+        createComment(parent, args) {
+          const {authorId, postId} = args.comment
+          const author = authors.find(a => authorId === a.id)
+          if (!author) {
+              throw new GraphQLError(`Author does not exist.`)
+          }
+
+          const post = posts.find(p => postId === p.id)
+          if (!post) {
+              throw new GraphQLError(`Post does not exist.`)
+          }
+
+          const alreadyCommentedOnPost = comments.some(c => c.post === post.id && c.author === author.id)
+          if (alreadyCommentedOnPost) {
+            throw new GraphQLError(`Author already commented on this post.`)
+          }
+
+          const newComment = {
+              id: uuidv4(),
+              text: args.comment.text,
+              post: post.id,
+              author: author.id,
+          }
+          comments.push(newComment)
+
+          return newComment
+        },
+        // @ts-ignore
+        createPost(parent, args) {
+          const {authorId, title, body} = args.post
+          const author = authors.find(a => authorId === a.id)
+          if (!author) {
+              throw new GraphQLError(`Author does not exist.`)
+          }
+
+          const postAlreadyExists = posts.some(p => p.author === author.id && p.title === title)
+
+          if (postAlreadyExists) {
+            throw new GraphQLError(`Post already exists with title for author.`)
+          }
+
+          const newPost = {
+              id: uuidv4(),
+              title,
+              body: body ?? "",
+              author: author.id,
+              comments: [],
+              published: false,
+          }
+          posts.push(newPost)
+
+          return newPost
+        }
+    }
   }

@@ -1,12 +1,13 @@
 import { createServer } from "node:http"
 import { createYoga } from "graphql-yoga"
-import { loadSchemaSync } from "@graphql-tools/load"
-import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader"
 import { schema } from './src/schema'
 
-const typeDefs = loadSchemaSync("src/schema/schema.gql", {
-  loaders: [new GraphQLFileLoader()],
-})
+// import { loadSchemaSync } from "@graphql-tools/load"
+// import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader"
+
+// const typeDefs = loadSchemaSync("src/schema/schema.gql", {
+//   loaders: [new GraphQLFileLoader()],
+// })
 
 // TODO: convert to NextJs project?
 // import type { NextApiRequest, NextApiResponse } from 'next'

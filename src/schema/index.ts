@@ -1,7 +1,6 @@
 import { createSchema } from 'graphql-yoga'
 import { readFileSync } from 'fs'
 import { resolvers } from './resolvers'
-// import { typeDefs } from './types'
 
 // Note: this uses a path relative to the project's
 // root directory, which is the current working directory

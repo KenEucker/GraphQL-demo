@@ -1,6 +1,7 @@
 export const authors = [
     { 
         id: "0001",
+        email: "",
         firstName: "John",
         lastName: "Doe",
         comments: [
@@ -13,6 +14,7 @@ export const authors = [
     },
     {
         id: "0002",
+        email: "",
         firstName: "Jane",
         lastName: "Doe",
         comments: [

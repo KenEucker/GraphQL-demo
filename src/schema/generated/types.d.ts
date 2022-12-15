@@ -17,6 +17,7 @@ export type Scalars = {
 export type Author = {
   readonly __typename?: 'Author';
   readonly comments?: Maybe<ReadonlyArray<Comment>>;
+  readonly email: Scalars['String'];
   readonly firstName: Scalars['String'];
   readonly id: Scalars['ID'];
   readonly lastName: Scalars['String'];
@@ -29,6 +30,52 @@ export type Comment = {
   readonly id: Scalars['ID'];
   readonly post: Post;
   readonly text: Scalars['String'];
+};
+
+export type CreateAuthorInput = {
+  readonly email: Scalars['String'];
+  readonly firstName: Scalars['String'];
+  readonly lastName: Scalars['String'];
+};
+
+export type CreateCommentInput = {
+  readonly authorId: Scalars['String'];
+  readonly postId: Scalars['String'];
+  readonly text: Scalars['String'];
+};
+
+export type CreatePostInput = {
+  readonly authorId: Scalars['String'];
+  readonly body?: InputMaybe<Scalars['String']>;
+  readonly title: Scalars['String'];
+};
+
+export type Mutation = {
+  readonly __typename?: 'Mutation';
+  readonly createAuthor: Author;
+  readonly createComment: Comment;
+  readonly createPost: Post;
+  readonly publishPost: Post;
+};
+
+
+export type MutationCreateAuthorArgs = {
+  author: CreateAuthorInput;
+};
+
+
+export type MutationCreateCommentArgs = {
+  comment: CreateCommentInput;
+};
+
+
+export type MutationCreatePostArgs = {
+  post: CreatePostInput;
+};
+
+
+export type MutationPublishPostArgs = {
+  postId: Scalars['String'];
 };
 
 export type Post = {
@@ -152,7 +199,11 @@ export type ResolversTypes = {
   Author: ResolverTypeWrapper<Author>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Comment: ResolverTypeWrapper<Comment>;
+  CreateAuthorInput: CreateAuthorInput;
+  CreateCommentInput: CreateCommentInput;
+  CreatePostInput: CreatePostInput;
   ID: ResolverTypeWrapper<Scalars['ID']>;
+  Mutation: ResolverTypeWrapper<{}>;
   Post: ResolverTypeWrapper<Post>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
@@ -163,7 +214,11 @@ export type ResolversParentTypes = {
   Author: Author;
   Boolean: Scalars['Boolean'];
   Comment: Comment;
+  CreateAuthorInput: CreateAuthorInput;
+  CreateCommentInput: CreateCommentInput;
+  CreatePostInput: CreatePostInput;
   ID: Scalars['ID'];
+  Mutation: {};
   Post: Post;
   Query: {};
   String: Scalars['String'];
@@ -171,6 +226,7 @@ export type ResolversParentTypes = {
 
 export type AuthorResolvers<ContextType = any, ParentType extends ResolversParentTypes['Author'] = ResolversParentTypes['Author']> = {
   comments?: Resolver<Maybe<ReadonlyArray<ResolversTypes['Comment']>>, ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -184,6 +240,13 @@ export type CommentResolvers<ContextType = any, ParentType extends ResolversPare
   post?: Resolver<ResolversTypes['Post'], ParentType, ContextType>;
   text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  createAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationCreateAuthorArgs, 'author'>>;
+  createComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'comment'>>;
+  createPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationCreatePostArgs, 'post'>>;
+  publishPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationPublishPostArgs, 'postId'>>;
 };
 
 export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {
@@ -206,6 +269,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 export type Resolvers<ContextType = any> = {
   Author?: AuthorResolvers<ContextType>;
   Comment?: CommentResolvers<ContextType>;
+  Mutation?: MutationResolvers<ContextType>;
   Post?: PostResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
 };

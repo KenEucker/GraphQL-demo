@@ -26,6 +26,8 @@ https://www.apollographql.com/docs/react/development-testing/static-typing/
 
 # how I got there
 
+https://graphql.org/learn/queries/
+
 https://the-guild.dev/graphql/codegen/docs/guides/graphql-server-apollo-yoga
 
 https://www.youtube.com/watch?v=tHMaNmqPIC4

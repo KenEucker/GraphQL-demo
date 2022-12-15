@@ -14,8 +14,10 @@
   "dependencies": {
     "@apollo/client": "^3.7.2",
     "@vue/apollo-composable": "^4.0.0-beta.1",
+    "@vueuse/core": "^9.6.0",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
+    "uuid": "^9.0.0",
     "vue": "^3.2.45"
   },
   "devDependencies": {
@@ -23,11 +25,14 @@
     "@graphql-codegen/cli": "2.16.1",
     "@graphql-codegen/client-preset": "1.2.3",
     "@graphql-codegen/introspection": "^2.2.3",
+    "@graphql-codegen/named-operations-object": "^2.3.1",
     "@graphql-codegen/near-operation-file-preset": "^2.4.4",
     "@graphql-codegen/typescript": "^2.8.5",
+    "@graphql-codegen/typescript-apollo-client-helpers": "^2.2.6",
     "@graphql-codegen/typescript-operations": "^2.5.10",
     "@graphql-codegen/typescript-resolvers": "^2.7.10",
     "@graphql-codegen/typescript-vue-apollo": "^3.3.6",
+    "@types/uuid": "^9.0.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "concurrently": "^7.6.0",
     "cross-env": "^7.0.3",
