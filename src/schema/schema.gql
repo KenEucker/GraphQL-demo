@@ -1,0 +1,30 @@
+type Author {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  comments: [Comment!]
+  posts: [Post]
+}
+
+type Comment {
+  id: ID!
+  text: String!
+  author: Author!
+  post: Post!
+}
+ 
+type Post {
+  id: ID!
+  title: String!
+  author: Author!
+  comments: [Comment!]
+}
+ 
+type Query {
+  author(id: ID!): Author
+  authors(query: String): [Author]
+  comment(id: ID!): Comment
+  comments(author: String, text: String): [Comment]
+  post(id: ID!): Post
+  posts(query: String): [Post]
+}

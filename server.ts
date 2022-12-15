@@ -4,7 +4,7 @@ import { loadSchemaSync } from "@graphql-tools/load"
 import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader"
 import { schema } from './src/schema'
 
-const typeDefs = loadSchemaSync("schema.graphql", {
+const typeDefs = loadSchemaSync("src/schema/schema.gql", {
   loaders: [new GraphQLFileLoader()],
 })
 

@@ -4,6 +4,7 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -14,28 +15,69 @@ export type Scalars = {
 };
 
 export type Author = {
-  __typename?: 'Author';
-  firstName: Scalars['String'];
-  id: Scalars['Int'];
-  lastName: Scalars['String'];
-  posts?: Maybe<Array<Maybe<Post>>>;
+  readonly __typename?: 'Author';
+  readonly comments?: Maybe<ReadonlyArray<Comment>>;
+  readonly firstName: Scalars['String'];
+  readonly id: Scalars['ID'];
+  readonly lastName: Scalars['String'];
+  readonly posts?: Maybe<ReadonlyArray<Maybe<Post>>>;
 };
 
-
-export type AuthorPostsArgs = {
-  findTitle?: InputMaybe<Scalars['String']>;
+export type Comment = {
+  readonly __typename?: 'Comment';
+  readonly author: Author;
+  readonly id: Scalars['ID'];
+  readonly post: Post;
+  readonly text: Scalars['String'];
 };
 
 export type Post = {
-  __typename?: 'Post';
-  author?: Maybe<Author>;
-  id: Scalars['Int'];
-  title: Scalars['String'];
+  readonly __typename?: 'Post';
+  readonly author: Author;
+  readonly comments?: Maybe<ReadonlyArray<Comment>>;
+  readonly id: Scalars['ID'];
+  readonly title: Scalars['String'];
 };
 
 export type Query = {
-  __typename?: 'Query';
-  posts?: Maybe<Array<Maybe<Post>>>;
+  readonly __typename?: 'Query';
+  readonly author?: Maybe<Author>;
+  readonly authors?: Maybe<ReadonlyArray<Maybe<Author>>>;
+  readonly comment?: Maybe<Comment>;
+  readonly comments?: Maybe<ReadonlyArray<Maybe<Comment>>>;
+  readonly post?: Maybe<Post>;
+  readonly posts?: Maybe<ReadonlyArray<Maybe<Post>>>;
+};
+
+
+export type QueryAuthorArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryAuthorsArgs = {
+  query?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryCommentArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryCommentsArgs = {
+  author?: InputMaybe<Scalars['String']>;
+  text?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryPostArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryPostsArgs = {
+  query?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -109,7 +151,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Author: ResolverTypeWrapper<Author>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
+  Comment: ResolverTypeWrapper<Comment>;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
   Post: ResolverTypeWrapper<Post>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
@@ -119,33 +162,50 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Author: Author;
   Boolean: Scalars['Boolean'];
-  Int: Scalars['Int'];
+  Comment: Comment;
+  ID: Scalars['ID'];
   Post: Post;
   Query: {};
   String: Scalars['String'];
 };
 
 export type AuthorResolvers<ContextType = any, ParentType extends ResolversParentTypes['Author'] = ResolversParentTypes['Author']> = {
+  comments?: Resolver<Maybe<ReadonlyArray<ResolversTypes['Comment']>>, ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  posts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType, Partial<AuthorPostsArgs>>;
+  posts?: Resolver<Maybe<ReadonlyArray<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CommentResolvers<ContextType = any, ParentType extends ResolversParentTypes['Comment'] = ResolversParentTypes['Comment']> = {
+  author?: Resolver<ResolversTypes['Author'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  post?: Resolver<ResolversTypes['Post'], ParentType, ContextType>;
+  text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {
-  author?: Resolver<Maybe<ResolversTypes['Author']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  author?: Resolver<ResolversTypes['Author'], ParentType, ContextType>;
+  comments?: Resolver<Maybe<ReadonlyArray<ResolversTypes['Comment']>>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  posts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType>;
+  author?: Resolver<Maybe<ResolversTypes['Author']>, ParentType, ContextType, RequireFields<QueryAuthorArgs, 'id'>>;
+  authors?: Resolver<Maybe<ReadonlyArray<Maybe<ResolversTypes['Author']>>>, ParentType, ContextType, Partial<QueryAuthorsArgs>>;
+  comment?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType, RequireFields<QueryCommentArgs, 'id'>>;
+  comments?: Resolver<Maybe<ReadonlyArray<Maybe<ResolversTypes['Comment']>>>, ParentType, ContextType, Partial<QueryCommentsArgs>>;
+  post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<QueryPostArgs, 'id'>>;
+  posts?: Resolver<Maybe<ReadonlyArray<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType, Partial<QueryPostsArgs>>;
 };
 
 export type Resolvers<ContextType = any> = {
   Author?: AuthorResolvers<ContextType>;
+  Comment?: CommentResolvers<ContextType>;
   Post?: PostResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
 };

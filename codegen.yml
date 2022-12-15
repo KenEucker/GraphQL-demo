@@ -1,6 +1,32 @@
-schema: schema.graphql
+overwrite: true
+schema:
+  - ./src/schema/schema.gql
 generates:
-  types.ts:
+  ./src/schema/generated/types.d.ts:
     plugins:
-      - "@graphql-codegen/typescript"
-      - "@graphql-codegen/typescript-resolvers"
+      - typescript
+      - typescript-resolvers
+    config:
+      constEnums: true
+      enumsAsConst: true
+      enumsAsTypes: true
+      immutableTypes: true
+      useImplementingTypes: true
+  ./src/schema/generated:
+    preset: near-operation-file
+    presetConfig:
+      baseTypesPath: types.d.ts
+      extension: .generated.ts
+    config:
+      addDocBlocks: false
+      pureMagicComment: true
+      documentMode: external
+      importDocumentNodeExternallyFrom: near-operation-file
+      addOperationExport: true
+      vueCompositionApiImportFrom: vue
+    plugins:
+      - typescript-operations
+      - typescript-vue-apollo
+  ./src/schema/generated/graphql.schema.json:
+    plugins:
+      - 'introspection'

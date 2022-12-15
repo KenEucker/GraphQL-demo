@@ -13,6 +13,7 @@ Learn how to build GraphQL applications using Node.js. Includes Prisma v1, authe
 * Vue3
 * Apollo Server
 * GraphQL Yoga
+* Vue Apollo
 
 # development decisions
 
@@ -26,7 +27,13 @@ https://www.apollographql.com/docs/react/development-testing/static-typing/
 # how I got there
 
 https://the-guild.dev/graphql/codegen/docs/guides/graphql-server-apollo-yoga
+
 https://www.youtube.com/watch?v=tHMaNmqPIC4
+
+https://v4.apollo.vuejs.org/
+https://v4.apollo.vuejs.org/guide-composable/
+
+
 
 # potential hosting solutions
 
