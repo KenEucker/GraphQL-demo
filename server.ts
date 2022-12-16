@@ -1,6 +1,7 @@
 import { createServer } from "node:http"
 import { createYoga } from "graphql-yoga"
 import { schema } from './src/schema'
+import db from './src/store/db'
 
 // import { loadSchemaSync } from "@graphql-tools/load"
 // import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader"
@@ -14,7 +15,10 @@ import { schema } from './src/schema'
 
 // Create a Yoga instance with a GraphQL schema.
 const yoga = createYoga({
-  schema
+  schema,
+  context: {
+    db,
+  }
 })
 
 // Pass it into a server to hook into request handlers.

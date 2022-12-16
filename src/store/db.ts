@@ -126,3 +126,11 @@ export const posts = [
         published: true
     },
 ]
+
+const db = {
+  posts,
+  comments,
+  authors,
+}
+
+export default db

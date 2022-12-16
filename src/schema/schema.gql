@@ -38,6 +38,10 @@ type Mutation {
   deleteAuthor(authorId: String!): Author!
   deleteComment(commentId: String!): Comment!
   deletePost(postId: String!): Post!
+  
+  updateAuthor(id: String!, data: UpdateAuthorInput!): Author!
+  updateComment(id: String!, data: UpdateCommentInput!): Comment!
+  updatePost(id: String!, data: UpdatePostInput!): Post!
 
   publishPost(postId: String!): Post!
 }
@@ -55,6 +59,22 @@ input CreateCommentInput {
 input CreatePostInput {
   authorId: String!
   title: String!
+  body: String
+}
+
+input UpdateAuthorInput {
+  firstName: String
+  lastName: String
+  email: String
+}
+input UpdateCommentInput {
+  authorId: String
+  postId: String
+  text: String
+}
+input UpdatePostInput {
+  authorId: String
+  title: String
   body: String
 }
 

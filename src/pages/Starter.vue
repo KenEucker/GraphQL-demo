@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import HelloWorld from '../components/HelloWorld.vue'
+import About from '../components/About.vue'
 import HelloApollo from '../components/HelloApollo.vue'
+import { vElementHover } from '@vueuse/components'
 
 const logos = [
   {
@@ -29,12 +30,25 @@ const logos = [
     src: "/graphql-yoga.svg",
   },
 ]
+
+const hoverered = (index: number) => {
+  const logo = logos[index]
+  const logoEl = document.querySelector(`.name.${logo.name}`)
+  
+  logoEl?.classList.add('hovered')
+  setTimeout(() => {
+    logoEl?.classList.remove('hovered')
+  }, 500)
+}
 </script>
 
 <template>
+  <h1>
+    Starter Demo Kit
+  </h1>
   <div class="logos">
-    <div v-for="logo in logos">
-      <a :href="logo.href" target="_blank">
+    <div v-for="(logo, i) in logos">
+      <a :href="logo.href" target="_blank" v-element-hover="() => hoverered(i)">
         <img 
           v-motion 
           :initial="{
@@ -60,7 +74,14 @@ const logos = [
       </a>
     </div>
   </div>
-  <HelloWorld msg="Vite + Vue + VueUse + TypeScript + Apollo" />
+  <h1>
+    <span v-for="(logo, i) in logos" :class="`name ${logo.name}`" :key="i">
+      {{ logo.name }} +
+    </span>
+    you!
+  </h1>
+
+  <About />
   <HelloApollo msg="Vite + Vue" />
 </template>
 
@@ -85,19 +106,28 @@ const logos = [
   filter: drop-shadow(0 0 2em #646cffaa);
 }
 
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+.logo.vite:hover, .name.vite.hovered {
+  filter: drop-shadow(0 0 2em #646cffaa);
+  color: #646cffaa;
 }
 
-.logo.ts:hover {
+.logo.vue:hover, .name.vue.hovered {
+  filter: drop-shadow(0 0 2em #42b883aa);
+  color: #42b883aa;
+}
+
+.logo.vueuse:hover, .name.vueuse.hovered {
+  filter: drop-shadow(0 0 2em #42b883aa);
+  color: #42b883aa;
+}
+
+.logo.typescript:hover, .name.typescript.hovered {
   filter: drop-shadow(0 0 2em #017ACC);
+  color: #017ACC;
 }
 
-.logo.yoga:hover {
+.logo.apollo:hover, .name.apollo.hovered {
   filter: drop-shadow(0 0 2em #C025D3);
-}
-
-.logo.vueuse:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+  color: #C025D3;
 }
 </style>

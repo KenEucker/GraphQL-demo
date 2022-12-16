@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Hello from './pages/Hello.vue'
+import Starter from './pages/Starter.vue'
 </script>
 
 <template>
-  <hello />
+  <starter />
 </template>

@@ -1,20 +1,21 @@
 <script setup lang="ts">
-import { useMouse, useCounter } from '@vueuse/core'
+import {
+  useMouse,
+  useCounter,
+  useDark, 
+  useToggle,
+  useFps,
+} from '@vueuse/core'
 import { UseNetwork } from '@vueuse/components'
-import { useDark, useToggle } from '@vueuse/core'
 
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
-
-defineProps<{ msg: string }>()
-
 const { x, y } = useMouse()
 const { count, inc, dec } = useCounter()
+const fps = useFps()
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
-
   <div class="card">
     <h2>TestBed</h2>
     <h3>Mouse: {{x}} x {{y}}</h3>
@@ -31,6 +32,8 @@ const { count, inc, dec } = useCounter()
       Speed: {{ downlinkMax ?? downlink }}
       <br />
       Connection: {{ type ?? effectiveType }}
+      <br />
+      FPS: {{ fps }}
     </UseNetwork>
     <br />
     <br />
@@ -55,7 +58,7 @@ const { count, inc, dec } = useCounter()
     This project starter uses
     <a href="https://the-guild.dev/graphql/codegen" target="_blank"
       >graphql-codegen</a
-    >, to generate Typed Queries, resolvers, and more for Vue Apollo.
+    >, to generate Typed Queries, resolvers, and more for Vue Apollo
   </p>
   <p>
     <a href="https://vitejs.dev/blog/announcing-vite4.html" target="_blank"
@@ -66,7 +69,7 @@ const { count, inc, dec } = useCounter()
     </a>
   </p>
   <p>
-    Powered by vite 4
+    Frontend powered by 
     <a href="https://vitejs.dev/blog/announcing-vite4.html" target="_blank"
       >Vite 4</a
     >, now using 
@@ -79,7 +82,7 @@ const { count, inc, dec } = useCounter()
     <a href="https://github.com/johnsoncodehk/volar" target="_blank">Volar</a>
     in your IDE for a better DX
   </p>
-  <p class="read-the-docs">This starter was developed as research into learning GraphQL and Apollo.</p>
+  <p class="read-the-docs">This starter was developed as research into learning GraphQL and Apollo</p>
 </template>
 
 <style scoped>

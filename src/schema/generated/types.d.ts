@@ -59,6 +59,9 @@ export type Mutation = {
   readonly deleteComment: Comment;
   readonly deletePost: Post;
   readonly publishPost: Post;
+  readonly updateAuthor: Author;
+  readonly updateComment: Comment;
+  readonly updatePost: Post;
 };
 
 
@@ -94,6 +97,24 @@ export type MutationDeletePostArgs = {
 
 export type MutationPublishPostArgs = {
   postId: Scalars['String'];
+};
+
+
+export type MutationUpdateAuthorArgs = {
+  data: UpdateAuthorInput;
+  id: Scalars['String'];
+};
+
+
+export type MutationUpdateCommentArgs = {
+  data: UpdateCommentInput;
+  id: Scalars['String'];
+};
+
+
+export type MutationUpdatePostArgs = {
+  data: UpdatePostInput;
+  id: Scalars['String'];
 };
 
 export type Post = {
@@ -143,6 +164,24 @@ export type QueryPostArgs = {
 
 export type QueryPostsArgs = {
   query?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateAuthorInput = {
+  readonly email?: InputMaybe<Scalars['String']>;
+  readonly firstName?: InputMaybe<Scalars['String']>;
+  readonly lastName?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateCommentInput = {
+  readonly authorId?: InputMaybe<Scalars['String']>;
+  readonly postId?: InputMaybe<Scalars['String']>;
+  readonly text?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdatePostInput = {
+  readonly authorId?: InputMaybe<Scalars['String']>;
+  readonly body?: InputMaybe<Scalars['String']>;
+  readonly title?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -225,6 +264,9 @@ export type ResolversTypes = {
   Post: ResolverTypeWrapper<Post>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  UpdateAuthorInput: UpdateAuthorInput;
+  UpdateCommentInput: UpdateCommentInput;
+  UpdatePostInput: UpdatePostInput;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -240,6 +282,9 @@ export type ResolversParentTypes = {
   Post: Post;
   Query: {};
   String: Scalars['String'];
+  UpdateAuthorInput: UpdateAuthorInput;
+  UpdateCommentInput: UpdateCommentInput;
+  UpdatePostInput: UpdatePostInput;
 };
 
 export type AuthorResolvers<ContextType = any, ParentType extends ResolversParentTypes['Author'] = ResolversParentTypes['Author']> = {
@@ -268,6 +313,9 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationDeleteCommentArgs, 'commentId'>>;
   deletePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationDeletePostArgs, 'postId'>>;
   publishPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationPublishPostArgs, 'postId'>>;
+  updateAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationUpdateAuthorArgs, 'data' | 'id'>>;
+  updateComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationUpdateCommentArgs, 'data' | 'id'>>;
+  updatePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationUpdatePostArgs, 'data' | 'id'>>;
 };
 
 export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {
