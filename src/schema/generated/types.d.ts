@@ -55,6 +55,9 @@ export type Mutation = {
   readonly createAuthor: Author;
   readonly createComment: Comment;
   readonly createPost: Post;
+  readonly deleteAuthor: Author;
+  readonly deleteComment: Comment;
+  readonly deletePost: Post;
   readonly publishPost: Post;
 };
 
@@ -71,6 +74,21 @@ export type MutationCreateCommentArgs = {
 
 export type MutationCreatePostArgs = {
   post: CreatePostInput;
+};
+
+
+export type MutationDeleteAuthorArgs = {
+  authorId: Scalars['String'];
+};
+
+
+export type MutationDeleteCommentArgs = {
+  commentId: Scalars['String'];
+};
+
+
+export type MutationDeletePostArgs = {
+  postId: Scalars['String'];
 };
 
 
@@ -246,6 +264,9 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationCreateAuthorArgs, 'author'>>;
   createComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'comment'>>;
   createPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationCreatePostArgs, 'post'>>;
+  deleteAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationDeleteAuthorArgs, 'authorId'>>;
+  deleteComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationDeleteCommentArgs, 'commentId'>>;
+  deletePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationDeletePostArgs, 'postId'>>;
   publishPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationPublishPostArgs, 'postId'>>;
 };
 

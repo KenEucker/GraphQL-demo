@@ -34,6 +34,11 @@ type Mutation {
   createAuthor(author: CreateAuthorInput!): Author!
   createComment(comment: CreateCommentInput!): Comment!
   createPost(post: CreatePostInput!): Post!
+
+  deleteAuthor(authorId: String!): Author!
+  deleteComment(commentId: String!): Comment!
+  deletePost(postId: String!): Post!
+
   publishPost(postId: String!): Post!
 }
 

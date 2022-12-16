@@ -16,11 +16,14 @@ export type CommentFieldPolicy = {
 	post?: FieldPolicy<any> | FieldReadFunction<any>,
 	text?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type MutationKeySpecifier = ('createAuthor' | 'createComment' | 'createPost' | 'publishPost' | MutationKeySpecifier)[];
+export type MutationKeySpecifier = ('createAuthor' | 'createComment' | 'createPost' | 'deleteAuthor' | 'deleteComment' | 'deletePost' | 'publishPost' | MutationKeySpecifier)[];
 export type MutationFieldPolicy = {
 	createAuthor?: FieldPolicy<any> | FieldReadFunction<any>,
 	createComment?: FieldPolicy<any> | FieldReadFunction<any>,
 	createPost?: FieldPolicy<any> | FieldReadFunction<any>,
+	deleteAuthor?: FieldPolicy<any> | FieldReadFunction<any>,
+	deleteComment?: FieldPolicy<any> | FieldReadFunction<any>,
+	deletePost?: FieldPolicy<any> | FieldReadFunction<any>,
 	publishPost?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type PostKeySpecifier = ('author' | 'comments' | 'id' | 'title' | PostKeySpecifier)[];

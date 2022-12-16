@@ -28,7 +28,7 @@ const { count, inc, dec } = useCounter()
     <UseNetwork v-slot="{ isOnline, downlink, downlinkMax, effectiveType, type}">
       IsOnline: {{ isOnline }}
       <br />
-      Speed: {{ downlink }}
+      Speed: {{ downlinkMax ?? downlink }}
       <br />
       Connection: {{ type ?? effectiveType }}
     </UseNetwork>
