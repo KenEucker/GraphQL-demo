@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { useMouse, useCounter } from '@vueuse/core'
+import { UseNetwork } from '@vueuse/components'
+import { useDark, useToggle } from '@vueuse/core'
+
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
 
 defineProps<{ msg: string }>()
 
@@ -13,9 +18,25 @@ const { count, inc, dec } = useCounter()
   <div class="card">
     <h2>TestBed</h2>
     <h3>Mouse: {{x}} x {{y}}</h3>
-    <button type="button" @click="count--">-</button>
+    <br />
+    <br />
+    <button type="button" @click="dec()">-</button>
     <span>count is {{ count }}</span>
-    <button type="button" @click="count++">+</button>
+    <button type="button" @click="inc()">+</button>
+    <br />
+    <br />
+    <UseNetwork v-slot="{ isOnline, downlink, downlinkMax, effectiveType, type}">
+      IsOnline: {{ isOnline }}
+      <br />
+      Speed: {{ downlink }}
+      <br />
+      Connection: {{ type ?? effectiveType }}
+    </UseNetwork>
+    <br />
+    <br />
+    <button @click="toggleDark()">
+      Enable {{ isDark ? 'Light' : 'Dark' }} Mode
+    </button>
   </div>
 
   <p>
@@ -23,6 +44,12 @@ const { count, inc, dec } = useCounter()
     <a href="https://vuejs.org/guide/quick-start.html#local" target="_blank"
       >create-vue</a
     >, the official Vue + Vite starter
+  </p>
+  <p>
+    The testbed displayed above showcases 
+    <a href="https://vueuse.org/" target="_blank"
+      >VueUse</a
+    >, which is like Vue's version of jQuery
   </p>
   <p>
     This project starter uses
