@@ -19,17 +19,19 @@ const Mutation = {
         return newAuthor
     },
     // @ts-ignore
-    createComment(parent, args, { db }, info) {
+    createComment(parent, args, { db, pubsub }, info) {
       const {authorId, postId} = args.comment
       const author = db.authors.find(a => authorId === a.id)
       if (!author) {
           throw new GraphQLError(`Author does not exist.`)
       }
 
-      const post = db.posts.find(p => postId === p.id)
-      if (!post) {
+      const postIndex = db.posts.findIndex(p => postId === p.id)
+      if (!postIndex) {
           throw new GraphQLError(`Post does not exist.`)
       }
+
+      const post = db.posts[postIndex]
 
       const alreadyCommentedOnPost = db.comments.some(c => c.post === post.id && c.author === author.id)
       if (alreadyCommentedOnPost) {
@@ -42,7 +44,15 @@ const Mutation = {
           post: post.id,
           author: author.id,
       }
+
+      /// Add the new comment to the database
       db.comments.push(newComment)
+      /// Add the new comment to the post
+      post.comments.push(newComment.id)
+      /// Update the post in the database
+      db.posts[postIndex] = post
+
+      pubsub.publish(`comment`, newComment )
 
       return newComment
     },

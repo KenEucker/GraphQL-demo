@@ -46,6 +46,11 @@ type Mutation {
   publishPost(postId: String!): Post!
 }
 
+type Subscription {
+  countdown(from: Int): Int!
+  comment(postId: String!): Comment
+}
+
 input CreateAuthorInput {
   firstName: String!
   lastName: String!

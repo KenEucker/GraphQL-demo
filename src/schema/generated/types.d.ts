@@ -166,6 +166,22 @@ export type QueryPostsArgs = {
   query?: InputMaybe<Scalars['String']>;
 };
 
+export type Subscription = {
+  readonly __typename?: 'Subscription';
+  readonly comment?: Maybe<Comment>;
+  readonly countdown: Scalars['Int'];
+};
+
+
+export type SubscriptionCommentArgs = {
+  postId: Scalars['String'];
+};
+
+
+export type SubscriptionCountdownArgs = {
+  from?: InputMaybe<Scalars['Int']>;
+};
+
 export type UpdateAuthorInput = {
   readonly email?: InputMaybe<Scalars['String']>;
   readonly firstName?: InputMaybe<Scalars['String']>;
@@ -260,10 +276,12 @@ export type ResolversTypes = {
   CreateCommentInput: CreateCommentInput;
   CreatePostInput: CreatePostInput;
   ID: ResolverTypeWrapper<Scalars['ID']>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
   Post: ResolverTypeWrapper<Post>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  Subscription: ResolverTypeWrapper<{}>;
   UpdateAuthorInput: UpdateAuthorInput;
   UpdateCommentInput: UpdateCommentInput;
   UpdatePostInput: UpdatePostInput;
@@ -278,10 +296,12 @@ export type ResolversParentTypes = {
   CreateCommentInput: CreateCommentInput;
   CreatePostInput: CreatePostInput;
   ID: Scalars['ID'];
+  Int: Scalars['Int'];
   Mutation: {};
   Post: Post;
   Query: {};
   String: Scalars['String'];
+  Subscription: {};
   UpdateAuthorInput: UpdateAuthorInput;
   UpdateCommentInput: UpdateCommentInput;
   UpdatePostInput: UpdatePostInput;
@@ -335,11 +355,17 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   posts?: Resolver<Maybe<ReadonlyArray<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType, Partial<QueryPostsArgs>>;
 };
 
+export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
+  comment?: SubscriptionResolver<Maybe<ResolversTypes['Comment']>, "comment", ParentType, ContextType, RequireFields<SubscriptionCommentArgs, 'postId'>>;
+  countdown?: SubscriptionResolver<ResolversTypes['Int'], "countdown", ParentType, ContextType, Partial<SubscriptionCountdownArgs>>;
+};
+
 export type Resolvers<ContextType = any> = {
   Author?: AuthorResolvers<ContextType>;
   Comment?: CommentResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Post?: PostResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Subscription?: SubscriptionResolvers<ContextType>;
 };
 

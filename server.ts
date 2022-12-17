@@ -1,5 +1,5 @@
 import { createServer } from "node:http"
-import { createYoga } from "graphql-yoga"
+import { createYoga, createPubSub } from "graphql-yoga"
 import { schema } from './src/schema'
 import db from './src/store/db'
 
@@ -18,6 +18,11 @@ const yoga = createYoga({
   schema,
   context: {
     db,
+    pubsub: createPubSub(),
+  },
+  cors: {
+    origin: 'http://localhost:3000',
+    credentials: true,
   }
 })
 

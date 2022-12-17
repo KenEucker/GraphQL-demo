@@ -1,6 +1,7 @@
 import { Resolvers } from '../generated/types'
 import Query from './Query'
 import Mutation from './Mutation'
+import Subscription from './Subscription'
 import Author from './Author'
 import Comment from './Comment'
 import Post from './Post'
@@ -12,6 +13,7 @@ import Post from './Post'
 export const resolvers: Resolvers = {
   Query,
   Mutation,
+  Subscription,
   Author,
   Comment,
   Post,

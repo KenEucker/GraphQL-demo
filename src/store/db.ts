@@ -68,12 +68,12 @@ export const comments = [
         post: "0104",
         text: "Look, everyone knows that dragons are dangerous. This is nothing new.",
     },
-    {
-        id: "1007",
-        author: '0002',
-        post: "0105",
-        text: "Seroiusly, have you read any of the previous books?",
-    }   
+    // {
+    //     id: "1007",
+    //     author: '0002',
+    //     post: "0105",
+    //     text: "Seroiusly, have you read any of the previous books?",
+    // }   
 ]
 
 export const posts = [
@@ -122,7 +122,7 @@ export const posts = [
         author: "0002",
         title: "Why would anyone want to eat dragon meat?",
         body: "Why would anyone want to eat dragon meat?",
-        comments: ["1006"],
+        comments: [],
         published: true
     },
 ]

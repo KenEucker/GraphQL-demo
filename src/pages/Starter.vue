@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import About from '../components/About.vue'
-import HelloApollo from '../components/HelloApollo.vue'
+import TestBed from '../components/TestBed.vue'
+import HelloApollo from '../components/Authors.vue'
 import { vElementHover } from '@vueuse/components'
 
 const logos = [
@@ -81,8 +82,8 @@ const hoverered = (index: number) => {
     you!
   </h1>
 
-  <About />
-  <HelloApollo msg="Vite + Vue" />
+  <test-bed />
+  <about />
 </template>
 
 <style lang="scss" scoped>

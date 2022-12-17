@@ -45,6 +45,11 @@ export type QueryFieldPolicy = {
 	post?: FieldPolicy<any> | FieldReadFunction<any>,
 	posts?: FieldPolicy<any> | FieldReadFunction<any>
 };
+export type SubscriptionKeySpecifier = ('comment' | 'countdown' | SubscriptionKeySpecifier)[];
+export type SubscriptionFieldPolicy = {
+	comment?: FieldPolicy<any> | FieldReadFunction<any>,
+	countdown?: FieldPolicy<any> | FieldReadFunction<any>
+};
 export type StrictTypedTypePolicies = {
 	Author?: Omit<TypePolicy, "fields" | "keyFields"> & {
 		keyFields?: false | AuthorKeySpecifier | (() => undefined | AuthorKeySpecifier),
@@ -65,6 +70,10 @@ export type StrictTypedTypePolicies = {
 	Query?: Omit<TypePolicy, "fields" | "keyFields"> & {
 		keyFields?: false | QueryKeySpecifier | (() => undefined | QueryKeySpecifier),
 		fields?: QueryFieldPolicy,
+	},
+	Subscription?: Omit<TypePolicy, "fields" | "keyFields"> & {
+		keyFields?: false | SubscriptionKeySpecifier | (() => undefined | SubscriptionKeySpecifier),
+		fields?: SubscriptionFieldPolicy,
 	}
 };
 export type TypedTypePolicies = StrictTypedTypePolicies & TypePolicies;

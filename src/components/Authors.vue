@@ -6,7 +6,7 @@
   // Call the gql function with the GraphQL query
   const query = gql`
     query allAuthors {
-      allAuthors {
+      authors {
         id
         firstName
         lastName

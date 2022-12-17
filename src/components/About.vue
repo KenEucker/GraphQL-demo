@@ -1,47 +1,7 @@
 <script setup lang="ts">
-import {
-  useMouse,
-  useCounter,
-  useDark, 
-  useToggle,
-  useFps,
-} from '@vueuse/core'
-import { UseNetwork } from '@vueuse/components'
-
-const isDark = useDark()
-const toggleDark = useToggle(isDark)
-const { x, y } = useMouse()
-const { count, inc, dec } = useCounter()
-const fps = useFps()
 </script>
 
 <template>
-  <div class="card">
-    <h2>TestBed</h2>
-    <h3>Mouse: {{x}} x {{y}}</h3>
-    <br />
-    <br />
-    <button type="button" @click="dec()">-</button>
-    <span>count is {{ count }}</span>
-    <button type="button" @click="inc()">+</button>
-    <br />
-    <br />
-    <UseNetwork v-slot="{ isOnline, downlink, downlinkMax, effectiveType, type}">
-      IsOnline: {{ isOnline }}
-      <br />
-      Speed: {{ downlinkMax ?? downlink }}
-      <br />
-      Connection: {{ type ?? effectiveType }}
-      <br />
-      FPS: {{ fps }}
-    </UseNetwork>
-    <br />
-    <br />
-    <button @click="toggleDark()">
-      Enable {{ isDark ? 'Light' : 'Dark' }} Mode
-    </button>
-  </div>
-
   <p>
     Check out
     <a href="https://vuejs.org/guide/quick-start.html#local" target="_blank"
@@ -88,10 +48,5 @@ const fps = useFps()
 <style scoped>
 .read-the-docs {
   color: #888;
-}
-
-span {
-  padding-left: 10px;
-  padding-right: 10px;
 }
 </style>

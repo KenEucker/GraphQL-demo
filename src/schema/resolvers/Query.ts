@@ -1,4 +1,3 @@
-
 const Query = {
     // @ts-ignore
     author: (parent, args, { db }, info) => db.authors.find(p => p.id === args.id),

@@ -35,6 +35,7 @@ https://www.youtube.com/watch?v=tHMaNmqPIC4
 https://v4.apollo.vuejs.org/
 https://v4.apollo.vuejs.org/guide-composable/
 
+Subscriptions deviates from the udemy course instruction. I believe that this is due to the fact that I am using Apollo V4 with Graphql-Yoga@latest. https://the-guild.dev/graphql/yoga-server/docs/features/subscriptions
 
 
 # potential hosting solutions
