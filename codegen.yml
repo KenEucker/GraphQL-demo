@@ -4,6 +4,9 @@ schema:
 generates:
   ./src/schema/generated/types.d.ts:
     plugins:
+      - add:
+          content:
+            - '/* eslint-disable */'
       - typescript
       - typescript-resolvers
     config:

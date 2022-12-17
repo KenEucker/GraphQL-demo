@@ -44,7 +44,7 @@ const hoverered = (index: number) => {
 </script>
 
 <template>
-  <h1>Starter Demo Kit</h1>
+  <h1>Vue GraphQl TypeScript Demo</h1>
   <div class="logos">
     <div v-for="(logo, i) in logos" :key="`logo-${i}`">
       <a v-element-hover="() => hoverered(i)" :href="logo.href" target="_blank">
