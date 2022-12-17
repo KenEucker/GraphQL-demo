@@ -1,4 +1,5 @@
 import { GraphQLError } from 'graphql'
+import { pipe, map, filter } from 'graphql-yoga'
 
 const Subscription = {
   countdown: {
@@ -17,24 +18,32 @@ const Subscription = {
   },
   comment: {
     // @ts-ignore
-    subscribe: async function* (parent, { postId }, { db }) {
-      const post = db.posts.find((p) => p.id === postId)
+    // subscribe: async function* (parent, { postId }, { db, pubsub }) {
+    //   const post = db.posts.find((p) => p.id === postId)
 
-      if (!post) {
-        throw new GraphQLError(`Post does not exist.`)
-      }
+    //   if (!post) {
+    //     throw new GraphQLError(`Post does not exist.`)
+    //   }
 
-      const commentCount = Object.values(post.comments).length
-      if (commentCount) {
-        const latestCommentId = post.comments[commentCount - 1]
-        console.log({ latestCommentId, commentCount, comments: post.comments })
-        const comment = db.comments.find((c) => c.id === latestCommentId)
+    //   const getLatestPost = () => {
+    //     const commentCount = Object.values(post.comments).length
+    //     if (commentCount) {
+    //       const latestCommentId = post.comments[commentCount - 1]
+    //       // console.log({ latestCommentId, commentCount, comments: post.comments })
+    //       return db.comments.find((c) => c.id === latestCommentId)
+    //     }
 
-        yield comment
-      } else {
-        yield null
-      }
-    },
+    //     return null
+    //   }
+
+    //   yield getLatestPost()
+    // },
+    subscribe: (_, { postId }, { pubsub }) =>
+      pipe(
+        pubsub.subscribe('comment'),
+        filter(c => c.post === postId),
+        // map(c => c.post === postId)
+      ),
     // @ts-ignore
     resolve: (data) => data,
   },
