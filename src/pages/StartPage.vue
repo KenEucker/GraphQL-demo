@@ -1,41 +1,41 @@
 <script setup lang="ts">
-import About from '../components/About.vue'
+import AboutProject from '../components/AboutProject.vue'
 import TestBed from '../components/TestBed.vue'
-import HelloApollo from '../components/Authors.vue'
+import AuthorList from '../components/AuthorList.vue'
 import { vElementHover } from '@vueuse/components'
 
 const logos = [
   {
-    name: "vite",
-    href: "https://vitejs.dev",
-    src: "/vite.svg",
+    name: 'vite',
+    href: 'https://vitejs.dev',
+    src: '/vite.svg',
   },
   {
-    name: "vue",
-    href: "https://vuejs.org",
-    src: "/vue.svg",
+    name: 'vue',
+    href: 'https://vuejs.org',
+    src: '/vue.svg',
   },
   {
-    name: "vueuse",
-    href: "https://vueuse.org",
-    src: "/vueuse-icon.svg",
+    name: 'vueuse',
+    href: 'https://vueuse.org',
+    src: '/vueuse-icon.svg',
   },
   {
-    name: "typescript",
-    href: "https://typescriptlang.org",
-    src: "/typescript.svg",
+    name: 'typescript',
+    href: 'https://typescriptlang.org',
+    src: '/typescript.svg',
   },
   {
-    name: "apollo",
-    href: "https://the-guild.dev/graphql/yoga-server",
-    src: "/graphql-yoga.svg",
+    name: 'apollo',
+    href: 'https://the-guild.dev/graphql/yoga-server',
+    src: '/graphql-yoga.svg',
   },
 ]
 
 const hoverered = (index: number) => {
   const logo = logos[index]
   const logoEl = document.querySelector(`.name.${logo.name}`)
-  
+
   logoEl?.classList.add('hovered')
   setTimeout(() => {
     logoEl?.classList.remove('hovered')
@@ -44,14 +44,12 @@ const hoverered = (index: number) => {
 </script>
 
 <template>
-  <h1>
-    Starter Demo Kit
-  </h1>
+  <h1>Starter Demo Kit</h1>
   <div class="logos">
-    <div v-for="(logo, i) in logos">
-      <a :href="logo.href" target="_blank" v-element-hover="() => hoverered(i)">
-        <img 
-          v-motion 
+    <div v-for="(logo, i) in logos" :key="`logo-${i}`">
+      <a v-element-hover="() => hoverered(i)" :href="logo.href" target="_blank">
+        <img
+          v-motion
           :initial="{
             y: 100,
             opacity: 0,
@@ -71,19 +69,20 @@ const hoverered = (index: number) => {
           }"
           :src="logo.src"
           :class="`logo ${logo.name}`"
-          :alt="`${logo.name} logo`" />
+          :alt="`${logo.name} logo`"
+        />
       </a>
     </div>
   </div>
   <h1>
-    <span v-for="(logo, i) in logos" :class="`name ${logo.name}`" :key="i">
+    <span v-for="(logo, i) in logos" :key="`name-${i}`" :class="`name ${logo.name}`">
       {{ logo.name }} +
     </span>
     you!
   </h1>
 
   <test-bed />
-  <about />
+  <about-project />
 </template>
 
 <style lang="scss" scoped>
@@ -107,28 +106,33 @@ const hoverered = (index: number) => {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
 
-.logo.vite:hover, .name.vite.hovered {
+.logo.vite:hover,
+.name.vite.hovered {
   filter: drop-shadow(0 0 2em #646cffaa);
   color: #646cffaa;
 }
 
-.logo.vue:hover, .name.vue.hovered {
+.logo.vue:hover,
+.name.vue.hovered {
   filter: drop-shadow(0 0 2em #42b883aa);
   color: #42b883aa;
 }
 
-.logo.vueuse:hover, .name.vueuse.hovered {
+.logo.vueuse:hover,
+.name.vueuse.hovered {
   filter: drop-shadow(0 0 2em #42b883aa);
   color: #42b883aa;
 }
 
-.logo.typescript:hover, .name.typescript.hovered {
-  filter: drop-shadow(0 0 2em #017ACC);
-  color: #017ACC;
+.logo.typescript:hover,
+.name.typescript.hovered {
+  filter: drop-shadow(0 0 2em #017acc);
+  color: #017acc;
 }
 
-.logo.apollo:hover, .name.apollo.hovered {
-  filter: drop-shadow(0 0 2em #C025D3);
-  color: #C025D3;
+.logo.apollo:hover,
+.name.apollo.hovered {
+  filter: drop-shadow(0 0 2em #c025d3);
+  color: #c025d3;
 }
 </style>

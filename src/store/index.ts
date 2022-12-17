@@ -18,5 +18,4 @@ const apolloClient = new ApolloClient({
   connectToDevTools: true,
 })
 
-export default 
-    apolloClient
+export default apolloClient

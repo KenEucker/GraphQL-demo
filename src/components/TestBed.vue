@@ -1,14 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import {
-  useMouse,
-  useCounter,
-  useDark, 
-  useToggle,
-  useFps,
-} from '@vueuse/core'
+import { useMouse, useCounter, useDark, useToggle, useFps } from '@vueuse/core'
 import { UseNetwork } from '@vueuse/components'
-import { useMotion } from '@vueuse/motion';
+import { useMotion } from '@vueuse/motion'
 
 let counting = false
 
@@ -23,7 +17,7 @@ const { apply } = useMotion(countdown, {
   initial: {
     opacity: 0,
     y: -100,
-    'text-shadow': '0 0 1px rgba(0,0,0,0),'
+    'text-shadow': '0 0 1px rgba(0,0,0,0),',
   },
   enter: {
     opacity: 1,
@@ -39,7 +33,7 @@ const { apply } = useMotion(countdown, {
       repeat: Infinity,
       repeatType: 'reverse',
     },
-  }
+  },
 })
 
 const beginCountdown = () => {
@@ -52,7 +46,7 @@ const beginCountdown = () => {
   counting = true
 
   const url = new URL('http://localhost:4000/graphql')
-  
+
   url.searchParams.append(
     'query',
     `subscription Countdown($from: Int!) {
@@ -60,11 +54,11 @@ const beginCountdown = () => {
       }`
   )
   url.searchParams.append('variables', JSON.stringify({ from: 100 }))
-  
+
   const eventsource = new EventSource(url.toString(), {
-    withCredentials: true // This is required for cookies
+    withCredentials: true, // This is required for cookies
   })
-  
+
   eventsource.onmessage = function (event) {
     const data = JSON.parse(event.data)
     const count = data.data.countdown
@@ -81,9 +75,9 @@ const beginCountdown = () => {
 <template>
   <div class="card">
     <h2>TestBed</h2>
-    <h3>Mouse: {{x}} x {{y}}</h3>
+    <h3>Mouse: {{ x }} x {{ y }}</h3>
     <button type="button" @click="beginCountdown()">count down</button>
-    <span class="countdown" ref="countdown">100</span>
+    <span ref="countdown" class="countdown">100</span>
     <br />
     <br />
     <button type="button" @click="dec()">-</button>
@@ -91,7 +85,7 @@ const beginCountdown = () => {
     <button type="button" @click="inc()">+</button>
     <br />
     <br />
-    <UseNetwork v-slot="{ isOnline, downlink, downlinkMax, effectiveType, type}">
+    <UseNetwork v-slot="{ isOnline, downlink, downlinkMax, effectiveType, type }">
       IsOnline: {{ isOnline }}
       <br />
       Speed: {{ downlinkMax ?? downlink }}
@@ -102,9 +96,7 @@ const beginCountdown = () => {
     </UseNetwork>
     <br />
     <br />
-    <button @click="toggleDark()">
-      Enable {{ isDark ? 'Light' : 'Dark' }} Mode
-    </button>
+    <button @click="toggleDark()">Enable {{ isDark ? 'Light' : 'Dark' }} Mode</button>
   </div>
 </template>
 

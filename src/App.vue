@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Starter from './pages/Starter.vue'
+import StartPage from './pages/StartPage.vue'
 </script>
 
 <template>
-  <starter />
+  <start-page />
 </template>
