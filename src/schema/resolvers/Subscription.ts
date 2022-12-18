@@ -13,39 +13,61 @@ const Subscription = {
         yield i
       }
     },
-    // @ts-ignore
-    resolve: (data) => data,
+    resolve: (data: any) => data,
+  },
+  author: {
+    subscribe: (parent: never, { by }, { db, pubsub }) => {
+      if (by && (by.id || by.email)) {
+        const author = db.authors.find((a) => a.email === by.email || a.id === by.id)
+
+        if (!author) {
+          throw new GraphQLError('author does not exist')
+        }
+      }
+
+      return pipe(
+        pubsub.subscribe('author'),
+        filter((a) => (by?.email ? a.data.email === by.email : true)),
+        filter((a) => (by?.id ? a.data.id === by.id : true))
+      )
+    },
+    resolve: (data: any) => data,
   },
   comment: {
-    // @ts-ignore
-    // subscribe: async function* (parent, { postId }, { db, pubsub }) {
-    //   const post = db.posts.find((p) => p.id === postId)
+    subscribe: (parent: never, { by }, { pubsub, db }) => {
+      if (by && (by.author || by.post)) {
+        const comment = db.comments.find((c) => c.author === by.author || c.post === by.post)
 
-    //   if (!post) {
-    //     throw new GraphQLError(`Post does not exist.`)
-    //   }
+        if (!comment) {
+          throw new GraphQLError('author or post does not exist')
+        }
+      }
 
-    //   const getLatestPost = () => {
-    //     const commentCount = Object.values(post.comments).length
-    //     if (commentCount) {
-    //       const latestCommentId = post.comments[commentCount - 1]
-    //       // console.log({ latestCommentId, commentCount, comments: post.comments })
-    //       return db.comments.find((c) => c.id === latestCommentId)
-    //     }
-
-    //     return null
-    //   }
-
-    //   yield getLatestPost()
-    // },
-    subscribe: (_, { postId }, { pubsub }) =>
-      pipe(
+      return pipe(
         pubsub.subscribe('comment'),
-        filter(c => c.post === postId),
-        // map(c => c.post === postId)
-      ),
-    // @ts-ignore
-    resolve: (data) => data,
+        filter((c) => (by?.author ? c.data.author === by.author : true)),
+        filter((c) => (by?.post ? c.data.post === by.post : true))
+      )
+    },
+    resolve: (data: any) => data,
+  },
+  post: {
+    subscribe: (parent: never, { by }, { pubsub, db }) => {
+      if (by && by.author) {
+        const author = db.authors.find((a) => a.id === by.author)
+
+        if (!author) {
+          throw new GraphQLError('author does not exist')
+        }
+      }
+
+      return pipe(
+        pubsub.subscribe('post'),
+        filter((p) => (by?.author ? p.data.author === by.author : true)),
+        filter((p) => (p.mutation !== 'UNPUBLISHED' ? p.data.published : true))
+      )
+    },
+    resolve: (data: any) => data,
   },
 }
 

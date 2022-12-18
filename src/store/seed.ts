@@ -5,6 +5,7 @@ export const authors = [
     firstName: 'John',
     lastName: 'Doe',
     comments: ['1000', '1001', '1002', '1003', '1004'],
+    permissions: ['READ', 'WRITE'],
   },
   {
     id: '0002',

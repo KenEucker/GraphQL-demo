@@ -1,7 +1,7 @@
 import { createServer } from "node:http"
 import { createYoga, createPubSub } from "graphql-yoga"
 import { schema } from './src/schema'
-import db from './src/store/db'
+import db from './src/store/seed'
 
 // import { loadSchemaSync } from "@graphql-tools/load"
 // import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader"

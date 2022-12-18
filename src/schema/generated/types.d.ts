@@ -22,7 +22,14 @@ export type Author = {
   readonly firstName: Scalars['String'];
   readonly id: Scalars['ID'];
   readonly lastName: Scalars['String'];
-  readonly posts?: Maybe<ReadonlyArray<Maybe<Post>>>;
+  readonly permissions?: Maybe<ReadonlyArray<Permissions>>;
+  readonly posts?: Maybe<ReadonlyArray<Post>>;
+};
+
+export type AuthorSubscriptionPayload = {
+  readonly __typename?: 'AuthorSubscriptionPayload';
+  readonly data?: Maybe<Author>;
+  readonly mutation: MutationType;
 };
 
 export type Comment = {
@@ -31,6 +38,12 @@ export type Comment = {
   readonly id: Scalars['ID'];
   readonly post: Post;
   readonly text: Scalars['String'];
+};
+
+export type CommentSubscriptionPayload = {
+  readonly __typename?: 'CommentSubscriptionPayload';
+  readonly data?: Maybe<Comment>;
+  readonly mutation: MutationType;
 };
 
 export type CreateAuthorInput = {
@@ -48,6 +61,7 @@ export type CreateCommentInput = {
 export type CreatePostInput = {
   readonly authorId: Scalars['String'];
   readonly body?: InputMaybe<Scalars['String']>;
+  readonly published?: InputMaybe<Scalars['Boolean']>;
   readonly title: Scalars['String'];
 };
 
@@ -60,6 +74,7 @@ export type Mutation = {
   readonly deleteComment: Comment;
   readonly deletePost: Post;
   readonly publishPost: Post;
+  readonly unPublishPost: Post;
   readonly updateAuthor: Author;
   readonly updateComment: Comment;
   readonly updatePost: Post;
@@ -97,7 +112,12 @@ export type MutationDeletePostArgs = {
 
 
 export type MutationPublishPostArgs = {
-  postId: Scalars['String'];
+  id: Scalars['String'];
+};
+
+
+export type MutationUnPublishPostArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -118,12 +138,32 @@ export type MutationUpdatePostArgs = {
   id: Scalars['String'];
 };
 
+export type MutationType =
+  | 'CREATED'
+  | 'DELETED'
+  | 'PUBLISHED'
+  | 'UNPUBLISHED'
+  | 'UPDATED';
+
+export type Permissions =
+  | 'COMMENT'
+  | 'LOGIN'
+  | 'READ'
+  | 'WRITE';
+
 export type Post = {
   readonly __typename?: 'Post';
   readonly author: Author;
   readonly comments?: Maybe<ReadonlyArray<Comment>>;
   readonly id: Scalars['ID'];
+  readonly published?: Maybe<Scalars['Boolean']>;
   readonly title: Scalars['String'];
+};
+
+export type PostSubscriptionPayload = {
+  readonly __typename?: 'PostSubscriptionPayload';
+  readonly data?: Maybe<Post>;
+  readonly mutation: MutationType;
 };
 
 export type Query = {
@@ -167,20 +207,46 @@ export type QueryPostsArgs = {
   query?: InputMaybe<Scalars['String']>;
 };
 
+export type SubscribeAuthorInput = {
+  readonly email?: InputMaybe<Scalars['String']>;
+  readonly id?: InputMaybe<Scalars['String']>;
+};
+
+export type SubscribeCommentInput = {
+  readonly author?: InputMaybe<Scalars['String']>;
+  readonly post?: InputMaybe<Scalars['String']>;
+};
+
+export type SubscribePostInput = {
+  readonly author?: InputMaybe<Scalars['String']>;
+};
+
 export type Subscription = {
   readonly __typename?: 'Subscription';
-  readonly comment?: Maybe<Comment>;
+  readonly author?: Maybe<AuthorSubscriptionPayload>;
+  readonly comment?: Maybe<CommentSubscriptionPayload>;
   readonly countdown: Scalars['Int'];
+  readonly post?: Maybe<PostSubscriptionPayload>;
+};
+
+
+export type SubscriptionAuthorArgs = {
+  by?: InputMaybe<SubscribeAuthorInput>;
 };
 
 
 export type SubscriptionCommentArgs = {
-  postId: Scalars['String'];
+  by?: InputMaybe<SubscribeCommentInput>;
 };
 
 
 export type SubscriptionCountdownArgs = {
   from?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type SubscriptionPostArgs = {
+  by?: InputMaybe<SubscribePostInput>;
 };
 
 export type UpdateAuthorInput = {
@@ -198,6 +264,7 @@ export type UpdateCommentInput = {
 export type UpdatePostInput = {
   readonly authorId?: InputMaybe<Scalars['String']>;
   readonly body?: InputMaybe<Scalars['String']>;
+  readonly published?: InputMaybe<Scalars['Boolean']>;
   readonly title?: InputMaybe<Scalars['String']>;
 };
 
@@ -271,17 +338,25 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Author: ResolverTypeWrapper<Author>;
+  AuthorSubscriptionPayload: ResolverTypeWrapper<AuthorSubscriptionPayload>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Comment: ResolverTypeWrapper<Comment>;
+  CommentSubscriptionPayload: ResolverTypeWrapper<CommentSubscriptionPayload>;
   CreateAuthorInput: CreateAuthorInput;
   CreateCommentInput: CreateCommentInput;
   CreatePostInput: CreatePostInput;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
+  MutationType: MutationType;
+  Permissions: Permissions;
   Post: ResolverTypeWrapper<Post>;
+  PostSubscriptionPayload: ResolverTypeWrapper<PostSubscriptionPayload>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  SubscribeAuthorInput: SubscribeAuthorInput;
+  SubscribeCommentInput: SubscribeCommentInput;
+  SubscribePostInput: SubscribePostInput;
   Subscription: ResolverTypeWrapper<{}>;
   UpdateAuthorInput: UpdateAuthorInput;
   UpdateCommentInput: UpdateCommentInput;
@@ -291,8 +366,10 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Author: Author;
+  AuthorSubscriptionPayload: AuthorSubscriptionPayload;
   Boolean: Scalars['Boolean'];
   Comment: Comment;
+  CommentSubscriptionPayload: CommentSubscriptionPayload;
   CreateAuthorInput: CreateAuthorInput;
   CreateCommentInput: CreateCommentInput;
   CreatePostInput: CreatePostInput;
@@ -300,8 +377,12 @@ export type ResolversParentTypes = {
   Int: Scalars['Int'];
   Mutation: {};
   Post: Post;
+  PostSubscriptionPayload: PostSubscriptionPayload;
   Query: {};
   String: Scalars['String'];
+  SubscribeAuthorInput: SubscribeAuthorInput;
+  SubscribeCommentInput: SubscribeCommentInput;
+  SubscribePostInput: SubscribePostInput;
   Subscription: {};
   UpdateAuthorInput: UpdateAuthorInput;
   UpdateCommentInput: UpdateCommentInput;
@@ -314,7 +395,14 @@ export type AuthorResolvers<ContextType = any, ParentType extends ResolversParen
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  posts?: Resolver<Maybe<ReadonlyArray<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType>;
+  permissions?: Resolver<Maybe<ReadonlyArray<ResolversTypes['Permissions']>>, ParentType, ContextType>;
+  posts?: Resolver<Maybe<ReadonlyArray<ResolversTypes['Post']>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type AuthorSubscriptionPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthorSubscriptionPayload'] = ResolversParentTypes['AuthorSubscriptionPayload']> = {
+  data?: Resolver<Maybe<ResolversTypes['Author']>, ParentType, ContextType>;
+  mutation?: Resolver<ResolversTypes['MutationType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -326,6 +414,12 @@ export type CommentResolvers<ContextType = any, ParentType extends ResolversPare
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type CommentSubscriptionPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['CommentSubscriptionPayload'] = ResolversParentTypes['CommentSubscriptionPayload']> = {
+  data?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType>;
+  mutation?: Resolver<ResolversTypes['MutationType'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationCreateAuthorArgs, 'author'>>;
   createComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'comment'>>;
@@ -333,7 +427,8 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationDeleteAuthorArgs, 'authorId'>>;
   deleteComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationDeleteCommentArgs, 'commentId'>>;
   deletePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationDeletePostArgs, 'postId'>>;
-  publishPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationPublishPostArgs, 'postId'>>;
+  publishPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationPublishPostArgs, 'id'>>;
+  unPublishPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationUnPublishPostArgs, 'id'>>;
   updateAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationUpdateAuthorArgs, 'data' | 'id'>>;
   updateComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationUpdateCommentArgs, 'data' | 'id'>>;
   updatePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationUpdatePostArgs, 'data' | 'id'>>;
@@ -343,7 +438,14 @@ export type PostResolvers<ContextType = any, ParentType extends ResolversParentT
   author?: Resolver<ResolversTypes['Author'], ParentType, ContextType>;
   comments?: Resolver<Maybe<ReadonlyArray<ResolversTypes['Comment']>>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  published?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type PostSubscriptionPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['PostSubscriptionPayload'] = ResolversParentTypes['PostSubscriptionPayload']> = {
+  data?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType>;
+  mutation?: Resolver<ResolversTypes['MutationType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -357,15 +459,20 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
-  comment?: SubscriptionResolver<Maybe<ResolversTypes['Comment']>, "comment", ParentType, ContextType, RequireFields<SubscriptionCommentArgs, 'postId'>>;
+  author?: SubscriptionResolver<Maybe<ResolversTypes['AuthorSubscriptionPayload']>, "author", ParentType, ContextType, Partial<SubscriptionAuthorArgs>>;
+  comment?: SubscriptionResolver<Maybe<ResolversTypes['CommentSubscriptionPayload']>, "comment", ParentType, ContextType, Partial<SubscriptionCommentArgs>>;
   countdown?: SubscriptionResolver<ResolversTypes['Int'], "countdown", ParentType, ContextType, Partial<SubscriptionCountdownArgs>>;
+  post?: SubscriptionResolver<Maybe<ResolversTypes['PostSubscriptionPayload']>, "post", ParentType, ContextType, Partial<SubscriptionPostArgs>>;
 };
 
 export type Resolvers<ContextType = any> = {
   Author?: AuthorResolvers<ContextType>;
+  AuthorSubscriptionPayload?: AuthorSubscriptionPayloadResolvers<ContextType>;
   Comment?: CommentResolvers<ContextType>;
+  CommentSubscriptionPayload?: CommentSubscriptionPayloadResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Post?: PostResolvers<ContextType>;
+  PostSubscriptionPayload?: PostSubscriptionPayloadResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
 };
