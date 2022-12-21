@@ -11,11 +11,15 @@ const link = createHttpLink({
 const cache = new InMemoryCache()
 
 // Create the apollo client
-const apolloClient = new ApolloClient({
+export const apolloClient = new ApolloClient({
   link,
   cache,
   /// TODO: grab from env
   connectToDevTools: true,
 })
 
-export default apolloClient
+export const appStore: any = {}
+
+export const registerStore = () => {
+  console.log('store registered')
+}

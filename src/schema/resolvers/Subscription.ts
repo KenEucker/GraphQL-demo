@@ -1,5 +1,6 @@
 import { GraphQLError } from 'graphql'
-import { pipe, map, filter } from 'graphql-yoga'
+import { pipe, filter } from 'graphql-yoga'
+import { Author, AuthorByInput, InteractionByInput, PostByInput } from '../generated/types'
 
 const Subscription = {
   countdown: {
@@ -16,9 +17,11 @@ const Subscription = {
     resolve: (data: any) => data,
   },
   author: {
-    subscribe: (parent: never, { by }, { db, pubsub }) => {
-      if (by && (by.id || by.email)) {
-        const author = db.authors.find((a) => a.email === by.email || a.id === by.id)
+    subscribe: (parent: never, { by }: { by: AuthorByInput }, { db, pubsub }: any) => {
+      if (by && (by.id || by.email || by.handle)) {
+        const author = db.authors.find(
+          (a: Author) => a.email === by.email || a.id === by.id || a.handle === by.handle
+        )
 
         if (!author) {
           throw new GraphQLError('author does not exist')
@@ -27,34 +30,36 @@ const Subscription = {
 
       return pipe(
         pubsub.subscribe('author'),
-        filter((a) => (by?.email ? a.data.email === by.email : true)),
-        filter((a) => (by?.id ? a.data.id === by.id : true))
+        filter((a: { data: Author }) => (by?.email ? a.data.email === by.email : true)),
+        filter((a: { data: Author }) => (by?.id ? a.data.id === by.id : true))
       )
     },
     resolve: (data: any) => data,
   },
-  comment: {
-    subscribe: (parent: never, { by }, { pubsub, db }) => {
+  interaction: {
+    subscribe: (parent: never, { by }: { by: InteractionByInput }, { pubsub, db }: any) => {
       if (by && (by.author || by.post)) {
-        const comment = db.comments.find((c) => c.author === by.author || c.post === by.post)
+        const interaction = db.interactions.find(
+          (c: any) => c.author === by.author || c.post === by.post
+        )
 
-        if (!comment) {
+        if (!interaction) {
           throw new GraphQLError('author or post does not exist')
         }
       }
 
       return pipe(
-        pubsub.subscribe('comment'),
-        filter((c) => (by?.author ? c.data.author === by.author : true)),
+        pubsub.subscribe('interaction'),
+        filter((c: any) => (by?.author ? c.data.author === by.author : true)),
         filter((c) => (by?.post ? c.data.post === by.post : true))
       )
     },
     resolve: (data: any) => data,
   },
   post: {
-    subscribe: (parent: never, { by }, { pubsub, db }) => {
+    subscribe: (parent: never, { by }: { by: PostByInput }, { pubsub, db }: any) => {
       if (by && by.author) {
-        const author = db.authors.find((a) => a.id === by.author)
+        const author = db.authors.find((a: Author) => a.id === by.author)
 
         if (!author) {
           throw new GraphQLError('author does not exist')
@@ -63,7 +68,7 @@ const Subscription = {
 
       return pipe(
         pubsub.subscribe('post'),
-        filter((p) => (by?.author ? p.data.author === by.author : true)),
+        filter((p: any) => (by?.author ? p.data.author === by.author : true)),
         filter((p) => (p.mutation !== 'UNPUBLISHED' ? p.data.published : true))
       )
     },

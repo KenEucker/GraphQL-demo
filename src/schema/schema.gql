@@ -2,7 +2,7 @@ enum Permissions {
   READ
   WRITE
   LOGIN
-  COMMENT
+  INTERACT
 }
 
 enum MutationType {
@@ -13,62 +13,81 @@ enum MutationType {
   UNPUBLISHED
 }
 
-type Author {
-  id: ID!
-  email: String!
-  firstName: String!
-  lastName: String!
-  comments: [Comment!]
-  posts: [Post!]
-  permissions: [Permissions!]
-}
-
-type Comment {
-  id: ID!
-  text: String!
+type Like {
   author: Author!
   post: Post!
 }
- 
+
+type Author {
+  id: ID!
+  email: String!
+  handle: String!
+  name: String!
+  verified: Boolean
+  avatar: String!
+  banner: String
+  bio: String
+  link: String
+  location: String
+  birthday: String
+  posts: [Post!]
+  permissions: [Permissions!]
+  interactions: [Interaction!]
+}
+
+type Interaction {
+  id: ID!
+  author: Author!
+  post: Post!
+  text: String
+  share: Boolean
+  like: Boolean
+}
+
 type Post {
   id: ID!
   title: String!
   author: Author!
-  comments: [Comment!]
   published: Boolean
+  text: String
+  media: [String]
+  tags: [String]
+  interactions: [Interaction!]
 }
- 
+
 type Query {
   author(id: ID!): Author
-  authors(query: String): [Author]
-  comment(id: ID!): Comment
-  comments(author: String, text: String): [Comment]
+  authors(by: AuthorByInput): [Author]
+  interaction(id: ID!): Interaction
+  interactions(by: InteractionByInput): [Interaction]
   post(id: ID!): Post
-  posts(query: String): [Post]
+  posts(by: PostByInput): [Post]
 }
 
 type Mutation {
   createAuthor(author: CreateAuthorInput!): Author!
-  createComment(comment: CreateCommentInput!): Comment!
+  createInteraction(interaction: CreateInteractionInput!): Interaction!
   createPost(post: CreatePostInput!): Post!
 
   deleteAuthor(authorId: String!): Author!
-  deleteComment(commentId: String!): Comment!
+  deleteInteraction(interactionId: String!): Interaction!
   deletePost(postId: String!): Post!
-  
+
   updateAuthor(id: String!, data: UpdateAuthorInput!): Author!
-  updateComment(id: String!, data: UpdateCommentInput!): Comment!
+  updateInteraction(id: String!, data: UpdateInteractionInput!): Interaction!
   updatePost(id: String!, data: UpdatePostInput!): Post!
 
   publishPost(id: String!): Post!
   unPublishPost(id: String!): Post!
+
+  verifyAuthor(id: String!): Author!
 }
 
 type Subscription {
   countdown(from: Int): Int!
-  author(by: SubscribeAuthorInput): AuthorSubscriptionPayload
-  comment(by: SubscribeCommentInput): CommentSubscriptionPayload
-  post(by: SubscribePostInput): PostSubscriptionPayload
+  author(by: AuthorByInput): AuthorSubscriptionPayload
+  interaction(by: InteractionByInput): InteractionSubscriptionPayload
+  post(by: PostByInput): PostSubscriptionPayload
 }
 
 type AuthorSubscriptionPayload {
@@ -76,9 +95,9 @@ type AuthorSubscriptionPayload {
   data: Author
 }
 
-type CommentSubscriptionPayload {
+type InteractionSubscriptionPayload {
   mutation: MutationType!
-  data: Comment
+  data: Interaction
 }
 
 type PostSubscriptionPayload {
@@ -86,29 +105,35 @@ type PostSubscriptionPayload {
   data: Post
 }
 
-input SubscribeAuthorInput {
+input AuthorByInput {
   email: String
+  handle: String
   id: String
 }
 
-input SubscribeCommentInput {
+input InteractionByInput {
   author: String
   post: String
 }
 
-input SubscribePostInput {
+input PostByInput {
   author: String
+  title: String
 }
 
 input CreateAuthorInput {
-  firstName: String!
-  lastName: String!
+  name: String!
+  handle: String!
   email: String!
+  avatar: String
+  banner: String
 }
-input CreateCommentInput {
+input CreateInteractionInput {
   authorId: String!
   postId: String!
-  text: String!
+  text: String
+  like: Boolean
+  share: Boolean
 }
 input CreatePostInput {
   authorId: String!
@@ -118,14 +143,17 @@ input CreatePostInput {
 }
 
 input UpdateAuthorInput {
-  firstName: String
-  lastName: String
+  name: String
   email: String
+  avatar: String
+  banner: String
 }
-input UpdateCommentInput {
+input UpdateInteractionInput {
   authorId: String
   postId: String
   text: String
+  like: Boolean
+  share: Boolean
 }
 input UpdatePostInput {
   authorId: String
@@ -136,4 +164,6 @@ input UpdatePostInput {
 
 schema {
   query: Query
+  mutation: Mutation
+  subscription: Subscription
 }

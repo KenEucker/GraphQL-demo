@@ -5,15 +5,20 @@ import { MutationType } from '../generated/types.d'
 const Mutation = {
   // @ts-ignore
   createAuthor(parent, args, { db, pubsub }, info) {
-    const emailTaken = db.authors.some((a) => args.author.email === a.email)
+    const emailTaken = db.authors.some((a: { email: any }) => args.author.email === a.email)
     if (emailTaken) {
       throw new GraphQLError(`Email is already in use.`)
+    }
+
+    const handleTaken = db.authors.some((a: { handle: any }) => args.author.handle === a.handle)
+    if (handleTaken) {
+      throw new GraphQLError(`Handle is already in use.`)
     }
 
     const newAuthor = {
       id: uuidv4(),
       ...args.author,
-      comments: [],
+      interactions: [],
       posts: [],
     }
 
@@ -23,54 +28,56 @@ const Mutation = {
     return newAuthor
   },
   // @ts-ignore
-  createComment(parent, args, { db, pubsub }, info) {
-    const { authorId, postId } = args.comment
-    const author = db.authors.find((a) => authorId === a.id)
+  createInteraction(parent, args, { db, pubsub }, info) {
+    const { authorId, postId } = args.interaction
+    const author = db.authors.find((a: { id: any }) => authorId === a.id)
     if (!author) {
       throw new GraphQLError(`Author does not exist.`)
     }
 
-    const postIndex = db.posts.findIndex((p) => postId === p.id)
+    const postIndex = db.posts.findIndex((p: { id: any }) => postId === p.id)
     if (!postIndex) {
       throw new GraphQLError(`Post does not exist.`)
     }
 
     const post = db.posts[postIndex]
 
-    const alreadyCommentedOnPost = db.comments.some(
-      (c) => c.post === post.id && c.author === author.id
+    const alreadyInteractionedOnPost = db.interactions.some(
+      (c: { post: any; author: any }) => c.post === post.id && c.author === author.id
     )
-    if (alreadyCommentedOnPost) {
-      throw new GraphQLError(`Author already commented on this post.`)
+    if (alreadyInteractionedOnPost) {
+      throw new GraphQLError(`Author already interactioned on this post.`)
     }
 
-    const newComment = {
+    const newInteraction = {
       id: uuidv4(),
-      text: args.comment.text,
+      text: args.interaction.text,
       post: post.id,
       author: author.id,
     }
 
-    /// Add the new comment to the database
-    db.comments.push(newComment)
-    /// Add the new comment to the post
-    post.comments.push(newComment.id)
+    /// Add the new interaction to the database
+    db.interactions.push(newInteraction)
+    /// Add the new interaction to the post
+    post.interactions.push(newInteraction.id)
     /// Update the post in the database
     db.posts[postIndex] = post
 
-    pubsub.publish(`comment`, { mutation: 'CREATED', data: newComment })
+    pubsub.publish(`interaction`, { mutation: 'CREATED', data: newInteraction })
 
-    return newComment
+    return newInteraction
   },
   // @ts-ignore
   createPost(parent, args, { db, pubsub }, info) {
     const { authorId, title, body, published } = args.post
-    const author = db.authors.find((a) => authorId === a.id)
+    const author = db.authors.find((a: { id: any }) => authorId === a.id)
     if (!author) {
       throw new GraphQLError(`Author does not exist.`)
     }
 
-    const postAlreadyExists = db.posts.some((p) => p.author === author.id && p.title === title)
+    const postAlreadyExists = db.posts.some(
+      (p: { author: any; title: any }) => p.author === author.id && p.title === title
+    )
 
     if (postAlreadyExists) {
       throw new GraphQLError(`Post already exists with title for author.`)
@@ -82,7 +89,7 @@ const Mutation = {
       body: body ?? '',
       author: author.id,
       published,
-      comments: [],
+      interactions: [],
     }
 
     db.posts.push(newPost)
@@ -90,8 +97,8 @@ const Mutation = {
 
     return newPost
   },
-  publishPost(parent, { id }, { db, pubsub }, info) {
-    const postIndex = db.posts.findIndex((p) => p.id === id)
+  publishPost(parent: any, { id }: any, { db, pubsub }: any, info: any) {
+    const postIndex = db.posts.findIndex((p: { id: any }) => p.id === id)
 
     if (postIndex === -1) {
       throw new GraphQLError(`Post does not exist.`)
@@ -111,8 +118,8 @@ const Mutation = {
 
     return publishedPost
   },
-  unPublishPost(parent, { id }, { db, pubsub }, info) {
-    const postIndex = db.posts.findIndex((p) => p.id === id)
+  unPublishPost(parent: any, { id }: any, { db, pubsub }: any, info: any) {
+    const postIndex = db.posts.findIndex((p: { id: any }) => p.id === id)
 
     if (postIndex === -1) {
       throw new GraphQLError(`Post does not exist.`)
@@ -136,7 +143,7 @@ const Mutation = {
 
   // @ts-ignore
   deleteAuthor(parent, args, { db, pubsub }, info) {
-    const authorIndex = db.authors.findIndex((a) => a.id === args.authorId)
+    const authorIndex = db.authors.findIndex((a: { id: any }) => a.id === args.authorId)
 
     if (authorIndex === -1) {
       throw new GraphQLError(`Author does not exist.`)
@@ -144,40 +151,42 @@ const Mutation = {
 
     const [deletedAuthor] = db.authors.splice(authorIndex, 1)
 
-    db.posts = db.posts.filter((post) => {
+    db.posts = db.posts.filter((post: { author: any; id: any }) => {
       const match = post.author === args.authorId
       if (match) {
-        /// Remove all comments for that post
-        db.comments = db.comments.filter((c) => c.post !== post.id)
+        /// Remove all interactions for that post
+        db.interactions = db.interactions.filter((c: { post: any }) => c.post !== post.id)
       }
 
       return !match
     })
 
-    /// Remove all comments for the author
-    db.comments = db.comments.filter((c) => c.author !== args.authorId)
+    /// Remove all interactions for the author
+    db.interactions = db.interactions.filter((c: { author: any }) => c.author !== args.authorId)
     /// Publish the deleted event
     pubsub.publish(`author`, { mutation: 'DELETED', data: deletedAuthor })
 
     return deletedAuthor
   },
   // @ts-ignore
-  deleteComment(parent, args, { db, pubsub }, info) {
-    const commentIndex = db.comments.findIndex((a) => a.id === args.commentId)
+  deleteInteraction(parent, args, { db, pubsub }, info) {
+    const interactionIndex = db.interactions.findIndex(
+      (a: { id: any }) => a.id === args.interactionId
+    )
 
-    if (commentIndex === -1) {
-      throw new GraphQLError(`Comment does not exist.`)
+    if (interactionIndex === -1) {
+      throw new GraphQLError(`Interaction does not exist.`)
     }
 
-    const [deletedComment] = db.comments.splice(commentIndex, 1)
+    const [deletedInteraction] = db.interactions.splice(interactionIndex, 1)
 
-    pubsub.publish(`comment`, { mutation: 'DELETED', data: deletedComment })
+    pubsub.publish(`interaction`, { mutation: 'DELETED', data: deletedInteraction })
 
-    return deletedComment
+    return deletedInteraction
   },
   // @ts-ignore
   deletePost(parent, args, { db, pubsub }, info) {
-    const postIndex = db.posts.findIndex((a) => a.id === args.postId)
+    const postIndex = db.posts.findIndex((a: { id: any }) => a.id === args.postId)
 
     if (postIndex === -1) {
       throw new GraphQLError(`Post does not exist.`)
@@ -185,7 +194,7 @@ const Mutation = {
 
     const [deletedPost] = db.posts.splice(postIndex, 1)
 
-    db.comments = db.comments.filter((c) => c.post !== args.postId)
+    db.interactions = db.interactions.filter((c: { post: any }) => c.post !== args.postId)
     if (deletedPost.published) {
       pubsub.publish(`post`, { mutation: 'DELETED', data: deletedPost })
     }
@@ -196,7 +205,7 @@ const Mutation = {
   // @ts-ignore
   updateAuthor(parent, args, { db, pubsub }, info) {
     const { data, id } = args
-    const authorIndex = db.authors.findIndex((a) => a.id === id)
+    const authorIndex = db.authors.findIndex((a: { id: any }) => a.id === id)
 
     if (authorIndex === -1) {
       throw new GraphQLError(`Author does not exist.`)
@@ -204,7 +213,7 @@ const Mutation = {
     const updatedAuthor = db.authors[authorIndex]
 
     if (typeof data.email === 'string') {
-      const emailTaken = db.authors.some((a) => a.email === data.email)
+      const emailTaken = db.authors.some((a: { email: any }) => a.email === data.email)
 
       if (emailTaken) {
         throw new GraphQLError(`Email already taken.`)
@@ -213,8 +222,7 @@ const Mutation = {
       updatedAuthor.email = data.email
     }
 
-    updatedAuthor.firstName = data.firstName ?? updatedAuthor.firstName
-    updatedAuthor.lastName = data.lastName ?? updatedAuthor.lastName
+    updatedAuthor.name = data.name ?? updatedAuthor.name
 
     db.authors[authorIndex] = updatedAuthor
     pubsub.publish('author', { mutation: 'UPDATED', data: updatedAuthor })
@@ -222,29 +230,29 @@ const Mutation = {
     return updatedAuthor
   },
   // @ts-ignore
-  updateComment(parent, args, { db, pubsub }, info) {
+  updateInteraction(parent, args, { db, pubsub }, info) {
     const { data, id } = args
-    const commentIndex = db.comments.findIndex((a) => a.id === id)
+    const interactionIndex = db.interactions.findIndex((a: { id: any }) => a.id === id)
 
-    if (commentIndex === -1) {
-      throw new GraphQLError(`Comment does not exist.`)
+    if (interactionIndex === -1) {
+      throw new GraphQLError(`Interaction does not exist.`)
     }
 
-    const updatedComment = db.comments[commentIndex]
+    const updatedInteraction = db.interactions[interactionIndex]
 
-    updatedComment.text = data.text ?? updatedComment.text
-    /// Not going to allow changing the post that a comment was left for
-    /// Not going to allow changing the author that left the comment
+    updatedInteraction.text = data.text ?? updatedInteraction.text
+    /// Not going to allow changing the post that a interaction was left for
+    /// Not going to allow changing the author that left the interaction
 
-    db.comments[commentIndex] = updatedComment
-    pubsub.publish('comment', { mutation: 'UPDATED', data: updatedComment })
+    db.interactions[interactionIndex] = updatedInteraction
+    pubsub.publish('interaction', { mutation: 'UPDATED', data: updatedInteraction })
 
-    return updatedComment
+    return updatedInteraction
   },
   // @ts-ignore
   updatePost(parent, args, { db, pubsub }, info) {
     const { data, id } = args
-    const postIndex = db.posts.findIndex((a) => a.id === id)
+    const postIndex = db.posts.findIndex((a: { id: any }) => a.id === id)
 
     if (postIndex === -1) {
       throw new GraphQLError(`Post does not exist.`)
@@ -263,6 +271,24 @@ const Mutation = {
     }
 
     return updatedPost
+  },
+
+  // @ts-ignore
+  verifyAuthor(parent, args, { db, pubsub }, info) {
+    const { data, id } = args
+    const authorIndex = db.authors.findIndex((a: { id: any }) => a.id === id)
+
+    if (authorIndex === -1) {
+      throw new GraphQLError(`Author does not exist.`)
+    }
+    const updatedAuthor = db.authors[authorIndex]
+
+    updatedAuthor.verified = true
+
+    db.authors[authorIndex] = updatedAuthor
+    pubsub.publish('author', { mutation: 'UPDATED', data: updatedAuthor })
+
+    return updatedAuthor
   },
 }
 
