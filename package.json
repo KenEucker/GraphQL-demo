@@ -4,15 +4,22 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "analyze": "windicss-analysis",
     "build": "vue-tsc && vite build",
+    "build:prod": "npm run build",
     "dev": "concurrently \"npm:dev-server\" \"npm:dev-client\" -n \"server, client\" -c \"auto\"",
     "dev-server": "concurrently \"nodemon --watch './src/schema/**/*.ts' --exec 'ts-node --experimental-specifier-resolution=node --project tsconfig-server.json' server.ts\" \"graphql-codegen -w\" ",
     "dev-client": "vite",
-    "compile": "graphql-codegen",
+    "compile": "npm run compile:graphql",
+    "compile:graphql": "graphql-codegen",
+    "compile:prisma": "prisma generate",
     "lint": "yarn lint:js && yarn lint:style",
     "lint:js": "eslint --ext .ts,.js,.vue src --fix",
     "lint:style": "stylelint \"./src/**/*.vue\" \"./src/**/*.scss\" --fix",
     "preview": "vite preview"
+  },
+  "prisma": {
+    "schema": "src/schema/schema.prisma"
   },
   "dependencies": {
     "@apollo/client": "^3.7.2",
@@ -22,8 +29,12 @@
     "@vueuse/motion": "^2.0.0-beta.12",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
+    "nprogress": "^0.2.0",
+    "pinia": "^2.0.28",
     "uuid": "^9.0.0",
-    "vue": "^3.2.45"
+    "vue": "^3.2.45",
+    "vue-ionicons": "^3.0.5",
+    "vue-router": "^4.1.6"
   },
   "devDependencies": {
     "@apollo/server": "^4.3.0",
@@ -33,11 +44,13 @@
     "@graphql-codegen/introspection": "^2.2.3",
     "@graphql-codegen/named-operations-object": "^2.3.1",
     "@graphql-codegen/near-operation-file-preset": "^2.4.4",
+    "@graphql-codegen/typed-document-node": "^2.3.10",
     "@graphql-codegen/typescript": "^2.8.5",
     "@graphql-codegen/typescript-apollo-client-helpers": "^2.2.6",
     "@graphql-codegen/typescript-operations": "^2.5.10",
     "@graphql-codegen/typescript-resolvers": "^2.7.10",
     "@graphql-codegen/typescript-vue-apollo": "^3.3.6",
+    "@types/nprogress": "^0.2.0",
     "@types/uuid": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@vitejs/plugin-vue": "^4.0.0",
@@ -52,6 +65,8 @@
     "nodemon": "^2.0.20",
     "postcss": "^8.4.20",
     "postcss-html": "^1.5.0",
+    "prisma": "^4.7.1",
+    "prisma-class-validator-generator": "^0.2.0",
     "sass": "^1.56.2",
     "stylelint": "^14.16.0",
     "stylelint-config-prettier": "^9.0.4",
@@ -63,6 +78,9 @@
     "ts-node-dev": "^2.0.0",
     "typescript": "^4.9.3",
     "vite": "^4.0.0",
-    "vue-tsc": "^1.0.11"
+    "vite-plugin-windicss": "^1.8.10",
+    "vue-tsc": "^1.0.11",
+    "windicss": "^3.5.6",
+    "windicss-analysis": "^0.3.5"
   }
 }

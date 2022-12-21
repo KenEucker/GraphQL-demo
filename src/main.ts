@@ -1,8 +1,32 @@
-import './style.scss'
 import { createApp } from 'vue'
-import App from './App.vue'
 import { DefaultApolloClient } from '@vue/apollo-composable'
-import apolloClient from './store'
-import { MotionPlugin } from '@vueuse/motion'
 
-createApp(App).provide(DefaultApolloClient, apolloClient).use(MotionPlugin).mount('#app')
+import 'virtual:windi-devtools'
+import 'virtual:windi.css'
+import 'vue-ionicons/ionicons.css'
+import './styles/main.scss'
+
+import App from './App.vue'
+
+import { apolloClient, registerStore } from './store'
+import router from './router'
+
+import { MotionPlugin } from '@vueuse/motion'
+import { createPinia } from 'pinia'
+
+const app = createApp(App)
+// GraphQL
+app.provide(DefaultApolloClient, apolloClient)
+
+// Router
+app.use(router)
+
+// Store
+app.use(createPinia())
+registerStore()
+
+// other UI plugins
+app.use(MotionPlugin)
+
+// Run
+app.mount('#app')

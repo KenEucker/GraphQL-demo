@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import AboutProject from '../components/AboutProject.vue'
-import TestBed from '../components/TestBed.vue'
-import AuthorList from '../components/AuthorList.vue'
 import { vElementHover } from '@vueuse/components'
 
 const logos = [
@@ -44,62 +41,56 @@ const hoverered = (index: number) => {
 </script>
 
 <template>
-  <h1>Vue GraphQl TypeScript Demo</h1>
-  <div class="logos">
-    <div v-for="(logo, i) in logos" :key="`logo-${i}`">
-      <a v-element-hover="() => hoverered(i)" :href="logo.href" target="_blank">
-        <img
-          v-motion
-          :initial="{
-            y: 100,
-            opacity: 0,
-            scale: 1,
-          }"
-          :enter="{
-            y: 0,
-            scale: 1,
-            opacity: 1,
-            transition: {
-              stiffness: '100',
-              delay: 100,
-            },
-          }"
-          :hovered="{
-            scale: 1.25,
-          }"
-          :src="logo.src"
-          :class="`logo ${logo.name}`"
-          :alt="`${logo.name} logo`"
-        />
-      </a>
+  <div class="p-2 text-xl text-center mt-10 w-full md:p-4 md:w-3/4 m-auto">
+    <h1>Vue GraphQl TypeScript Demo</h1>
+    <div class="items-center justify-between flex-wrap flex md:pl-10 lg:pr-30">
+      <div v-for="(logo, i) in logos" :key="`logo-${i}`">
+        <a v-element-hover="() => hoverered(i)" :href="logo.href" target="_blank">
+          <img
+            v-motion
+            :initial="{
+              y: 100,
+              opacity: 0,
+              scale: 1,
+            }"
+            :enter="{
+              y: 0,
+              scale: 1,
+              opacity: 1,
+              transition: {
+                stiffness: '100',
+                delay: 100,
+              },
+            }"
+            :hovered="{
+              scale: 1.25,
+            }"
+            :src="logo.src"
+            class="logo"
+            :class="logo.name"
+            :alt="`${logo.name} logo`"
+          />
+        </a>
+      </div>
+    </div>
+    <div
+      class="text-xl text-center flex justify-between items-center justify-between flex-wrap flex md:pl-10 lg:pr-40"
+    >
+      <span v-for="(logo, i) in logos" :key="`name-${i}`" class="p-5 name" :class="logo.name">
+        <span class="ml-5">{{ logo.name }}</span>
+        <span class="ml-5">+</span>
+      </span>
+      <span class="mr-5 p-5">you!</span>
     </div>
   </div>
-  <h1>
-    <span v-for="(logo, i) in logos" :key="`name-${i}`" :class="`name ${logo.name}`">
-      {{ logo.name }} +
-    </span>
-    you!
-  </h1>
-
-  <test-bed />
-  <about-project />
 </template>
 
 <style lang="scss" scoped>
-.logos {
-  display: flex;
-  margin: auto;
-  width: 100%;
-
-  > div {
-    margin: auto;
-  }
-}
-
 .logo {
-  height: 6em;
+  min-height: 6rem;
   padding: 1.5em;
   will-change: filter;
+  max-width: 95px;
 }
 
 .logo:hover {
