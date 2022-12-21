@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import AboutProject from '../components/demo/AboutProject.vue'
-import TestBed from '../components/demo/TestBed.vue'
-import ProjectLogos from '../components/demo/ProjectLogos.vue'
+import AboutProject from '../components/about/AboutProject.vue'
+import TestBed from '../components/about/TestBed.vue'
+import ProjectLogos from '../components/about/ProjectLogos.vue'
 </script>
 
 <template>

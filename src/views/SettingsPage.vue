@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ImageIcon from 'vue-ionicons/dist/md-image.vue'
 import LoadingSpinner from '../components/app/LoadingSpinner.vue'
+import ErrorMessage from '../components/app/ErrorMessage.vue'
 import PovAuthor from '../components/app/PovAuthor.vue'
 import { reactive, watch, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
@@ -128,7 +129,9 @@ function saveFields(e: Event) {
   <div v-if="loading">
     <loading-spinner />
   </div>
-  <div v-else-if="error">Error: {{ error.message }}</div>
+  <div v-else-if="error">
+    <error-message title="Error Fetching Account Data" :message="error.message" />
+  </div>
   <div v-else>
     <section
       class="max-w-4xl p-6 mx-auto rounded-md shadow-md text-center items-center mx-auto dark:bg-gray-800 mt-20"

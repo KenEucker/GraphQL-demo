@@ -48,6 +48,7 @@ const classes = computed(() => {
         {{ props.author.name }}
       </p>
       <p class="-mt-1">{{ props.author.handle }}</p>
+      <p class="-mt-1">{{ props.author.status }}</p>
     </div>
   </div>
 </template>

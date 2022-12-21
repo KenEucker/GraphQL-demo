@@ -21,6 +21,7 @@ const query = gql`
       handle
       avatar
       verified
+      status
       posts {
         id
       }

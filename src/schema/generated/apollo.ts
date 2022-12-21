@@ -1,6 +1,6 @@
 import { FieldPolicy, FieldReadFunction, TypePolicies, TypePolicy } from '@apollo/client/cache';
 import gql from 'graphql-tag';
-export type AuthorKeySpecifier = ('avatar' | 'banner' | 'bio' | 'birthday' | 'email' | 'handle' | 'id' | 'interactions' | 'link' | 'location' | 'name' | 'permissions' | 'posts' | 'verified' | AuthorKeySpecifier)[];
+export type AuthorKeySpecifier = ('avatar' | 'banner' | 'bio' | 'birthday' | 'email' | 'handle' | 'id' | 'interactions' | 'link' | 'location' | 'name' | 'permissions' | 'posts' | 'status' | 'verified' | AuthorKeySpecifier)[];
 export type AuthorFieldPolicy = {
 	avatar?: FieldPolicy<any> | FieldReadFunction<any>,
 	banner?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -15,6 +15,7 @@ export type AuthorFieldPolicy = {
 	name?: FieldPolicy<any> | FieldReadFunction<any>,
 	permissions?: FieldPolicy<any> | FieldReadFunction<any>,
 	posts?: FieldPolicy<any> | FieldReadFunction<any>,
+	status?: FieldPolicy<any> | FieldReadFunction<any>,
 	verified?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type AuthorSubscriptionPayloadKeySpecifier = ('data' | 'mutation' | AuthorSubscriptionPayloadKeySpecifier)[];
@@ -36,11 +37,6 @@ export type InteractionSubscriptionPayloadFieldPolicy = {
 	data?: FieldPolicy<any> | FieldReadFunction<any>,
 	mutation?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type LikeKeySpecifier = ('author' | 'post' | LikeKeySpecifier)[];
-export type LikeFieldPolicy = {
-	author?: FieldPolicy<any> | FieldReadFunction<any>,
-	post?: FieldPolicy<any> | FieldReadFunction<any>
-};
 export type MutationKeySpecifier = ('createAuthor' | 'createInteraction' | 'createPost' | 'deleteAuthor' | 'deleteInteraction' | 'deletePost' | 'publishPost' | 'unPublishPost' | 'updateAuthor' | 'updateInteraction' | 'updatePost' | 'verifyAuthor' | MutationKeySpecifier)[];
 export type MutationFieldPolicy = {
 	createAuthor?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -56,13 +52,14 @@ export type MutationFieldPolicy = {
 	updatePost?: FieldPolicy<any> | FieldReadFunction<any>,
 	verifyAuthor?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type PostKeySpecifier = ('author' | 'id' | 'interactions' | 'media' | 'published' | 'tags' | 'text' | 'title' | PostKeySpecifier)[];
+export type PostKeySpecifier = ('author' | 'id' | 'interactions' | 'media' | 'published' | 'status' | 'tags' | 'text' | 'title' | PostKeySpecifier)[];
 export type PostFieldPolicy = {
 	author?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
 	interactions?: FieldPolicy<any> | FieldReadFunction<any>,
 	media?: FieldPolicy<any> | FieldReadFunction<any>,
 	published?: FieldPolicy<any> | FieldReadFunction<any>,
+	status?: FieldPolicy<any> | FieldReadFunction<any>,
 	tags?: FieldPolicy<any> | FieldReadFunction<any>,
 	text?: FieldPolicy<any> | FieldReadFunction<any>,
 	title?: FieldPolicy<any> | FieldReadFunction<any>
@@ -104,10 +101,6 @@ export type StrictTypedTypePolicies = {
 	InteractionSubscriptionPayload?: Omit<TypePolicy, "fields" | "keyFields"> & {
 		keyFields?: false | InteractionSubscriptionPayloadKeySpecifier | (() => undefined | InteractionSubscriptionPayloadKeySpecifier),
 		fields?: InteractionSubscriptionPayloadFieldPolicy,
-	},
-	Like?: Omit<TypePolicy, "fields" | "keyFields"> & {
-		keyFields?: false | LikeKeySpecifier | (() => undefined | LikeKeySpecifier),
-		fields?: LikeFieldPolicy,
 	},
 	Mutation?: Omit<TypePolicy, "fields" | "keyFields"> & {
 		keyFields?: false | MutationKeySpecifier | (() => undefined | MutationKeySpecifier),

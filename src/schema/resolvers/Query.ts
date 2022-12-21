@@ -8,19 +8,22 @@ const Query = {
   // @ts-ignore
   interaction: (parent, args, { db }, info) => db.interactions.find((i) => i.id === args.id),
   // @ts-ignore
-  authors: (parent, { by }, { db }, info) => {
+  authors: (parent, { by }, { db, prisma }, info) => {
     if (by?.id || by?.name || by?.email || by?.handle) {
-      return db.authors.filter(
-        (a: Author) =>
-          a.id === by.id || a.email === by.email || a.handle === by.handle || a.name === by.name
-      )
+      return prisma.author.findMany()
+      // return db.authors.filter(
+      //   (a: Author) =>
+      //     a.id === by.id || a.email === by.email || a.handle === by.handle || a.name === by.name
+      // )
     }
+    return prisma.author.findMany()
 
-    return db.authors
+    // return db.authors
   },
   // @ts-ignore
-  posts: (parent, { by }, { db }, info) => {
+  posts: (parent, { by }, { db, prisma }, info) => {
     if (by?.id || by?.title || by?.text) {
+      return prisma.post.findMany()
       return db.posts.filter(
         (p: Post) =>
           p.id === by.id ||
@@ -29,7 +32,7 @@ const Query = {
       )
     }
 
-    return db.posts
+    return prisma.post.findMany()
   },
   // @ts-ignore
   interactions: (parent, { by }, { db }, info) => {

@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import { createServer } from 'node:http'
 import { createYoga } from 'graphql-yoga'
 import { schema, pubsub, prisma } from './src/schema'

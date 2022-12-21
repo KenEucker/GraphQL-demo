@@ -6,6 +6,7 @@ import ArrowBack from 'vue-ionicons/dist/md-arrow-back.vue'
 import Link from 'vue-ionicons/dist/md-link.vue'
 import PovSelfPost from '../components/app/PovSelfPost.vue'
 import LoadingSpinner from '../components/app/LoadingSpinner.vue'
+import ErrorMessage from '../components/app/ErrorMessage.vue'
 import { reactive, watch, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuery } from '@vue/apollo-composable'
@@ -77,7 +78,9 @@ function selected(idx: number) {
   <div v-if="loading">
     <loading-spinner />
   </div>
-  <div v-else-if="error">Error: {{ error.message }}</div>
+  <div v-else-if="error">
+    <error-message title="Error Fetching Profile Data" :message="error.message" />
+  </div>
   <div v-else class="w-full p-4 pr-6 max-w-[700px] mx-auto">
     <div class="flex p-1 text-twitter-gray">
       <arrow-back v-if="props.showBackButton" w="25" h="25" class="text-twitter-primary p-3 px-4" />

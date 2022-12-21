@@ -34,8 +34,11 @@ https://v4.apollo.vuejs.org/guide-composable/
 
 Subscriptions deviates from the udemy course instruction. I believe that this is due to the fact that I am using Apollo V4 with Graphql-Yoga@latest. https://the-guild.dev/graphql/yoga-server/docs/features/subscriptions
 
-Hasura instead of Heroku
+Hasura instead of Heroku (Just kidding went back to Heroku)
 https://cloud.hasura.io/
+
+Deploying Prisma to Heroku
+https://github.com/prisma/prisma-examples/tree/latest/deployment-platforms/heroku
 
 # potential hosting solutions
 
@@ -49,6 +52,19 @@ https://cloud.hasura.io/
 
 # advanced learning
 
-- Serverless GraphQL Starter Kit https://github.com/serverless/serverless-graphql
+Serverless GraphQL Starter Kit - https://github.com/serverless/serverless-graphql
 
-NextJs https://github.com/dotansimha/graphql-yoga/tree/main/examples/nextjs
+Put it all into NextJs - https://github.com/dotansimha/graphql-yoga/tree/main/examples/nextjs
+
+Whatever Remix is - https://remix.run/docs/en/v1/tutorials/blog
+
+# big platform ideas
+
+Build a Coolify server - https://github.com/coollabsio/coolify
+Connect Totum for artists - https://github.com/poulainv/tottem
+Connect calendly for scheduling - https://github.com/calcom/cal.com
+Connect umami for analytics - https://github.com/umami-software/umami
+Connect vaultwarden for IAM services - https://github.com/dani-garcia/vaultwarden
+Build in a code server for creating Vue's - https://github.com/coder/code-server
+Connect Linen for chat spaces (no DMs!) - https://github.com/Linen-dev/linen.dev
+Build Beam into posts for more rich "longform" posts - https://github.com/planetscale/beam

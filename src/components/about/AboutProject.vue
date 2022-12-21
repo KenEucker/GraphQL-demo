@@ -21,7 +21,7 @@
       >, which is like Vue's version of jQuery
     </p>
     <p class="p-2">
-      This project demo uses
+      This project uses
       <a
         class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
         href="https://the-guild.dev/graphql/codegen"
@@ -73,7 +73,7 @@
       in your IDE for a better DX
     </p>
     <p class="read-the-docs text-gray-400">
-      This demo was developed as research into learning GraphQL and Apollo
+      This project was originally developed as research into learning GraphQL with Apollo and Prisma
     </p>
   </div>
 </template>

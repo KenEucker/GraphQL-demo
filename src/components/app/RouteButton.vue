@@ -32,16 +32,17 @@ const props = defineProps({
 </script>
 <template>
   <router-link :to="props.path">
-    <pov v-if="props.text == 'Hello'" w="40" h="40" class="-mt-1" />
-    <list v-else-if="props.text == 'Posts'" w="30" h="30" class="-mt-1" />
-    <node-js v-else-if="props.text == 'About'" w="30" h="30" class="-mt-1" />
-    <home v-else-if="props.text == 'Home'" w="30" h="30" class="-mt-1" />
-    <explore v-else-if="props.text == 'Graph'" w="30" h="30" class="-mt-1" />
-    <notifications v-else-if="props.text == 'Notifications'" w="30" h="30" class="-mt-1" />
-    <saved v-else-if="props.text == 'Favorites'" w="30" h="30" class="-mt-1" />
-    <groups v-else-if="props.text == 'Groups'" w="30" h="30" class="-mt-1" />
-    <profile v-else-if="props.text == 'Profile'" w="30" h="30" class="-mt-1" />
-    <settings v-else-if="props.text == 'Settings'" w="30" h="30" class="-mt-1" />
+    <pov v-if="props.text == 'Hello'" w="40" h="40" />
+    <list v-else-if="props.text == 'Posts'" w="30" h="30" />
+    <node-js v-else-if="props.text == 'About'" w="30" h="30" class="-mt-1 text-green-400" />
+    <home v-else-if="props.text == 'Home'" w="30" h="30" />
+    <img v-else-if="props.text == 'Graph'" class="-mt-1 w-8 h-8 inline" src="/GraphQL_Logo.svg" />
+    <explore v-else-if="props.text == 'Data'" w="30" h="30" class="text-blue-600" />
+    <notifications v-else-if="props.text == 'Notifications'" w="30" h="30" />
+    <saved v-else-if="props.text == 'Favorites'" w="30" h="30" />
+    <groups v-else-if="props.text == 'Groups'" w="30" h="30" />
+    <profile v-else-if="props.text == 'Profile'" w="30" h="30" />
+    <settings v-else-if="props.text == 'Settings'" w="30" h="30" />
     <span v-if="props.expanded" class="ml-5 align-top text-md capitalize">{{
       props.text ?? props.text
     }}</span>

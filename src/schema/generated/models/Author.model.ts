@@ -1,28 +1,64 @@
-import { IsInt, IsDefined, IsString } from "class-validator";
-import "./";
+import { IsInt, IsDefined, IsString, IsBoolean, IsIn } from 'class-validator'
+import { Post, Interaction } from './'
+import { getEnumValues } from '../helpers'
+import { Permissions } from '../enums'
 
 export class Author {
-    @IsDefined()
-    @IsInt()
-    id!: number;
+  @IsDefined()
+  @IsInt()
+  id!: number
 
-    @IsDefined()
-    @IsString()
-    email!: string;
+  @IsDefined()
+  @IsString()
+  handle!: string
 
-    @IsDefined()
-    @IsString()
-    handle!: string;
+  @IsDefined()
+  @IsBoolean()
+  verified!: boolean
 
-    @IsDefined()
-    @IsString()
-    name!: string;
+  @IsDefined()
+  posts!: Post[]
 
-    @IsDefined()
-    @IsString()
-    avatar!: string;
+  @IsDefined()
+  @IsIn(getEnumValues(Permissions))
+  permissions!: Permissions[]
 
-    @IsDefined()
-    @IsString()
-    banner!: string;
+  @IsDefined()
+  @IsString()
+  email!: string
+
+  @IsDefined()
+  @IsString()
+  name!: string
+
+  @IsDefined()
+  @IsString()
+  avatar!: string
+
+  @IsDefined()
+  @IsString()
+  banner!: string
+
+  @IsDefined()
+  @IsString()
+  status!: string
+
+  @IsDefined()
+  @IsString()
+  bio!: string
+
+  @IsDefined()
+  @IsString()
+  link!: string
+
+  @IsDefined()
+  @IsString()
+  location!: string
+
+  @IsDefined()
+  @IsString()
+  birthday!: string
+
+  @IsDefined()
+  interactions!: Interaction[]
 }

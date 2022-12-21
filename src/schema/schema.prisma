@@ -14,18 +14,58 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Permissions {
+  READ
+  WRITE
+  LOGIN
+  INTERACT
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+  PUBLISHED
+  UNPUBLISHED
+}
+
 model Author {
-  id     Int    @id @default(autoincrement())
-  email  String
-  handle String
-  name   String
-  avatar String
-  banner String @default("")
+  id           Int           @id @default(autoincrement())
+  handle       String
+  verified     Boolean
+  posts        Post[]
+  permissions  Permissions[]
+  email        String
+  name         String        @default("")
+  avatar       String        @default("")
+  banner       String        @default("")
+  status       String        @default("")
+  bio          String        @default("")
+  link         String        @default("")
+  location     String        @default("")
+  birthday     String        @default("")
+  interactions Interaction[]
+}
+
+model Interaction {
+  id       Int     @id @default(autoincrement())
+  author   Author  @relation(fields: [authorId], references: [id])
+  post     Post    @relation(fields: [postId], references: [id])
+  text     String  @default("")
+  share    Boolean
+  like     Boolean
+  authorId Int
+  postId   Int
 }
 
 model Post {
-  id    Int      @id @default(autoincrement())
-  title String
-  text  String
-  tags  String[]
+  id           Int           @id @default(autoincrement())
+  published    Boolean       @default(false)
+  author       Author        @relation(fields: [id], references: [id])
+  interactions Interaction[]
+  tags         String[]
+  title        String
+  text         String        @default("")
+  status       String        @default("")
+  media        String[]
 }

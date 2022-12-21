@@ -90,9 +90,9 @@ import PointOfVue from '../components/app/PointOfVue.vue'
           <div
             class="mx-auto w-full md:w-4/5 transform -rotate-6 transition hover:scale-105 duration-700 ease-in-out hover:rotate-6"
           >
-            <img src="macbook.svg" />
+            <img src="/macbook.svg" />
             <img
-              src="app-screenshot.png"
+              src="/app-screenshot.png"
               alt="app screenshot"
               class="absolute z-10 top-0 left-0 bottom-0 right-0 max-w-[500px] mx-auto mt-[30px] overflow-hidden"
             />
@@ -103,11 +103,11 @@ import PointOfVue from '../components/app/PointOfVue.vue'
           <p class="text-blue-400 font-bold pb-8 lg:pb-6 text-center">Download our app:</p>
           <div class="flex w-full justify-center md:justify-start pb-24 lg:pb-0 fade-in">
             <img
-              src="App-Store.svg"
+              src="/App-Store.svg"
               class="h-12 pr-12 transform hover:scale-125 duration-300 ease-in-out"
             />
             <img
-              src="Play-Store.svg"
+              src="/Play-Store.svg"
               class="h-12 transform hover:scale-125 duration-300 ease-in-out"
             />
           </div>

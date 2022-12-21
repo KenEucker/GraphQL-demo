@@ -30,6 +30,14 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: '/settings',
+    name: 'Settings',
+    component: () => import('../views/SettingsPage.vue'),
+    meta: {
+      mainMenu: true,
+    },
+  },
+  {
     path: '/graph',
     name: 'Graph',
     component: () => import('../views/GraphPage.vue'),
@@ -38,9 +46,9 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: '/settings',
-    name: 'Settings',
-    component: () => import('../views/SettingsPage.vue'),
+    path: '/data',
+    name: 'Data',
+    component: () => import('../views/DataPage.vue'),
     meta: {
       mainMenu: true,
     },

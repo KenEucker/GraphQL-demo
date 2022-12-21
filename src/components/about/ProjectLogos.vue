@@ -42,7 +42,7 @@ const hoverered = (index: number) => {
 
 <template>
   <div class="p-2 text-xl text-center mt-10 w-full md:p-4 md:w-3/4 m-auto">
-    <h1>Vue GraphQl TypeScript Demo</h1>
+    <h1>This project uses the following libraries and platforms.</h1>
     <div class="items-center justify-between flex-wrap flex md:pl-10 lg:pr-30">
       <div v-for="(logo, i) in logos" :key="`logo-${i}`">
         <a v-element-hover="() => hoverered(i)" :href="logo.href" target="_blank">

@@ -1,20 +1,38 @@
-import { IsInt, IsDefined, IsString } from "class-validator";
-import "./";
+import { IsInt, IsDefined, IsBoolean, IsString } from 'class-validator'
+import { Author, Interaction } from './'
 
 export class Post {
-    @IsDefined()
-    @IsInt()
-    id!: number;
+  @IsDefined()
+  @IsInt()
+  id!: number
 
-    @IsDefined()
-    @IsString()
-    title!: string;
+  @IsDefined()
+  @IsBoolean()
+  published!: boolean
 
-    @IsDefined()
-    @IsString()
-    text!: string;
+  @IsDefined()
+  author!: Author
 
-    @IsDefined()
-    @IsString()
-    tags!: string;
+  @IsDefined()
+  interactions!: Interaction[]
+
+  @IsDefined()
+  @IsString()
+  tags!: string
+
+  @IsDefined()
+  @IsString()
+  title!: string
+
+  @IsDefined()
+  @IsString()
+  text!: string
+
+  @IsDefined()
+  @IsString()
+  status!: string
+
+  @IsDefined()
+  @IsString()
+  media!: string
 }

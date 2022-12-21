@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import { Resolvers } from '../generated/types'
 import Query from './Query'
 import Mutation from './Mutation'

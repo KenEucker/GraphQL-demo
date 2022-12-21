@@ -31,6 +31,7 @@ export type Author = {
   readonly name: Scalars['String'];
   readonly permissions?: Maybe<ReadonlyArray<Permissions>>;
   readonly posts?: Maybe<ReadonlyArray<Post>>;
+  readonly status?: Maybe<Scalars['String']>;
   readonly verified?: Maybe<Scalars['Boolean']>;
 };
 
@@ -64,8 +65,10 @@ export type CreateInteractionInput = {
 
 export type CreatePostInput = {
   readonly authorId: Scalars['String'];
-  readonly body?: InputMaybe<Scalars['String']>;
+  readonly media?: InputMaybe<ReadonlyArray<Scalars['String']>>;
   readonly published?: InputMaybe<Scalars['Boolean']>;
+  readonly status?: InputMaybe<Scalars['String']>;
+  readonly text?: InputMaybe<Scalars['String']>;
   readonly title: Scalars['String'];
 };
 
@@ -88,12 +91,6 @@ export type InteractionSubscriptionPayload = {
   readonly __typename?: 'InteractionSubscriptionPayload';
   readonly data?: Maybe<Interaction>;
   readonly mutation: MutationType;
-};
-
-export type Like = {
-  readonly __typename?: 'Like';
-  readonly author: Author;
-  readonly post: Post;
 };
 
 export type Mutation = {
@@ -195,6 +192,7 @@ export type Post = {
   readonly interactions?: Maybe<ReadonlyArray<Interaction>>;
   readonly media?: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
   readonly published?: Maybe<Scalars['Boolean']>;
+  readonly status?: Maybe<Scalars['String']>;
   readonly tags?: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
   readonly text?: Maybe<Scalars['String']>;
   readonly title: Scalars['String'];
@@ -295,9 +293,9 @@ export type UpdateInteractionInput = {
 };
 
 export type UpdatePostInput = {
-  readonly authorId?: InputMaybe<Scalars['String']>;
-  readonly body?: InputMaybe<Scalars['String']>;
-  readonly published?: InputMaybe<Scalars['Boolean']>;
+  readonly media?: InputMaybe<ReadonlyArray<Scalars['String']>>;
+  readonly status?: InputMaybe<Scalars['String']>;
+  readonly text?: InputMaybe<Scalars['String']>;
   readonly title?: InputMaybe<Scalars['String']>;
 };
 
@@ -382,7 +380,6 @@ export type ResolversTypes = {
   Interaction: ResolverTypeWrapper<Interaction>;
   InteractionByInput: InteractionByInput;
   InteractionSubscriptionPayload: ResolverTypeWrapper<InteractionSubscriptionPayload>;
-  Like: ResolverTypeWrapper<Like>;
   Mutation: ResolverTypeWrapper<{}>;
   MutationType: MutationType;
   Permissions: Permissions;
@@ -411,7 +408,6 @@ export type ResolversParentTypes = {
   Interaction: Interaction;
   InteractionByInput: InteractionByInput;
   InteractionSubscriptionPayload: InteractionSubscriptionPayload;
-  Like: Like;
   Mutation: {};
   Post: Post;
   PostByInput: PostByInput;
@@ -438,6 +434,7 @@ export type AuthorResolvers<ContextType = any, ParentType extends ResolversParen
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   permissions?: Resolver<Maybe<ReadonlyArray<ResolversTypes['Permissions']>>, ParentType, ContextType>;
   posts?: Resolver<Maybe<ReadonlyArray<ResolversTypes['Post']>>, ParentType, ContextType>;
+  status?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   verified?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -464,12 +461,6 @@ export type InteractionSubscriptionPayloadResolvers<ContextType = any, ParentTyp
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type LikeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Like'] = ResolversParentTypes['Like']> = {
-  author?: Resolver<ResolversTypes['Author'], ParentType, ContextType>;
-  post?: Resolver<ResolversTypes['Post'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationCreateAuthorArgs, 'author'>>;
   createInteraction?: Resolver<ResolversTypes['Interaction'], ParentType, ContextType, RequireFields<MutationCreateInteractionArgs, 'interaction'>>;
@@ -491,6 +482,7 @@ export type PostResolvers<ContextType = any, ParentType extends ResolversParentT
   interactions?: Resolver<Maybe<ReadonlyArray<ResolversTypes['Interaction']>>, ParentType, ContextType>;
   media?: Resolver<Maybe<ReadonlyArray<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
   published?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  status?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   tags?: Resolver<Maybe<ReadonlyArray<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
   text?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -524,7 +516,6 @@ export type Resolvers<ContextType = any> = {
   AuthorSubscriptionPayload?: AuthorSubscriptionPayloadResolvers<ContextType>;
   Interaction?: InteractionResolvers<ContextType>;
   InteractionSubscriptionPayload?: InteractionSubscriptionPayloadResolvers<ContextType>;
-  Like?: LikeResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Post?: PostResolvers<ContextType>;
   PostSubscriptionPayload?: PostSubscriptionPayloadResolvers<ContextType>;

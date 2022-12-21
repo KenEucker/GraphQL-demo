@@ -2,6 +2,7 @@
 import { onMounted, reactive, watch } from 'vue'
 import PovPost from './PovPost.vue'
 import LoadingSpinner from './LoadingSpinner.vue'
+import ErrorMessage from './ErrorMessage.vue'
 import { Post } from '../../schema/generated/types.d'
 import { useQuery } from '@vue/apollo-composable'
 import { gql } from '@apollo/client/core'
@@ -106,7 +107,9 @@ onMounted(sortPosts)
     <div v-if="loading">
       <loading-spinner />
     </div>
-    <div v-else-if="error">Error: {{ error.message }}</div>
+    <div v-else-if="error">
+      <error-message title="Error Fetching Post Data" :message="error.message" />
+    </div>
     <div
       v-else
       class="w-full grid transition-all"

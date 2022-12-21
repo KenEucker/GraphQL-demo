@@ -13,26 +13,22 @@ enum MutationType {
   UNPUBLISHED
 }
 
-type Like {
-  author: Author!
-  post: Post!
-}
-
 type Author {
   id: ID!
-  email: String!
   handle: String!
-  name: String!
   verified: Boolean
+  posts: [Post!]
+  permissions: [Permissions!]
+  interactions: [Interaction!]
+  email: String!
+  name: String!
   avatar: String!
   banner: String
+  status: String
   bio: String
   link: String
   location: String
   birthday: String
-  posts: [Post!]
-  permissions: [Permissions!]
-  interactions: [Interaction!]
 }
 
 type Interaction {
@@ -46,13 +42,14 @@ type Interaction {
 
 type Post {
   id: ID!
-  title: String!
   author: Author!
   published: Boolean
+  interactions: [Interaction!]
+  title: String!
   text: String
+  status: String
   media: [String]
   tags: [String]
-  interactions: [Interaction!]
 }
 
 type Query {
@@ -138,8 +135,10 @@ input CreateInteractionInput {
 input CreatePostInput {
   authorId: String!
   title: String!
-  body: String
+  text: String
   published: Boolean
+  status: String
+  media: [String!]
 }
 
 input UpdateAuthorInput {
@@ -156,10 +155,10 @@ input UpdateInteractionInput {
   share: Boolean
 }
 input UpdatePostInput {
-  authorId: String
   title: String
-  body: String
-  published: Boolean
+  text: String
+  status: String
+  media: [String!]
 }
 
 schema {

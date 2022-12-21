@@ -68,31 +68,43 @@ const Mutation = {
     return newInteraction
   },
   // @ts-ignore
-  createPost(parent, args, { db, pubsub }, info) {
-    const { authorId, title, body, published } = args.post
-    const author = db.authors.find((a: { id: any }) => authorId === a.id)
+  async createPost(parent, args, { prisma, pubsub }, info) {
+    const { authorId, title, text, published } = args.post
+    // const author = db.authors.find((a: { id: any }) => authorId === a.id)
+    const author = await prisma.author.findUnique({
+      where: {
+        id: parseInt(authorId),
+      },
+    })
     if (!author) {
       throw new GraphQLError(`Author does not exist.`)
     }
+    console.log({ author })
 
-    const postAlreadyExists = db.posts.some(
-      (p: { author: any; title: any }) => p.author === author.id && p.title === title
-    )
+    const postAlreadyExists = await prisma.post.findFirst({
+      // const postAlreadyExists = db.posts.some(
+      where: {
+        author: {
+          id: author.id,
+        },
+        // title,
+      },
+    })
 
     if (postAlreadyExists) {
       throw new GraphQLError(`Post already exists with title for author.`)
     }
 
     const newPost = {
-      id: uuidv4(),
+      // id: uuidv4(),
       title,
-      body: body ?? '',
+      text: text ?? '',
       author: author.id,
       published,
-      interactions: [],
     }
 
-    db.posts.push(newPost)
+    prisma.post.create({ data: newPost })
+    // db.posts.push(newPost)
     pubsub.publish(`post`, { mutation: 'CREATED', data: newPost })
 
     return newPost
@@ -260,7 +272,7 @@ const Mutation = {
 
     const updatedPost = db.posts[postIndex]
     updatedPost.title = data.title ?? updatedPost.title
-    updatedPost.body = data.body ?? updatedPost.body
+    updatedPost.text = data.text ?? updatedPost.text
     /// Not allowing the updating of the published field with updatePost
     /// Client must use publishPost/unPublishPost mutations to set this
 

@@ -43,42 +43,51 @@ const classes = computed(() => {
   &-active {
     color: #017acc;
   }
+
   &:hover {
     filter: drop-shadow(0 0 4px #017acc);
     color: #017acc;
   }
 }
+
 .h-purple {
   &-active {
     color: #646cffaa;
   }
+
   &:hover {
     filter: drop-shadow(0 0 4px #646cffaa);
     color: #646cffaa;
   }
 }
+
 .h-pink {
   &-active {
     color: #c025d3;
   }
+
   &:hover {
     filter: drop-shadow(0 0 4px #c025d3);
     color: #c025d3;
   }
 }
+
 .h-green {
   &-active {
     color: #42b883;
   }
+
   &:hover {
     filter: drop-shadow(0 0 4px #42b883);
     color: #42b883;
   }
 }
+
 .h-red {
   &-active {
     color: #ba2c60;
   }
+
   &:hover {
     filter: drop-shadow(0 0 4px #ba2c60);
     color: #ba2c60;
