@@ -8,6 +8,7 @@
   },
   "scripts": {
     "analyze": "windicss-analysis",    
+    "postinstall": "npm run compile",
     "build": "npm run build:client",
     "build:prod": "prisma generate",
     "start": "concurrently \"npm run dev:server\" \"npm run start:client\" \"npm run start:prisma\" -n \"server, client, studio\" -c \"auto\"",
