@@ -48,9 +48,7 @@
     "vite": "^4.0.0",
     "vue": "^3.2.45",
     "vue-ionicons": "^3.0.5",
-    "vue-router": "^4.1.6"
-  },
-  "devDependencies": {
+    "vue-router": "^4.1.6",
     "@apollo/server": "^4.3.0",
     "@graphql-codegen/add": "^3.2.3",
     "@graphql-codegen/cli": "2.16.1",
