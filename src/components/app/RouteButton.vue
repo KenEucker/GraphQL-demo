@@ -36,7 +36,11 @@ const props = defineProps({
     <list v-else-if="props.text == 'Posts'" w="30" h="30" />
     <node-js v-else-if="props.text == 'About'" w="30" h="30" class="-mt-1 text-green-400" />
     <home v-else-if="props.text == 'Home'" w="30" h="30" />
-    <img v-else-if="props.text == 'Graph'" class="-mt-1 w-8 h-8 inline" src="/GraphQL_Logo.svg" />
+    <img
+      v-else-if="props.text == 'Graph'"
+      class="-mt-1 w-8 h-8 inline"
+      src="/img/GraphQL_Logo.svg"
+    />
     <explore v-else-if="props.text == 'Data'" w="30" h="30" class="text-blue-600" />
     <notifications v-else-if="props.text == 'Notifications'" w="30" h="30" />
     <saved v-else-if="props.text == 'Favorites'" w="30" h="30" />

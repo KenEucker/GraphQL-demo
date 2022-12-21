@@ -5,27 +5,27 @@ const logos = [
   {
     name: 'vite',
     href: 'https://vitejs.dev',
-    src: '/vite.svg',
+    src: '/img/vite.svg',
   },
   {
     name: 'vue',
     href: 'https://vuejs.org',
-    src: '/vue.svg',
+    src: '/img/vue.svg',
   },
   {
     name: 'vueuse',
     href: 'https://vueuse.org',
-    src: '/vueuse-icon.svg',
+    src: '/img/vueuse-icon.svg',
   },
   {
     name: 'typescript',
     href: 'https://typescriptlang.org',
-    src: '/typescript.svg',
+    src: '/img/typescript.svg',
   },
   {
     name: 'apollo',
     href: 'https://the-guild.dev/graphql/yoga-server',
-    src: '/graphql-yoga.svg',
+    src: '/img/graphql-yoga.svg',
   },
 ]
 
