@@ -16,5 +16,6 @@
     "noEmit": true
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "server.ts", "server.ts"],
+  "exclude": ["src/schema/generated/**/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
