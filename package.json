@@ -21,7 +21,7 @@
     "release": "npm run release:prisma",
     "release:prod": "npm run release:prisma",
     "release:prisma": "prisma migrate deploy",
-    "dev": "concurrently \"npm:dev:server\" \"npm:dev:client\"  \"graphql-codegen -w\" -n \"server, client, codegen\" -c \"auto\"",
+    "dev": "concurrently \"npm:dev:server\" \"npm:dev:client\"  \"graphql-codegen -w\" \"npm run start:prisma\" -n \"server, client, codegen, prisma\" -c \"auto\"",
     "dev:server": "nodemon --watch './src/schema/**/*.ts' --exec 'npm run start:server'",
     "dev:client": "vite",
     "compile": "npm run compile:prisma && npm run compile:graphql",
