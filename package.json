@@ -13,7 +13,7 @@
     "build:client": "vue-tsc && vite build",
     "build:prisma": "prisma db push",
     "build:prod": "prisma generate",
-    "start": "npx concurrently \"npm run dev:server\" \"npm run start:client\" \"npm run start:prisma\" -n \"server, client, studio\" -c \"auto\"",
+    "start": "concurrently \"npm run start:server\" \"npm run start:client\" \"npm run start:prisma\" -n \"server, client, studio\" -c \"auto\"",
     "start:client": "vite preview --host",
     "start:server": "ts-node --experimental-specifier-resolution=node --project tsconfig-server.json server.ts",
     "start:prisma": "prisma studio",
