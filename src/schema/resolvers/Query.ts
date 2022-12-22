@@ -2,13 +2,13 @@ import { Author, Interaction, Post } from '../generated/types'
 
 const Query = {
   // @ts-ignore
-  author: (parent, args, { db }, info) => db.authors.find((p) => p.id === args.id),
+  author: (parent, args, { prisma }, info) => prisma.author.findUnique({ where: args.where }),
   // @ts-ignore
-  post: (parent, args, { db }, info) => db.posts.find((p) => p.id === args.id),
+  post: (parent, args, { prisma }, info) => db.posts.find((p) => p.id === args.id),
   // @ts-ignore
-  interaction: (parent, args, { db }, info) => db.interactions.find((i) => i.id === args.id),
+  interaction: (parent, args, { prisma }, info) => db.interactions.find((i) => i.id === args.id),
   // @ts-ignore
-  authors: (parent, { where }, { db, prisma }, info) => {
+  authors: (parent, { where }, { prisma }, info) => {
     if (where?.id || where?.name || where?.email || where?.handle) {
       return prisma.author.findMany({ where })
       // return db.authors.filter(
@@ -21,45 +21,65 @@ const Query = {
     // return db.authors
   },
   // @ts-ignore
-  posts: (parent, { where }, { db, prisma }, info) => {
+  posts: (parent, { where }, { prisma }, info) => {
     if (where?.id || where?.title || where?.text) {
-      return prisma.post.findMany()
-      return db.posts.filter(
-        (p: Post) =>
-          p.id === where.id ||
-          p.text?.toLowerCase().indexOf(where.text) !== -1 ||
-          p.title.toLowerCase().indexOf(where.title) !== -1
-      )
+      return prisma.post.findMany({
+        where: {
+          id: where.id,
+          title: {
+            search: where.title,
+          },
+          text: {
+            search: where.text,
+          },
+        },
+      })
+      // return db.posts.filter(
+      //   (p: Post) =>
+      //     p.id === where.id ||
+      //     p.text?.toLowerCase().indexOf(where.text) !== -1 ||
+      //     p.title.toLowerCase().indexOf(where.title) !== -1
+      // )
     }
 
     return prisma.post.findMany()
   },
   // @ts-ignore
   interactions: (parent, { where }, { prisma }, info) => {
-    let foundInteractions: any = []
+    const foundInteractions: any = []
 
     if (where?.author) {
-      const authorsFound: any[] = prisma.author.filter(
-        (a: Author) => a.name.toLowerCase().indexOf(where.author.toLowerCase()) !== -1
-      )
-      foundInteractions = foundInteractions.concat(
-        authorsFound.reduce((o, a) => o.concat(a.interactions), [])
+      foundInteractions.push(
+        prisma.author.findMany({
+          where: {
+            author: {
+              id: where.author.id ?? 0,
+            },
+          },
+        })
       )
     }
 
     if (where?.text) {
-      const interactionsFound: any[] = prisma.interaction.findMany(
-        (i: Interaction) => i.text?.indexOf(where.text.toLowerCase()) !== -1
+      foundInteractions.push(
+        prisma.author.findMany({
+          where: {
+            text: {
+              search: where.text,
+            },
+          },
+        })
       )
-      foundInteractions = foundInteractions.concat(interactionsFound)
     }
 
     if (where?.author || where?.text) {
       /// Do not return duplicates
-      return foundInteractions.filter((o: any, i: number) => foundInteractions.indexOf(o) === i)
+      /// TODO: Need to dedup here
+      return foundInteractions
+      // return foundInteractions.filter((o: any, i: number) => foundInteractions.indexOf(o) === i)
     }
 
-    return db.interactions
+    return prisma.interactions.findMany()
   },
 }
 

@@ -73,7 +73,7 @@ const Mutation = {
     // const author = db.authors.find((a: { id: any }) => authorId === a.id)
     const author = await prisma.author.findUnique({
       where: {
-        id: parseInt(authorId),
+        id: authorId,
       },
     })
     if (!author) {
@@ -81,12 +81,11 @@ const Mutation = {
     }
 
     const postAlreadyExists = await prisma.post.findFirst({
-      // const postAlreadyExists = db.posts.some(
       where: {
         author: {
           id: author.id,
         },
-        // title,
+        title,
       },
     })
 
@@ -95,59 +94,66 @@ const Mutation = {
     }
 
     const newPost = {
-      // id: uuidv4(),
       title,
       text: text ?? '',
-      author: author.id,
+      authorId: author.id,
       published,
     }
 
-    prisma.post.create({ data: newPost })
-    // db.posts.push(newPost)
-    pubsub.publish(`post`, { mutation: 'CREATED', data: newPost })
+    const createdPost = await prisma.post.create({ data: newPost })
+    pubsub.publish(`post`, { mutation: 'CREATED', data: createdPost })
 
-    return newPost
+    return createdPost
   },
-  publishPost(parent: any, { id }: any, { db, pubsub }: any, info: any) {
-    const postIndex = db.posts.findIndex((p: { id: any }) => p.id === id)
+  async publishPost(parent: any, { id }: any, { prisma, pubsub }: any, info: any) {
+    const unpublishedPost = prisma.post.findUnique({ where: { id } })
 
-    if (postIndex === -1) {
+    if (unpublishedPost) {
       throw new GraphQLError(`Post does not exist.`)
     }
 
-    const publishedPost = db.posts[postIndex]
+    /// First, do nothing
+    if (unpublishedPost.published) {
+      return unpublishedPost
+    }
+
+    unpublishedPost.published = true
+
+    const publishedPost = await prisma.post.update(
+      {
+        where: {
+          id: unpublishedPost.id,
+        },
+      },
+      { data: unpublishedPost }
+    )
+    pubsub.publish('post', { mutation: 'PUBLISHED', data: publishedPost })
+
+    return publishedPost
+  },
+  async unPublishPost(parent: any, { id }: any, { prisma, pubsub }: any, info: any) {
+    const publishedPost = prisma.post.findUnique({ where: { id } })
+
+    if (publishedPost) {
+      throw new GraphQLError(`Post does not exist.`)
+    }
 
     /// First, do nothing
     if (publishedPost.published) {
       return publishedPost
     }
 
-    publishedPost.published = true
+    publishedPost.published = false
 
-    db.posts[postIndex] = publishedPost
-    pubsub.publish('post', { mutation: 'PUBLISHED', data: publishedPost })
-
-    return publishedPost
-  },
-  unPublishPost(parent: any, { id }: any, { db, pubsub }: any, info: any) {
-    const postIndex = db.posts.findIndex((p: { id: any }) => p.id === id)
-
-    if (postIndex === -1) {
-      throw new GraphQLError(`Post does not exist.`)
-    }
-
-    const unPublishedPost = db.posts[postIndex]
-
-    /// First, do nothing
-    if (!unPublishedPost.published) {
-      return unPublishedPost
-    }
-
-    unPublishedPost.published = false
-
-    db.posts[postIndex] = unPublishedPost
-    /// TODO: this isn't firing for some reason
-    pubsub.publish('post', { mutation: 'UNPUBLISHED', data: unPublishedPost })
+    const unPublishedPost = await prisma.post.update(
+      {
+        where: {
+          id: publishedPost.id,
+        },
+      },
+      { data: publishedPost }
+    )
+    pubsub.publish('post', { mutation: 'PUBLISHED', data: unPublishedPost })
 
     return unPublishedPost
   },
@@ -214,48 +220,43 @@ const Mutation = {
   },
 
   // @ts-ignore
-  updateAuthor(parent, args, { db, pubsub }, info) {
+  async updateAuthor(parent, args, { prisma, pubsub }, info) {
     const { data, id } = args
-    const authorIndex = db.authors.findIndex((a: { id: any }) => a.id === id)
+    const authorToUpdate = await prisma.author.findUnique({ where: { id } })
 
-    if (authorIndex === -1) {
+    if (!authorToUpdate) {
       throw new GraphQLError(`Author does not exist.`)
     }
-    const updatedAuthor = db.authors[authorIndex]
 
-    if (typeof data.email === 'string') {
-      const emailTaken = db.authors.some((a: { email: any }) => a.email === data.email)
+    if (typeof data.email === 'string' && data.email !== authorToUpdate.email) {
+      const emailTaken = await prisma.author.findUnique({ where: { email: authorToUpdate.email } })
 
       if (emailTaken) {
         throw new GraphQLError(`Email already taken.`)
       }
 
-      updatedAuthor.email = data.email
+      authorToUpdate.email = data.email
     }
 
-    updatedAuthor.name = data.name ?? updatedAuthor.name
+    authorToUpdate.name = data.name ?? authorToUpdate.name
+    authorToUpdate.link = data.link ?? authorToUpdate.link
+    authorToUpdate.location = data.location ?? authorToUpdate.location
+    authorToUpdate.bio = data.bio ?? authorToUpdate.status
+    authorToUpdate.status = data.name ?? authorToUpdate.status
 
-    db.authors[authorIndex] = updatedAuthor
+    const updatedAuthor = prisma.author.update({ where: { id }, data: authorToUpdate })
     pubsub.publish('author', { mutation: 'UPDATED', data: updatedAuthor })
 
     return updatedAuthor
   },
   // @ts-ignore
-  updateInteraction(parent, args, { db, pubsub }, info) {
-    const { data, id } = args
-    const interactionIndex = db.interactions.findIndex((a: { id: any }) => a.id === id)
+  updateInteraction(parent, args, { prisma, pubsub }, info) {
+    const updatedInteraction = prisma.interaction.upsert({
+      where: { id: args.id ?? 0 },
+      update: args.data,
+      create: args.data,
+    })
 
-    if (interactionIndex === -1) {
-      throw new GraphQLError(`Interaction does not exist.`)
-    }
-
-    const updatedInteraction = db.interactions[interactionIndex]
-
-    updatedInteraction.text = data.text ?? updatedInteraction.text
-    /// Not going to allow changing the post that a interaction was left for
-    /// Not going to allow changing the author that left the interaction
-
-    db.interactions[interactionIndex] = updatedInteraction
     pubsub.publish('interaction', { mutation: 'UPDATED', data: updatedInteraction })
 
     return updatedInteraction

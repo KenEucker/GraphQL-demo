@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import PostPov from 'vue-ionicons/dist/md-bonfire.vue'
 import RouteButton from './RouteButton.vue'
 import AuthorPanel from './AuthorPanel.vue'
 
 const router = useRouter()
-const routes = router.getRoutes().filter((r) => r.meta.mainMenu)
+const authorLoggedIn = ref(false)
+const routes = computed(() =>
+  router.getRoutes().filter((r) => r.meta.mainMenu && (authorLoggedIn.value || !r.meta.protected))
+)
 const currentRoute = router.currentRoute
 
 const emit = defineEmits(['onLoginClick', 'onOpenCreatePost', 'onCloseMenu'])
 
-const canPost = ref(false)
 const props = defineProps({
   isExpanded: {
     type: Boolean,
@@ -35,7 +37,7 @@ function postButtonClick() {
     <author-panel
       :is-expanded="props.isExpanded"
       @on-login-button-click="emit('onLoginClick')"
-      @on-user-logged-in="canPost = true"
+      @on-user-logged-in="authorLoggedIn = true"
     />
     <ul class="flex flex-col pt-5" :class="props.isExpanded ? '' : 'justify-center flex '">
       <li
@@ -57,7 +59,7 @@ function postButtonClick() {
     </ul>
 
     <button
-      v-if="canPost"
+      v-if="authorLoggedIn"
       class="w-full max-w-50 md:max-w-90 bg-ll-primary dark:bg-ld-primary text-white rounded-lg py-3 px-2 active:scale-95 transform transition-transform flex items-center justify-center"
       @click="postButtonClick"
     >

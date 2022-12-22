@@ -24,8 +24,9 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/profile',
     name: 'Profile',
-    component: () => import('../views/ProfilePage.vue'),
+    component: () => import('../views/AuthorPage.vue'),
     meta: {
+      protected: true,
       mainMenu: true,
     },
   },
@@ -34,6 +35,7 @@ const routes: RouteRecordRaw[] = [
     name: 'Settings',
     component: () => import('../views/SettingsPage.vue'),
     meta: {
+      protected: true,
       mainMenu: true,
     },
   },
@@ -42,6 +44,7 @@ const routes: RouteRecordRaw[] = [
     name: 'Graph',
     component: () => import('../views/GraphPage.vue'),
     meta: {
+      protected: true,
       mainMenu: true,
     },
   },
@@ -50,6 +53,7 @@ const routes: RouteRecordRaw[] = [
     name: 'Data',
     component: () => import('../views/DataPage.vue'),
     meta: {
+      protected: true,
       mainMenu: true,
     },
   },
@@ -67,6 +71,12 @@ const routes: RouteRecordRaw[] = [
     path: '/404',
     name: 'Error',
     component: () => import('../views/ErrorPage.vue'),
+  },
+  {
+    path: '/:handle',
+    name: 'Author',
+    component: () => import('../views/AuthorPage.vue'),
+    meta: {},
   },
   {
     path: '/:pathMatch(.*)*',

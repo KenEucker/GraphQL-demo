@@ -8,15 +8,12 @@ import Share from 'vue-ionicons/dist/md-share.vue'
 import PopButton from './PopButton.vue'
 import PovAuthor from './PovAuthor.vue'
 import PovPostMedia from './PovPostMedia.vue'
+import { useRouter } from 'vue-router'
 
-const extractHashtags = (str: string) => {
-  var rgx = /#(\w+)\b/gi
-  var result = []
-  var temp
-  while ((temp = rgx.exec(str))) {
-    result.push(temp[1])
-  }
-  return result
+const router = useRouter()
+
+function goToAuthorPage() {
+  router.push(`/${props.post.author.handle}`)
 }
 
 const props = defineProps({
@@ -42,14 +39,14 @@ const generateText = () => {
 <template>
   <div class="w-full p-5 bg-ll-neutral dark:bg-ld-neutral rounded-md flex flex-col mb-4">
     <div class="flex justify-between">
-      <pov-author :author="props.post?.author" />
+      <button @click="goToAuthorPage">
+        <pov-author :author="props.post?.author" />
+      </button>
       <button class="active:scale-95 transform transition-transform relative">
         <more-icon h="30" w="30" class="absolute top-0 right-0" />
       </button>
     </div>
-    <p
-      class="mt-2 m-auto -mb-3 flex justify-between text-xs bg-gray-600 rounded text-white px-5 py-1"
-    >
+    <p class="mt-2 -mb-3 flex justify-between text-xs text-white py-1">
       {{ props.post.title }}
     </p>
 

@@ -14,7 +14,7 @@ enum MutationType {
 }
 
 type Author {
-  id: ID!
+  id: Int!
   handle: String!
   verified: Boolean
   posts: [Post!]
@@ -32,7 +32,7 @@ type Author {
 }
 
 type Interaction {
-  id: ID!
+  id: Int!
   author: Author!
   post: Post!
   text: String
@@ -41,7 +41,7 @@ type Interaction {
 }
 
 type Post {
-  id: ID!
+  id: Int!
   author: Author!
   published: Boolean
   interactions: [Interaction!]
@@ -53,11 +53,11 @@ type Post {
 }
 
 type Query {
-  author(id: ID!): Author
+  author(where: AuthorByInput!, id: Int): Author
   authors(where: AuthorByInput): [Author]
-  interaction(id: ID!): Interaction
+  interaction(where: InteractionByInput!, id: Int): Interaction
   interactions(where: InteractionByInput): [Interaction]
-  post(id: ID!): Post
+  post(where: PostByInput!, id: Int): Post
   posts(where: PostByInput): [Post]
 }
 
@@ -66,18 +66,18 @@ type Mutation {
   createInteraction(interaction: CreateInteractionInput!): Interaction!
   createPost(post: CreatePostInput!): Post!
 
-  deleteAuthor(authorId: String!): Author!
-  deleteInteraction(interactionId: String!): Interaction!
-  deletePost(postId: String!): Post!
+  deleteAuthor(authorId: Int!): Author!
+  deleteInteraction(interactionId: Int!): Interaction!
+  deletePost(postId: Int!): Post!
 
-  updateAuthor(id: String!, data: UpdateAuthorInput!): Author!
-  updateInteraction(id: String!, data: UpdateInteractionInput!): Interaction!
-  updatePost(id: String!, data: UpdatePostInput!): Post!
+  updateAuthor(data: UpdateAuthorInput!, id: Int): Author!
+  updateInteraction(data: UpdateInteractionInput!, id: Int): Interaction!
+  updatePost(id: Int!, data: UpdatePostInput!): Post!
 
-  publishPost(id: String!): Post!
-  unPublishPost(id: String!): Post!
+  publishPost(id: Int!): Post!
+  unPublishPost(id: Int!): Post!
 
-  verifyAuthor(id: String!): Author!
+  verifyAuthor(id: Int!): Author!
 }
 
 type Subscription {
@@ -105,7 +105,7 @@ type PostSubscriptionPayload {
 input AuthorByInput {
   email: String
   handle: String
-  id: String
+  id: Int
 }
 
 input InteractionByInput {
@@ -114,25 +114,25 @@ input InteractionByInput {
 }
 
 input PostByInput {
-  id: ID
+  id: Int
   author: AuthorInput
   title: String
 }
 
 input AuthorInput {
-  id: ID
+  id: Int
   handle: String
   email: String
 }
 
 input InteractionInput {
-  id: ID
+  id: Int
   post: PostInput
   author: AuthorInput
 }
 
 input PostInput {
-  id: ID
+  id: Int
   title: String
   author: AuthorInput
 }
@@ -145,14 +145,14 @@ input CreateAuthorInput {
   banner: String
 }
 input CreateInteractionInput {
-  authorId: String!
-  postId: String!
+  authorId: Int!
+  postId: Int!
   text: String
   like: Boolean
   share: Boolean
 }
 input CreatePostInput {
-  authorId: String!
+  authorId: Int!
   title: String!
   text: String
   published: Boolean
@@ -167,8 +167,8 @@ input UpdateAuthorInput {
   banner: String
 }
 input UpdateInteractionInput {
-  authorId: String
-  postId: String
+  authorId: Int!
+  postId: Int!
   text: String
   like: Boolean
   share: Boolean

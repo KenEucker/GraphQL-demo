@@ -15,7 +15,7 @@ const classes = computed(() => {
       return 'w-4 h-4 -mt-2 ml-2'
     default:
     case 'medium':
-      return 'w-6 h-6 -mt-2 ml-2'
+      return 'w-7 h-7 mt-2 ml-2'
   }
 })
 </script>

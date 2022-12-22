@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 generator class_validator {
@@ -31,11 +32,12 @@ enum MutationType {
 
 model Author {
   id           Int           @id @default(autoincrement())
-  handle       String
-  verified     Boolean
+  handle       String        @unique
+  email        String        @unique
+  verified     Boolean       @default(false)
   posts        Post[]
   permissions  Permissions[]
-  email        String
+  interactions Interaction[]
   name         String        @default("")
   avatar       String        @default("")
   banner       String        @default("")
@@ -44,7 +46,6 @@ model Author {
   link         String        @default("")
   location     String        @default("")
   birthday     String        @default("")
-  interactions Interaction[]
 }
 
 model Interaction {
@@ -54,19 +55,19 @@ model Interaction {
   post     Post    @relation(fields: [postId], references: [id])
   postId   Int
   text     String  @default("")
-  share    Boolean
-  like     Boolean
+  share    Boolean @default(false)
+  like     Boolean @default(false)
 }
 
 model Post {
   id           Int           @id @default(autoincrement())
-  published    Boolean       @default(false)
   author       Author        @relation(fields: [authorId], references: [id])
-  authorId     Int
   interactions Interaction[]
-  tags         String[]
+  authorId     Int
   title        String
+  published    Boolean       @default(false)
+  tags         String[]      @default([])
   text         String        @default("")
   status       String        @default("")
-  media        String[]
+  media        String[]      @default([])
 }

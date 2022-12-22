@@ -11,6 +11,7 @@ const props = defineProps({
   },
 })
 
+const firstTitle = useDateFormat(useNow(), 'MMMM DD, YYYY').value
 const titleRef = ref()
 const statusRef = ref()
 const showEmojiPicker = reactive({
@@ -56,7 +57,7 @@ const getNewTitle = () => {
         ref="titleRef"
         type="text"
         class="w-3/4 mx-auto mb-2 rounded-md bg-ll-base dark:bg-ld-base p-2 outline-none text-lg"
-        placeholder="title the post (date by default)"
+        :placeholder="firstTitle"
         :value="''"
         resize="none"
       />

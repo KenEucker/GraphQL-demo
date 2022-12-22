@@ -134,7 +134,8 @@ function saveFields(e: Event) {
   </div>
   <div v-else>
     <section
-      class="max-w-4xl p-6 mx-auto rounded-md shadow-md text-center items-center mx-auto dark:bg-gray-800 mt-20"
+      class="max-w-4xl p-6 mx-auto rounded-md shadow-md mx-auto dark:bg-gray-800 mt-20"
+      :style="{ background: `url(/img/twitter-banner.jpg) no-repeat right` }"
     >
       <pov-author :author="author" size="large" />
     </section>
@@ -248,7 +249,7 @@ function saveFields(e: Event) {
       </form>
     </section>
 
-    <section class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800 mt-10">
+    <!-- <section class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800 mt-10">
       <h2 class="text-lg font-semibold capitalize dark:text-white">Profile Images</h2>
       <form>
         <div v-for="image in images" :key="image.name" class="mt-4 mb-4">
@@ -288,6 +289,6 @@ function saveFields(e: Event) {
           </button>
         </div>
       </form>
-    </section>
+    </section> -->
   </div>
 </template>

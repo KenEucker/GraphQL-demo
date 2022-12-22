@@ -10,8 +10,6 @@ generates:
       - typescript
       - typescript-resolvers
     config:
-      mappers:
-        User: .prisma/client#User as UserModel
       constEnums: true
       enumsAsConst: true
       enumsAsTypes: true

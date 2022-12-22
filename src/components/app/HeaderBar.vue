@@ -38,7 +38,7 @@ const emit = defineEmits(['onMenuClick', 'onRightMenuClick'])
       </button>
 
       <RouteButton path="/posts">
-        <pop-button>
+        <pop-button variant="red">
           <point-of-vue :expanded="width > 900" />
         </pop-button>
       </RouteButton>

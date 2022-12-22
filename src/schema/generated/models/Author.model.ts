@@ -13,6 +13,10 @@ export class Author {
     handle!: string;
 
     @IsDefined()
+    @IsString()
+    email!: string;
+
+    @IsDefined()
     @IsBoolean()
     verified!: boolean;
 
@@ -24,8 +28,7 @@ export class Author {
     permissions!: Permissions[];
 
     @IsDefined()
-    @IsString()
-    email!: string;
+    interactions!: Interaction[];
 
     @IsDefined()
     @IsString()
@@ -58,7 +61,4 @@ export class Author {
     @IsDefined()
     @IsString()
     birthday!: string;
-
-    @IsDefined()
-    interactions!: Interaction[];
 }
