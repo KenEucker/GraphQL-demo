@@ -4,7 +4,7 @@ import { DefaultApolloClient } from '@vue/apollo-composable'
 import 'virtual:windi-devtools'
 import 'virtual:windi.css'
 import 'vue-ionicons/ionicons.css'
-import './styles/main.scss'
+import './styles/app.scss'
 import 'vue3-emoji-picker/css'
 
 import App from './App.vue'
