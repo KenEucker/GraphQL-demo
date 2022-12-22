@@ -32,7 +32,7 @@ const fancyClass = computed(() =>
   <div v-if="props.full">
     <span class="point" :class="fancyClass">Point</span>
     <span class="point-o align-top" :class="fancyClass">o</span>
-    <img class="mt-1 align-middle w-12 h-12 inline" src="/img/pov.svg" />
+    <img class="mt-1 align-middle w-10 h-10 inline" src="/img/pov.svg" />
     <!-- <pov class="mt-1 align-middle" w="40" h="40"></pov> -->
     <span class="point-of align-top" :class="fancyClass">f</span>
     <span class="point-of-view" :class="fancyClass">Vue</span>
@@ -40,16 +40,28 @@ const fancyClass = computed(() =>
   <div v-else-if="props.expanded">
     <!-- <span class="point">Point</span> -->
     <!-- <span class="point-o align-top">o</span> -->
-    <span class="text-xl ml-2 -mr-2" :class="fancyClass">P</span>
-    <img class="mt-1 align-middle w-12 h-12 inline" src="/img/pov.svg" />
+    <span
+      class="text-xl ml-2 -mr-2.65 font-bold"
+      :class="`${fancyClass} ${props.condensed ? '-skew-x-330 -skew-y-330' : ''}`"
+      >P</span
+    >
+    <img
+      class="mt-1 align-middle w-10 h-10 inline"
+      src="/img/pov.svg"
+      :class="props.condensed ? '-rotate-5 skew-y-5' : ''"
+    />
     <!-- <pov class="mt-1 align-middle" w="40" h="40"></pov> -->
     <!-- <span class="point-of align-top">f</span> -->
-    <span class="text-xl -ml-2" :class="fancyClass">V</span>
+    <span
+      class="text-xl -ml-2.5 font-bold"
+      :class="`${fancyClass} ${props.condensed ? 'skew-x-330 skew-y-330' : ''}`"
+      >V</span
+    >
     <span v-if="!props.condensed" class="text-xl" :class="fancyClass">ue</span>
     <!-- <span class="point-of-view">Vue</span> -->
   </div>
   <div v-else>
-    <img class="mt-1 align-middle w-12 h-12 inline" src="/img/pov.svg" />
+    <img class="m-auto align-middle w-10 h-10 inline" src="/img/pov.svg" />
     <!-- <pov class="align-middle" w="40" h="40"></pov> -->
   </div>
 </template>

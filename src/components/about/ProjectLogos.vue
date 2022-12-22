@@ -77,9 +77,7 @@ const hoverered = (index: number) => {
 
 <template>
   <div class="p-2 text-center mt-10 w-full md:p-4 md:w-3/4 m-auto">
-    <span class="text-xl text-center"
-      >This project uses the following libraries and platforms.</span
-    >
+    <span class="text-xl text-center">This project uses the following libraries and platforms</span>
     <div
       class="items-center justify-between space-between flex grid grid-cols-2 md:grid-cols-3 md:pl-10 lg:pr-30"
     >

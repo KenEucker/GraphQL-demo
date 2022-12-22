@@ -54,14 +54,6 @@ const likePost = (post: Post) => {
   //     likePost(postId: $postId)
   //   }
   // `
-  /// HACK
-  leftPosts = []
-  rightPosts = []
-  const postIndex = feedPosts.value.posts.findIndex((p: Post) => p.id == post.id)
-  feedPosts.value.posts[postIndex].likes = feedPosts.value.posts[postIndex].likes
-    ? feedPosts.value.posts[postIndex].likes++
-    : 1
-  sortPosts()
   // refetch()
 }
 const lovePost = (post: Post) => {
@@ -70,15 +62,6 @@ const lovePost = (post: Post) => {
   //     likePost(postId: $postId)
   //   }
   // `
-  /// HACK
-  leftPosts = []
-  rightPosts = []
-  const postIndex = feedPosts.value.posts.findIndex((p: Post) => p.id == post.id)
-  feedPosts.value.posts[postIndex].likes = feedPosts.value.posts[postIndex].likes
-    ? feedPosts.value.posts[postIndex].likes++
-    : 1
-  feedPosts.value.posts[postIndex].iLoveIt = true
-  sortPosts()
   // refetch()
 }
 const rePost = (post: Post) => {
@@ -87,14 +70,14 @@ const rePost = (post: Post) => {
   //     likePost(postId: $postId)
   //   }
   // `
-  /// HACK
-  leftPosts = []
-  rightPosts = []
-  const postIndex = feedPosts.value.posts.findIndex((p: Post) => p.id == post.id)
-  feedPosts.value.posts[postIndex].likes = feedPosts.value.posts[postIndex].likes
-    ? feedPosts.value.posts[postIndex].likes++
-    : 1
-  sortPosts()
+  // refetch()
+}
+const sharePost = (post: Post) => {
+  // const likePostMutation = gql`
+  //   mutation likePost($postId: String!) {
+  //     likePost(postId: $postId)
+  //   }
+  // `
   // refetch()
 }
 
@@ -123,10 +106,19 @@ onMounted(sortPosts)
           @i-like-it="likePost(post)"
           @i-love-it="lovePost(post)"
           @i-want-some-more-of-it="rePost(post)"
+          @i-want-to-share-it="sharePost"
         ></pov-post>
       </div>
       <div class="flex flex-col p-2">
-        <pov-post v-for="(post, index) in leftPosts" :key="index" :post="post"></pov-post>
+        <pov-post
+          v-for="(post, index) in leftPosts"
+          :key="index"
+          :post="post"
+          @i-like-it="likePost(post)"
+          @i-love-it="lovePost(post)"
+          @i-want-some-more-of-it="rePost(post)"
+          @i-want-to-share-it="sharePost"
+        ></pov-post>
       </div>
     </div>
   </div>

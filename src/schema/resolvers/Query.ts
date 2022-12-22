@@ -1,24 +1,52 @@
 import { Author, Interaction, Post } from '../generated/types'
+import { GraphQLError } from 'graphql'
 
 const Query = {
   // @ts-ignore
-  author: (parent, args, { prisma }, info) => prisma.author.findUnique({ where: args.where }),
+  author: (parent, args, { prisma }, info) => {
+    const where = {
+      ...args.where,
+      id: args?.id ?? args?.where?.id,
+    }
+
+    if (!where.id && Object.keys(args?.where ?? {}).length == 0) {
+      throw new GraphQLError('You must specify which author to query.')
+    }
+
+    return prisma.author.findUnique({ where })
+  },
   // @ts-ignore
-  post: (parent, args, { prisma }, info) => db.posts.find((p) => p.id === args.id),
+  post: (parent, args, { prisma }, info) => {
+    const where = {
+      ...args.where,
+      id: args?.id ?? args?.where?.id,
+    }
+
+    if (!where.id && Object.keys(args?.where ?? {}).length == 0) {
+      throw new GraphQLError('You must specify which post to query.')
+    }
+
+    return prisma.post.findUnique({ where })
+  },
   // @ts-ignore
-  interaction: (parent, args, { prisma }, info) => db.interactions.find((i) => i.id === args.id),
+  interaction: (parent, args, { prisma }, info) => {
+    const where = {
+      ...args.where,
+      id: args?.id ?? args?.where?.id,
+    }
+
+    if (!where.id && Object.keys(args?.where ?? {}).length == 0) {
+      throw new GraphQLError('You must specify which interaction to query.')
+    }
+
+    return prisma.interaction.findUnique({ where })
+  },
   // @ts-ignore
   authors: (parent, { where }, { prisma }, info) => {
     if (where?.id || where?.name || where?.email || where?.handle) {
       return prisma.author.findMany({ where })
-      // return db.authors.filter(
-      //   (a: Author) =>
-      //     a.id === where.id || a.email === where.email || a.handle === where.handle || a.name === where.name
-      // )
     }
     return prisma.author.findMany()
-
-    // return db.authors
   },
   // @ts-ignore
   posts: (parent, { where }, { prisma }, info) => {
@@ -34,12 +62,6 @@ const Query = {
           },
         },
       })
-      // return db.posts.filter(
-      //   (p: Post) =>
-      //     p.id === where.id ||
-      //     p.text?.toLowerCase().indexOf(where.text) !== -1 ||
-      //     p.title.toLowerCase().indexOf(where.title) !== -1
-      // )
     }
 
     return prisma.post.findMany()

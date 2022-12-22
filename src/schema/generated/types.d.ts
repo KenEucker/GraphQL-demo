@@ -63,6 +63,7 @@ export type CreateAuthorInput = {
 export type CreateInteractionInput = {
   readonly authorId: Scalars['Int'];
   readonly like?: InputMaybe<Scalars['Boolean']>;
+  readonly love?: InputMaybe<Scalars['Boolean']>;
   readonly postId: Scalars['Int'];
   readonly share?: InputMaybe<Scalars['Boolean']>;
   readonly text?: InputMaybe<Scalars['String']>;
@@ -82,6 +83,7 @@ export type Interaction = {
   readonly author: Author;
   readonly id: Scalars['Int'];
   readonly like?: Maybe<Scalars['Boolean']>;
+  readonly love?: Maybe<Scalars['Boolean']>;
   readonly post: Post;
   readonly share?: Maybe<Scalars['Boolean']>;
   readonly text?: Maybe<Scalars['String']>;
@@ -114,6 +116,7 @@ export type Mutation = {
   readonly deletePost: Post;
   readonly publishPost: Post;
   readonly unPublishPost: Post;
+  readonly unVerifyAuthor: Author;
   readonly updateAuthor: Author;
   readonly updateInteraction: Interaction;
   readonly updatePost: Post;
@@ -137,17 +140,20 @@ export type MutationCreatePostArgs = {
 
 
 export type MutationDeleteAuthorArgs = {
-  authorId: Scalars['Int'];
+  authorId?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<AuthorByInput>;
 };
 
 
 export type MutationDeleteInteractionArgs = {
-  interactionId: Scalars['Int'];
+  interactionId?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<InteractionByInput>;
 };
 
 
 export type MutationDeletePostArgs = {
-  postId: Scalars['Int'];
+  postId?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<PostByInput>;
 };
 
 
@@ -157,6 +163,11 @@ export type MutationPublishPostArgs = {
 
 
 export type MutationUnPublishPostArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationUnVerifyAuthorArgs = {
   id: Scalars['Int'];
 };
 
@@ -240,7 +251,7 @@ export type Query = {
 
 export type QueryAuthorArgs = {
   id?: InputMaybe<Scalars['Int']>;
-  where: AuthorByInput;
+  where?: InputMaybe<AuthorByInput>;
 };
 
 
@@ -251,7 +262,7 @@ export type QueryAuthorsArgs = {
 
 export type QueryInteractionArgs = {
   id?: InputMaybe<Scalars['Int']>;
-  where: InteractionByInput;
+  where?: InputMaybe<InteractionByInput>;
 };
 
 
@@ -262,7 +273,7 @@ export type QueryInteractionsArgs = {
 
 export type QueryPostArgs = {
   id?: InputMaybe<Scalars['Int']>;
-  where: PostByInput;
+  where?: InputMaybe<PostByInput>;
 };
 
 
@@ -301,13 +312,19 @@ export type SubscriptionPostArgs = {
 export type UpdateAuthorInput = {
   readonly avatar?: InputMaybe<Scalars['String']>;
   readonly banner?: InputMaybe<Scalars['String']>;
+  readonly bio?: InputMaybe<Scalars['String']>;
+  readonly birthday?: InputMaybe<Scalars['String']>;
   readonly email?: InputMaybe<Scalars['String']>;
+  readonly link?: InputMaybe<Scalars['String']>;
+  readonly location?: InputMaybe<Scalars['String']>;
   readonly name?: InputMaybe<Scalars['String']>;
+  readonly status?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateInteractionInput = {
   readonly authorId: Scalars['Int'];
   readonly like?: InputMaybe<Scalars['Boolean']>;
+  readonly love?: InputMaybe<Scalars['Boolean']>;
   readonly postId: Scalars['Int'];
   readonly share?: InputMaybe<Scalars['Boolean']>;
   readonly text?: InputMaybe<Scalars['String']>;
@@ -474,6 +491,7 @@ export type InteractionResolvers<ContextType = any, ParentType extends Resolvers
   author?: Resolver<ResolversTypes['Author'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   like?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  love?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   post?: Resolver<ResolversTypes['Post'], ParentType, ContextType>;
   share?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   text?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -490,11 +508,12 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationCreateAuthorArgs, 'author'>>;
   createInteraction?: Resolver<ResolversTypes['Interaction'], ParentType, ContextType, RequireFields<MutationCreateInteractionArgs, 'interaction'>>;
   createPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationCreatePostArgs, 'post'>>;
-  deleteAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationDeleteAuthorArgs, 'authorId'>>;
-  deleteInteraction?: Resolver<ResolversTypes['Interaction'], ParentType, ContextType, RequireFields<MutationDeleteInteractionArgs, 'interactionId'>>;
-  deletePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationDeletePostArgs, 'postId'>>;
+  deleteAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, Partial<MutationDeleteAuthorArgs>>;
+  deleteInteraction?: Resolver<ResolversTypes['Interaction'], ParentType, ContextType, Partial<MutationDeleteInteractionArgs>>;
+  deletePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, Partial<MutationDeletePostArgs>>;
   publishPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationPublishPostArgs, 'id'>>;
   unPublishPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationUnPublishPostArgs, 'id'>>;
+  unVerifyAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationUnVerifyAuthorArgs, 'id'>>;
   updateAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationUpdateAuthorArgs, 'data'>>;
   updateInteraction?: Resolver<ResolversTypes['Interaction'], ParentType, ContextType, RequireFields<MutationUpdateInteractionArgs, 'data'>>;
   updatePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationUpdatePostArgs, 'data' | 'id'>>;
@@ -521,11 +540,11 @@ export type PostSubscriptionPayloadResolvers<ContextType = any, ParentType exten
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  author?: Resolver<Maybe<ResolversTypes['Author']>, ParentType, ContextType, RequireFields<QueryAuthorArgs, 'where'>>;
+  author?: Resolver<Maybe<ResolversTypes['Author']>, ParentType, ContextType, Partial<QueryAuthorArgs>>;
   authors?: Resolver<Maybe<ReadonlyArray<Maybe<ResolversTypes['Author']>>>, ParentType, ContextType, Partial<QueryAuthorsArgs>>;
-  interaction?: Resolver<Maybe<ResolversTypes['Interaction']>, ParentType, ContextType, RequireFields<QueryInteractionArgs, 'where'>>;
+  interaction?: Resolver<Maybe<ResolversTypes['Interaction']>, ParentType, ContextType, Partial<QueryInteractionArgs>>;
   interactions?: Resolver<Maybe<ReadonlyArray<Maybe<ResolversTypes['Interaction']>>>, ParentType, ContextType, Partial<QueryInteractionsArgs>>;
-  post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<QueryPostArgs, 'where'>>;
+  post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, Partial<QueryPostArgs>>;
   posts?: Resolver<Maybe<ReadonlyArray<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType, Partial<QueryPostsArgs>>;
 };
 

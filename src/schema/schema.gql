@@ -38,6 +38,7 @@ type Interaction {
   text: String
   share: Boolean
   like: Boolean
+  love: Boolean
 }
 
 type Post {
@@ -53,11 +54,11 @@ type Post {
 }
 
 type Query {
-  author(where: AuthorByInput!, id: Int): Author
+  author(where: AuthorByInput, id: Int): Author
   authors(where: AuthorByInput): [Author]
-  interaction(where: InteractionByInput!, id: Int): Interaction
+  interaction(where: InteractionByInput, id: Int): Interaction
   interactions(where: InteractionByInput): [Interaction]
-  post(where: PostByInput!, id: Int): Post
+  post(where: PostByInput, id: Int): Post
   posts(where: PostByInput): [Post]
 }
 
@@ -66,9 +67,9 @@ type Mutation {
   createInteraction(interaction: CreateInteractionInput!): Interaction!
   createPost(post: CreatePostInput!): Post!
 
-  deleteAuthor(authorId: Int!): Author!
-  deleteInteraction(interactionId: Int!): Interaction!
-  deletePost(postId: Int!): Post!
+  deleteAuthor(authorId: Int, where: AuthorByInput): Author!
+  deleteInteraction(interactionId: Int, where: InteractionByInput): Interaction!
+  deletePost(postId: Int, where: PostByInput): Post!
 
   updateAuthor(data: UpdateAuthorInput!, id: Int): Author!
   updateInteraction(data: UpdateInteractionInput!, id: Int): Interaction!
@@ -78,6 +79,7 @@ type Mutation {
   unPublishPost(id: Int!): Post!
 
   verifyAuthor(id: Int!): Author!
+  unVerifyAuthor(id: Int!): Author!
 }
 
 type Subscription {
@@ -149,6 +151,7 @@ input CreateInteractionInput {
   postId: Int!
   text: String
   like: Boolean
+  love: Boolean
   share: Boolean
 }
 input CreatePostInput {
@@ -161,16 +164,22 @@ input CreatePostInput {
 }
 
 input UpdateAuthorInput {
-  name: String
   email: String
+  name: String
   avatar: String
   banner: String
+  status: String
+  bio: String
+  link: String
+  location: String
+  birthday: String
 }
 input UpdateInteractionInput {
   authorId: Int!
   postId: Int!
   text: String
   like: Boolean
+  love: Boolean
   share: Boolean
 }
 input UpdatePostInput {

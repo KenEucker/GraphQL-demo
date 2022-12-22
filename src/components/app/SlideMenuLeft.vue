@@ -77,7 +77,7 @@ function onAuthorLoggedOut() {
       @click="postButtonClick"
     >
       <p v-if="props.isExpanded" class="mr-4">Post</p>
-      <post-pov root-class="text-white" w="30" h="30" />
+      <post-pov class="" w="30" h="30" />
     </button>
 
     <button

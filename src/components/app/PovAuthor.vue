@@ -33,10 +33,7 @@ const classes = computed(() => {
 })
 </script>
 <template>
-  <div
-    class="flex relative"
-    :class="props.size === 'large' || props.inline ? 'inline-grid' : 'items-center'"
-  >
+  <div class="flex relative" :class="props.size === 'large' ? 'inline-grid' : 'items-center'">
     <extra-special-checkmark v-if="author.verified" :size="props.size" class="special-aint-ya" />
     <div
       class="avatar rounded-full bg-ll-base dark:bg-ld-base border-2 border-ll-border dark:border-ld-border relative"
@@ -50,14 +47,14 @@ const classes = computed(() => {
     </div>
     <div
       v-if="!props.imageOnly"
-      class="flex flex-col ml-2"
+      class="flex flex-col ml-2 text-left"
       :class="props.size === 'medium' ? 'mt-20' : ''"
     >
       <p class="text-2xl font-bold text-gray-800 dark:text-gray-300">
         {{ props.author.name }}
       </p>
       <p class="-mt-1">{{ props.author.handle }}</p>
-      <p class="mt-1">{{ props.author.status }}</p>
+      <p class="mt-1 text-center">{{ props.author.status }}</p>
     </div>
   </div>
 </template>

@@ -16,7 +16,7 @@
     "start": "concurrently \"npm:start:server\" \"npm:start:client\" \"npm:start:prisma\" -n \"server, client, studio\" -c \"auto\"",
     "start:client": "vite preview --host",
     "start:server": "ts-node --experimental-specifier-resolution=node --project tsconfig-server.json server.ts",
-    "start:prisma": "prisma studio",
+    "start:prisma": "prisma studio --browser none",
     "deploy:prisma": "prisma migrate dev",
     "release": "npm run release:prisma",
     "release:prod": "npm run release:prisma",

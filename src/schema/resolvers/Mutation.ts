@@ -4,73 +4,78 @@ import { MutationType } from '../generated/types.d'
 
 const Mutation = {
   // @ts-ignore
-  createAuthor(parent, args, { db, pubsub }, info) {
-    const emailTaken = db.authors.some((a: { email: any }) => args.author.email === a.email)
+  async createAuthor(parent, args, { prisma, pubsub }, info) {
+    const emailTaken = await prisma.author.findUnique({
+      where: {
+        email: args.data.email,
+      },
+    })
     if (emailTaken) {
       throw new GraphQLError(`Email is already in use.`)
     }
 
-    const handleTaken = db.authors.some((a: { handle: any }) => args.author.handle === a.handle)
+    const handleTaken = await prisma.author.findUnique({
+      where: {
+        handle: args.data.handle,
+      },
+    })
     if (handleTaken) {
       throw new GraphQLError(`Handle is already in use.`)
     }
 
     const newAuthor = {
-      id: uuidv4(),
       ...args.author,
       interactions: [],
       posts: [],
     }
 
-    db.authors.push(newAuthor)
-    pubsub.publish(`author`, { mutation: 'CREATED', data: newAuthor })
+    const createdAuthor = await prisma.author.create({ data: newAuthor })
+    pubsub.publish(`author`, { mutation: 'CREATED', data: createdAuthor })
 
-    return newAuthor
+    return createdAuthor
   },
   // @ts-ignore
-  createInteraction(parent, args, { db, pubsub }, info) {
+  async createInteraction(parent, args, { prisma, pubsub }, info) {
     const { authorId, postId } = args.interaction
-    const author = db.authors.find((a: { id: any }) => authorId === a.id)
+    const author = await prisma.author.findUnique({ where: { id: authorId } })
     if (!author) {
       throw new GraphQLError(`Author does not exist.`)
     }
 
-    const postIndex = db.posts.findIndex((p: { id: any }) => postId === p.id)
-    if (!postIndex) {
+    const post = await prisma.post.findUnique({ where: { id: postId } })
+
+    if (!post) {
       throw new GraphQLError(`Post does not exist.`)
     }
 
-    const post = db.posts[postIndex]
-
-    const alreadyInteractionedOnPost = db.interactions.some(
-      (c: { post: any; author: any }) => c.post === post.id && c.author === author.id
-    )
+    const alreadyInteractionedOnPost = await prisma.interaction.findUnique({
+      where: {
+        postId,
+        authorId,
+      },
+    })
     if (alreadyInteractionedOnPost) {
-      throw new GraphQLError(`Author already interactioned on this post.`)
+      throw new GraphQLError(`Author post interaction already created for this post.`)
     }
 
     const newInteraction = {
-      id: uuidv4(),
+      like: args.interaction.like,
+      love: args.interaction.love,
+      share: args.interaction.share,
       text: args.interaction.text,
       post: post.id,
       author: author.id,
     }
 
-    /// Add the new interaction to the database
-    db.interactions.push(newInteraction)
-    /// Add the new interaction to the post
-    post.interactions.push(newInteraction.id)
-    /// Update the post in the database
-    db.posts[postIndex] = post
+    const interactionCreated = await prisma.interaction.create({ data: newInteraction })
 
-    pubsub.publish(`interaction`, { mutation: 'CREATED', data: newInteraction })
+    pubsub.publish(`interaction`, { mutation: 'CREATED', data: interactionCreated })
 
-    return newInteraction
+    return interactionCreated
   },
   // @ts-ignore
   async createPost(parent, args, { prisma, pubsub }, info) {
-    const { authorId, title, text, published } = args.post
-    // const author = db.authors.find((a: { id: any }) => authorId === a.id)
+    const { authorId, title, text, status, published } = args.post
     const author = await prisma.author.findUnique({
       where: {
         id: authorId,
@@ -94,9 +99,10 @@ const Mutation = {
     }
 
     const newPost = {
+      authorId: author.id,
       title,
       text: text ?? '',
-      authorId: author.id,
+      status,
       published,
     }
 
@@ -106,9 +112,9 @@ const Mutation = {
     return createdPost
   },
   async publishPost(parent: any, { id }: any, { prisma, pubsub }: any, info: any) {
-    const unpublishedPost = prisma.post.findUnique({ where: { id } })
+    const unpublishedPost = await prisma.post.findUnique({ where: { id } })
 
-    if (unpublishedPost) {
+    if (!unpublishedPost) {
       throw new GraphQLError(`Post does not exist.`)
     }
 
@@ -119,22 +125,20 @@ const Mutation = {
 
     unpublishedPost.published = true
 
-    const publishedPost = await prisma.post.update(
-      {
-        where: {
-          id: unpublishedPost.id,
-        },
+    const publishedPost = await prisma.post.update({
+      where: {
+        id: unpublishedPost.id,
       },
-      { data: unpublishedPost }
-    )
+      data: unpublishedPost,
+    })
     pubsub.publish('post', { mutation: 'PUBLISHED', data: publishedPost })
 
     return publishedPost
   },
   async unPublishPost(parent: any, { id }: any, { prisma, pubsub }: any, info: any) {
-    const publishedPost = prisma.post.findUnique({ where: { id } })
+    const publishedPost = await prisma.post.findUnique({ where: { id } })
 
-    if (publishedPost) {
+    if (!publishedPost) {
       throw new GraphQLError(`Post does not exist.`)
     }
 
@@ -145,74 +149,72 @@ const Mutation = {
 
     publishedPost.published = false
 
-    const unPublishedPost = await prisma.post.update(
-      {
-        where: {
-          id: publishedPost.id,
-        },
+    const unPublishedPost = await prisma.post.update({
+      where: {
+        id: publishedPost.id,
       },
-      { data: publishedPost }
-    )
+      data: publishedPost,
+    })
     pubsub.publish('post', { mutation: 'PUBLISHED', data: unPublishedPost })
 
     return unPublishedPost
   },
 
   // @ts-ignore
-  deleteAuthor(parent, args, { db, pubsub }, info) {
-    const authorIndex = db.authors.findIndex((a: { id: any }) => a.id === args.authorId)
+  async deleteAuthor(parent, args, { prisma, pubsub }, info) {
+    const { data, id } = args
+    const authorToDelete = await prisma.author.findUnique({ where: { id } })
 
-    if (authorIndex === -1) {
+    if (!authorToDelete) {
       throw new GraphQLError(`Author does not exist.`)
     }
 
-    const [deletedAuthor] = db.authors.splice(authorIndex, 1)
+    const deletedAuthor = await prisma.author.delete({ where: { id } })
 
-    db.posts = db.posts.filter((post: { author: any; id: any }) => {
-      const match = post.author === args.authorId
-      if (match) {
-        /// Remove all interactions for that post
-        db.interactions = db.interactions.filter((c: { post: any }) => c.post !== post.id)
-      }
-
-      return !match
-    })
-
-    /// Remove all interactions for the author
-    db.interactions = db.interactions.filter((c: { author: any }) => c.author !== args.authorId)
     /// Publish the deleted event
     pubsub.publish(`author`, { mutation: 'DELETED', data: deletedAuthor })
 
     return deletedAuthor
   },
   // @ts-ignore
-  deleteInteraction(parent, args, { db, pubsub }, info) {
-    const interactionIndex = db.interactions.findIndex(
-      (a: { id: any }) => a.id === args.interactionId
-    )
-
-    if (interactionIndex === -1) {
-      throw new GraphQLError(`Interaction does not exist.`)
+  async deleteInteraction(parent, args, { prisma, pubsub }, info) {
+    const where = {
+      ...args.where,
+      id: args?.id ?? args?.where?.id,
     }
 
-    const [deletedInteraction] = db.interactions.splice(interactionIndex, 1)
+    if (!where.id && Object.keys(args?.where ?? {}).length == 0) {
+      throw new GraphQLError('You must specify which interaction to delete.')
+    }
+
+    const deletedInteraction = await prisma.interaction.delete({ where })
 
     pubsub.publish(`interaction`, { mutation: 'DELETED', data: deletedInteraction })
 
     return deletedInteraction
   },
   // @ts-ignore
-  deletePost(parent, args, { db, pubsub }, info) {
-    const postIndex = db.posts.findIndex((a: { id: any }) => a.id === args.postId)
+  async deletePost(parent, args, { prisma, pubsub }, info) {
+    const where = {
+      ...args.where,
+      id: args?.id ?? args?.where?.id,
+    }
 
-    if (postIndex === -1) {
+    if (!where.id && Object.keys(args?.where ?? {}).length == 0) {
+      throw new GraphQLError('You must specify which post to delete.')
+    }
+
+    const postToDelete = await prisma.post.findUnique({ where: { id: args.postId } })
+
+    if (!postToDelete) {
       throw new GraphQLError(`Post does not exist.`)
     }
 
-    const [deletedPost] = db.posts.splice(postIndex, 1)
+    const deletedPost = await prisma.post.delete({
+      where: { id: args.postId },
+    })
 
-    db.interactions = db.interactions.filter((c: { post: any }) => c.post !== args.postId)
-    if (deletedPost.published) {
+    if (postToDelete.published) {
       pubsub.publish(`post`, { mutation: 'DELETED', data: deletedPost })
     }
 
@@ -244,14 +246,14 @@ const Mutation = {
     authorToUpdate.bio = data.bio ?? authorToUpdate.status
     authorToUpdate.status = data.name ?? authorToUpdate.status
 
-    const updatedAuthor = prisma.author.update({ where: { id }, data: authorToUpdate })
+    const updatedAuthor = await prisma.author.update({ where: { id }, data: authorToUpdate })
     pubsub.publish('author', { mutation: 'UPDATED', data: updatedAuthor })
 
     return updatedAuthor
   },
   // @ts-ignore
-  updateInteraction(parent, args, { prisma, pubsub }, info) {
-    const updatedInteraction = prisma.interaction.upsert({
+  async updateInteraction(parent, args, { prisma, pubsub }, info) {
+    const updatedInteraction = await prisma.interaction.upsert({
       where: { id: args.id ?? 0 },
       update: args.data,
       create: args.data,
@@ -262,21 +264,23 @@ const Mutation = {
     return updatedInteraction
   },
   // @ts-ignore
-  updatePost(parent, args, { db, pubsub }, info) {
+  async updatePost(parent, args, { prisma, pubsub }, info) {
     const { data, id } = args
-    const postIndex = db.posts.findIndex((a: { id: any }) => a.id === id)
+    const postToUpdate = await prisma.post.findUnique({ where: { id } })
 
-    if (postIndex === -1) {
+    if (!postToUpdate) {
       throw new GraphQLError(`Post does not exist.`)
     }
 
-    const updatedPost = db.posts[postIndex]
-    updatedPost.title = data.title ?? updatedPost.title
-    updatedPost.text = data.text ?? updatedPost.text
+    postToUpdate.title = data.title ?? postToUpdate.title
+    postToUpdate.text = data.text ?? postToUpdate.text
     /// Not allowing the updating of the published field with updatePost
     /// Client must use publishPost/unPublishPost mutations to set this
 
-    db.posts[postIndex] = updatedPost
+    const updatedPost = await prisma.post.update({
+      where: { id },
+      data: postToUpdate,
+    })
 
     if (updatedPost.published) {
       pubsub.publish('post', { mutation: 'UPDATED', data: updatedPost })
@@ -286,18 +290,50 @@ const Mutation = {
   },
 
   // @ts-ignore
-  verifyAuthor(parent, args, { db, pubsub }, info) {
+  async verifyAuthor(parent, args, { prisma, pubsub }, info) {
     const { data, id } = args
-    const authorIndex = db.authors.findIndex((a: { id: any }) => a.id === id)
+    const authorToUpdate = await prisma.author.findUnique({ where: { id } })
 
-    if (authorIndex === -1) {
+    if (!authorToUpdate) {
       throw new GraphQLError(`Author does not exist.`)
     }
-    const updatedAuthor = db.authors[authorIndex]
 
-    updatedAuthor.verified = true
+    // First, do nothing
+    if (authorToUpdate.verified) {
+      return authorToUpdate
+    }
+    authorToUpdate.verified = true
 
-    db.authors[authorIndex] = updatedAuthor
+    const updatedAuthor = await prisma.author.update({
+      where: { id },
+      data: authorToUpdate,
+    })
+
+    pubsub.publish('author', { mutation: 'UPDATED', data: updatedAuthor })
+
+    return updatedAuthor
+  },
+
+  // @ts-ignore
+  async unVerifyAuthor(parent, args, { prisma, pubsub }, info) {
+    const { data, id } = args
+    const authorToUpdate = await prisma.author.findUnique({ where: { id } })
+
+    if (!authorToUpdate) {
+      throw new GraphQLError(`Author does not exist.`)
+    }
+
+    // First, do nothing
+    if (!authorToUpdate.verified) {
+      return authorToUpdate
+    }
+    authorToUpdate.verified = false
+
+    const updatedAuthor = await prisma.author.update({
+      where: { id },
+      data: authorToUpdate,
+    })
+
     pubsub.publish('author', { mutation: 'UPDATED', data: updatedAuthor })
 
     return updatedAuthor

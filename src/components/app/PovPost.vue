@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Shares from 'vue-ionicons/dist/md-sync.vue'
+import Reposts from 'vue-ionicons/dist/md-sync.vue'
 import Heart from 'vue-ionicons/dist/md-heart.vue'
 import HeartEmpty from 'vue-ionicons/dist/md-heart-empty.vue'
 import MoreIcon from 'vue-ionicons/dist/md-more.vue'
@@ -26,7 +26,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['iLikeIt', 'iLoveIt', 'iWantSomeMoreOfIt'])
+const emit = defineEmits(['iLikeIt', 'iLoveIt', 'iWantSomeMoreOfIt', 'iWantToShareIt'])
 
 const generateText = () => {
   return props.post?.text?.replace(
@@ -62,10 +62,12 @@ const generateText = () => {
         /><span class="ml-1">{{ props.post?.interactions ?? 0 }}</span>
       </pop-button>
       <pop-button variant="green">
-        <shares w="25" h="25" :class="post.iWantSomeMoreOfIt ? 'text-yellow-600' : ''" /><span
-          class="ml-1"
-          >{{ props.post?.shares ?? 0 }}</span
-        >
+        <reposts
+          w="25"
+          h="25"
+          :class="post.iWantSomeMoreOfIt ? 'text-yellow-600' : ''"
+          @click="emit('iWantSomeMoreOfIt')"
+        /><span class="ml-1">{{ props.post?.reposts ?? 0 }}</span>
       </pop-button>
       <pop-button variant="purple">
         <span v-if="props.post.iLoveIt" class="ml-1 align-middle"
@@ -77,6 +79,7 @@ const generateText = () => {
       <pop-button
         variant="blue"
         class="flex items-center active:scale-95 transform transition-transform"
+        @click="emit('iWantToShareIt')"
       >
         <share w="25" h="25" />
       </pop-button>

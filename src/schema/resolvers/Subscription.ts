@@ -17,9 +17,13 @@ const Subscription = {
     resolve: (data: any) => data,
   },
   author: {
-    subscribe: (parent: never, { where }: { where: AuthorByInput }, { prisma, pubsub }: any) => {
+    subscribe: async (
+      parent: never,
+      { where }: { where: AuthorByInput },
+      { prisma, pubsub }: any
+    ) => {
       if (where && (where.id || where.email || where.handle)) {
-        const author = prisma.author.findUnique({ where })
+        const author = await prisma.author.findUnique({ where })
 
         if (!author) {
           throw new GraphQLError('author does not exist')
@@ -35,13 +39,13 @@ const Subscription = {
     resolve: (data: any) => data,
   },
   interaction: {
-    subscribe: (
+    subscribe: async (
       parent: never,
       { where }: { where: InteractionByInput },
       { pubsub, prisma }: any
     ) => {
       if (where && (where.author || where.post)) {
-        const interaction = prisma.interaction.findUnique({
+        const interaction = await prisma.interaction.findUnique({
           where: {
             posts: where.post,
             authors: where.author,
@@ -55,16 +59,20 @@ const Subscription = {
 
       return pipe(
         pubsub.subscribe('interaction'),
-        filter((c: any) => (where?.author ? c.data.author === where.author : true)),
-        filter((c) => (where?.post ? c.data.post === where.post : true))
+        filter((c: any) => (where?.author?.id ? c.data.authorId === where.author.id : true)),
+        filter((c) => (where?.post?.id ? c.data.postId === where.post.id : true))
       )
     },
     resolve: (data: any) => data,
   },
   post: {
-    subscribe: (parent: never, { where }: { where: PostByInput }, { pubsub, prisma }: any) => {
+    subscribe: async (
+      parent: never,
+      { where }: { where: PostByInput },
+      { pubsub, prisma }: any
+    ) => {
       if (where && where.author) {
-        const author = prisma.authors.findUnique({ where: where.author })
+        const author = await prisma.author.findUnique({ where: where.author })
 
         if (!author) {
           throw new GraphQLError('author does not exist')
@@ -73,7 +81,7 @@ const Subscription = {
 
       return pipe(
         pubsub.subscribe('post'),
-        filter((p: any) => (where?.author ? p.data.author.id === where.author.id : true)),
+        filter((p: any) => (where?.author ? p.data.authorId === where.author.id : true)),
         filter((p) => (p.mutation !== 'UNPUBLISHED' ? p.data.published : true))
       )
     },
