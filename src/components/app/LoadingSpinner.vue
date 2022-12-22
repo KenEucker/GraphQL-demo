@@ -1,5 +1,12 @@
+<script setup lang="ts">
+import { faker } from '@faker-js/faker'
+</script>
+
 <template>
   <div class="w-full min-h-screen flex justify-center items-center">
+    <div class="absolute flex w-full text-xl justify-center top-1/2">
+      {{ faker.hacker.phrase() }}
+    </div>
     <div class="p-10 rounded-xl relative">
       <div class="w-full min-h-screen flex justify-center items-center">
         <div class="flex min-h-screen w-full mt-1/2 justify-center">

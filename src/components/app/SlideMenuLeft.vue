@@ -12,7 +12,7 @@ const routes = computed(() =>
 )
 const currentRoute = router.currentRoute
 
-const emit = defineEmits(['onLoginClick', 'onOpenCreatePost', 'onCloseMenu'])
+const emit = defineEmits(['onLoginClick', 'onOpenCreatePost', 'onCloseMenu', 'onAuthorLoggedIn'])
 
 const props = defineProps({
   isExpanded: {
@@ -28,6 +28,18 @@ function postButtonClick() {
 
   router.push('/posts')
 }
+
+function onAuthorLoggedIn() {
+  authorLoggedIn.value = true
+  emit('onAuthorLoggedIn')
+}
+
+function onAuthorLoggedOut() {
+  authorLoggedIn.value = false
+  if (router.currentRoute.value.meta.protected) {
+    router.push('/about')
+  }
+}
 </script>
 <template>
   <div
@@ -37,7 +49,8 @@ function postButtonClick() {
     <author-panel
       :is-expanded="props.isExpanded"
       @on-login-button-click="emit('onLoginClick')"
-      @on-user-logged-in="authorLoggedIn = true"
+      @on-author-logged-in="onAuthorLoggedIn"
+      @on-author-logged-out="onAuthorLoggedOut"
     />
     <ul class="flex flex-col pt-5" :class="props.isExpanded ? '' : 'justify-center flex '">
       <li

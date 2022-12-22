@@ -29,7 +29,7 @@ const query = gql`
   }
 `
 
-const emit = defineEmits(['onLoginButtonClick', 'onUserLoggedIn'])
+const emit = defineEmits(['onLoginButtonClick', 'onAuthorLoggedIn', 'onAuthorLoggedOut'])
 
 const { result, refetch } = useQuery(query, { email: storedEmail.value })
 const isLoggedIn = reactive(result)
@@ -37,7 +37,7 @@ watch(isLoggedIn, (r) => {
   const loggedInAuthor = r?.authors.find((a: Author) => a.email === storedEmail.value)
   if (loggedInAuthor) {
     author.value = loggedInAuthor
-    emit('onUserLoggedIn', loggedInAuthor)
+    emit('onAuthorLoggedIn', loggedInAuthor)
   } else {
     storedEmail.value = null
   }
@@ -57,6 +57,7 @@ const loginWithEmail = () => {
 const logout = () => {
   storedEmail.value = null
   author.value = null
+  emit('onAuthorLoggedOut')
 }
 </script>
 

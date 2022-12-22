@@ -33,7 +33,10 @@ const classes = computed(() => {
 })
 </script>
 <template>
-  <div class="flex relative" :class="props.size === 'large' ? 'inline-grid' : 'items-center'">
+  <div
+    class="flex relative"
+    :class="props.size === 'large' || props.inline ? 'inline-grid' : 'items-center'"
+  >
     <extra-special-checkmark v-if="author.verified" :size="props.size" class="special-aint-ya" />
     <div
       class="avatar rounded-full bg-ll-base dark:bg-ld-base border-2 border-ll-border dark:border-ld-border relative"

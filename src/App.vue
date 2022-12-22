@@ -11,7 +11,7 @@ const { currentRoute } = useRouter()
 /// TODO: get these values from the route config
 const leftMenuOpen = ref(false)
 const rightMenuOpen = ref(false)
-const showCreatePost = ref(true)
+const showCreatePost = ref(false)
 </script>
 <template>
   <app-layout
@@ -33,6 +33,7 @@ const showCreatePost = ref(true)
       <slide-menu-left
         :is-expanded="leftMenuOpen"
         @on-login-click="leftMenuOpen = true"
+        @on-author-logged-in="showCreatePost = true"
         @on-open-create-post="showCreatePost = true"
         @on-close-menu="
           (v) => {
