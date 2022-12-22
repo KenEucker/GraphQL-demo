@@ -17,8 +17,8 @@ const storedEmail = useStorage('author-email', '')
 
 // Call the gql function with the GraphQL query
 const query = gql`
-  query AuthorPanelAuthor($email: String!) {
-    authors(by: { email: $email }) {
+  query ProfilePageAuthor($email: String!) {
+    authors(where: { email: $email }) {
       id
       name
       email

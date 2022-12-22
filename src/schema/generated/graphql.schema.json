@@ -293,6 +293,53 @@
         "possibleTypes": null
       },
       {
+        "kind": "INPUT_OBJECT",
+        "name": "AuthorInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "email",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "handle",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "AuthorSubscriptionPayload",
         "description": null,
@@ -727,8 +774,8 @@
             "name": "author",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
+              "kind": "INPUT_OBJECT",
+              "name": "AuthorInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -739,8 +786,55 @@
             "name": "post",
             "description": null,
             "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "PostInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "InteractionInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "author",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "AuthorInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "post",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "PostInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -1479,8 +1573,67 @@
             "name": "author",
             "description": null,
             "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "AuthorInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "title",
+            "description": null,
+            "type": {
               "kind": "SCALAR",
               "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "PostInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "author",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "AuthorInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
               "ofType": null
             },
             "defaultValue": null,
@@ -1582,7 +1735,7 @@
             "description": null,
             "args": [
               {
-                "name": "by",
+                "name": "where",
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",
@@ -1640,7 +1793,7 @@
             "description": null,
             "args": [
               {
-                "name": "by",
+                "name": "where",
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",
@@ -1698,7 +1851,7 @@
             "description": null,
             "args": [
               {
-                "name": "by",
+                "name": "where",
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",
@@ -1748,7 +1901,7 @@
             "description": null,
             "args": [
               {
-                "name": "by",
+                "name": "where",
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",
@@ -1802,7 +1955,7 @@
             "description": null,
             "args": [
               {
-                "name": "by",
+                "name": "where",
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",
@@ -1827,7 +1980,7 @@
             "description": null,
             "args": [
               {
-                "name": "by",
+                "name": "where",
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",

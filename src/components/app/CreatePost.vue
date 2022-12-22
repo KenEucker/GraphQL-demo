@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref, reactive } from 'vue'
 import { useNow, useDateFormat } from '@vueuse/core'
+import EmojiPicker from 'vue3-emoji-picker'
+
 const emit = defineEmits(['onMenuClick', 'onCloseCreatePost'])
 const props = defineProps({
   showPostCreate: {
@@ -10,29 +12,55 @@ const props = defineProps({
 })
 
 const titleRef = ref()
+const statusRef = ref()
+const showEmojiPicker = reactive({
+  show: false,
+  emoji: null,
+})
+const onSelectEmoji = (emoji: any) => {
+  showEmojiPicker.show = false
+  showEmojiPicker.emoji = emoji
+  statusRef.value.value = emoji.i
+}
 
 const getNewTitle = () => {
   if (titleRef.value?.value?.length) {
     return
   }
-  const formatted = useDateFormat(useNow(), 'MMMM DD, YYYY @ HH:m')
+  const formatted = useDateFormat(useNow(), 'MMMM DD, YYYY @ hh:mm a')
   titleRef.value.value = formatted.value
 }
 </script>
 
 <template>
   <div
-    class="transition-all overflow-hidden mx-2 bg-ll-neutral dark:bg-ld-neutral rounded-md flex flex-col relative"
-    :class="props.showPostCreate ? 'h-70 p-5' : 'h-0 p-0'"
+    class="transition-all mx-2 bg-ll-neutral dark:bg-ld-neutral rounded-md flex flex-col relative"
+    :class="props.showPostCreate ? 'h-70 p-5' : 'overflow-hidden h-0 p-0'"
   >
-    <input
-      ref="titleRef"
-      type="text"
-      class="w-1/2 mx-auto mb-2 rounded-md bg-ll-base dark:bg-ld-base p-2 outline-none text-lg"
-      placeholder="title"
-      :value="''"
-      resize="none"
-    />
+    <div class="flex">
+      <emoji-picker
+        v-show="showEmojiPicker.show"
+        :input="true"
+        class="absolute z-2000"
+        @select="onSelectEmoji"
+      />
+      <input
+        ref="statusRef"
+        type="text"
+        class="w-20 rounded-md bg-ll-base dark:bg-ld-base text-center p-2 mb-2 outline-none text-lg"
+        placeholder="status"
+        resize="none"
+        @focus="showEmojiPicker.show = true"
+      />
+      <input
+        ref="titleRef"
+        type="text"
+        class="w-3/4 mx-auto mb-2 rounded-md bg-ll-base dark:bg-ld-base p-2 outline-none text-lg"
+        placeholder="title the post (date by default)"
+        :value="''"
+        resize="none"
+      />
+    </div>
     <textarea
       class="w-full h-full rounded-md bg-ll-base dark:bg-ld-base p-4 outline-none text-lg"
       placeholder="What's happening?"
@@ -84,21 +112,7 @@ const getNewTitle = () => {
         <button
           class="text-sm px-5 py-2 bg-ll-primary text-white dark:bg-ld-primary rounded-md flex items-center active:scale-95 transform transition-transform"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6 mr-2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
-            />
-          </svg>
-          Share
+          Post
         </button>
       </div>
     </div>

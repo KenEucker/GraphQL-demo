@@ -1,34 +1,34 @@
-import { IsInt, IsDefined, IsString, IsBoolean } from 'class-validator'
-import { Author, Post } from './'
+import { IsInt, IsDefined, IsString, IsBoolean } from "class-validator";
+import { Author, Post } from "./";
 
 export class Interaction {
-  @IsDefined()
-  @IsInt()
-  id!: number
+    @IsDefined()
+    @IsInt()
+    id!: number;
 
-  @IsDefined()
-  author!: Author
+    @IsDefined()
+    author!: Author;
 
-  @IsDefined()
-  post!: Post
+    @IsDefined()
+    @IsInt()
+    authorId!: number;
 
-  @IsDefined()
-  @IsString()
-  text!: string
+    @IsDefined()
+    post!: Post;
 
-  @IsDefined()
-  @IsBoolean()
-  share!: boolean
+    @IsDefined()
+    @IsInt()
+    postId!: number;
 
-  @IsDefined()
-  @IsBoolean()
-  like!: boolean
+    @IsDefined()
+    @IsString()
+    text!: string;
 
-  @IsDefined()
-  @IsInt()
-  authorId!: number
+    @IsDefined()
+    @IsBoolean()
+    share!: boolean;
 
-  @IsDefined()
-  @IsInt()
-  postId!: number
+    @IsDefined()
+    @IsBoolean()
+    like!: boolean;
 }

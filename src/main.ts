@@ -5,6 +5,7 @@ import 'virtual:windi-devtools'
 import 'virtual:windi.css'
 import 'vue-ionicons/ionicons.css'
 import './styles/main.scss'
+import 'vue3-emoji-picker/css'
 
 import App from './App.vue'
 

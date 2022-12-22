@@ -79,7 +79,6 @@ const Mutation = {
     if (!author) {
       throw new GraphQLError(`Author does not exist.`)
     }
-    console.log({ author })
 
     const postAlreadyExists = await prisma.post.findFirst({
       // const postAlreadyExists = db.posts.some(

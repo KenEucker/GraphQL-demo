@@ -32,8 +32,8 @@ const yoga = createYoga({
 
 // Pass it into a server to hook into request handlers.
 const server = createServer(yoga)
-
+const port = 4000
 // Start the server and you're done!
-server.listen(4000, () => {
-  console.info('Server is running on http://localhost:4000/graphql')
+server.listen(port, () => {
+  console.info(`GraphQL Server (yoga) is running on http://localhost:${port}/graphql`)
 })

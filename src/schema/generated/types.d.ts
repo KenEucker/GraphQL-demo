@@ -41,6 +41,12 @@ export type AuthorByInput = {
   readonly id?: InputMaybe<Scalars['String']>;
 };
 
+export type AuthorInput = {
+  readonly email?: InputMaybe<Scalars['String']>;
+  readonly handle?: InputMaybe<Scalars['String']>;
+  readonly id?: InputMaybe<Scalars['ID']>;
+};
+
 export type AuthorSubscriptionPayload = {
   readonly __typename?: 'AuthorSubscriptionPayload';
   readonly data?: Maybe<Author>;
@@ -83,8 +89,14 @@ export type Interaction = {
 };
 
 export type InteractionByInput = {
-  readonly author?: InputMaybe<Scalars['String']>;
-  readonly post?: InputMaybe<Scalars['String']>;
+  readonly author?: InputMaybe<AuthorInput>;
+  readonly post?: InputMaybe<PostInput>;
+};
+
+export type InteractionInput = {
+  readonly author?: InputMaybe<AuthorInput>;
+  readonly id?: InputMaybe<Scalars['ID']>;
+  readonly post?: InputMaybe<PostInput>;
 };
 
 export type InteractionSubscriptionPayload = {
@@ -199,7 +211,14 @@ export type Post = {
 };
 
 export type PostByInput = {
-  readonly author?: InputMaybe<Scalars['String']>;
+  readonly author?: InputMaybe<AuthorInput>;
+  readonly id?: InputMaybe<Scalars['ID']>;
+  readonly title?: InputMaybe<Scalars['String']>;
+};
+
+export type PostInput = {
+  readonly author?: InputMaybe<AuthorInput>;
+  readonly id?: InputMaybe<Scalars['ID']>;
   readonly title?: InputMaybe<Scalars['String']>;
 };
 
@@ -226,7 +245,7 @@ export type QueryAuthorArgs = {
 
 
 export type QueryAuthorsArgs = {
-  by?: InputMaybe<AuthorByInput>;
+  where?: InputMaybe<AuthorByInput>;
 };
 
 
@@ -236,7 +255,7 @@ export type QueryInteractionArgs = {
 
 
 export type QueryInteractionsArgs = {
-  by?: InputMaybe<InteractionByInput>;
+  where?: InputMaybe<InteractionByInput>;
 };
 
 
@@ -246,7 +265,7 @@ export type QueryPostArgs = {
 
 
 export type QueryPostsArgs = {
-  by?: InputMaybe<PostByInput>;
+  where?: InputMaybe<PostByInput>;
 };
 
 export type Subscription = {
@@ -259,7 +278,7 @@ export type Subscription = {
 
 
 export type SubscriptionAuthorArgs = {
-  by?: InputMaybe<AuthorByInput>;
+  where?: InputMaybe<AuthorByInput>;
 };
 
 
@@ -269,12 +288,12 @@ export type SubscriptionCountdownArgs = {
 
 
 export type SubscriptionInteractionArgs = {
-  by?: InputMaybe<InteractionByInput>;
+  where?: InputMaybe<InteractionByInput>;
 };
 
 
 export type SubscriptionPostArgs = {
-  by?: InputMaybe<PostByInput>;
+  where?: InputMaybe<PostByInput>;
 };
 
 export type UpdateAuthorInput = {
@@ -370,6 +389,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Author: ResolverTypeWrapper<Author>;
   AuthorByInput: AuthorByInput;
+  AuthorInput: AuthorInput;
   AuthorSubscriptionPayload: ResolverTypeWrapper<AuthorSubscriptionPayload>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   CreateAuthorInput: CreateAuthorInput;
@@ -379,12 +399,14 @@ export type ResolversTypes = {
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Interaction: ResolverTypeWrapper<Interaction>;
   InteractionByInput: InteractionByInput;
+  InteractionInput: InteractionInput;
   InteractionSubscriptionPayload: ResolverTypeWrapper<InteractionSubscriptionPayload>;
   Mutation: ResolverTypeWrapper<{}>;
   MutationType: MutationType;
   Permissions: Permissions;
   Post: ResolverTypeWrapper<Post>;
   PostByInput: PostByInput;
+  PostInput: PostInput;
   PostSubscriptionPayload: ResolverTypeWrapper<PostSubscriptionPayload>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
@@ -398,6 +420,7 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Author: Author;
   AuthorByInput: AuthorByInput;
+  AuthorInput: AuthorInput;
   AuthorSubscriptionPayload: AuthorSubscriptionPayload;
   Boolean: Scalars['Boolean'];
   CreateAuthorInput: CreateAuthorInput;
@@ -407,10 +430,12 @@ export type ResolversParentTypes = {
   Int: Scalars['Int'];
   Interaction: Interaction;
   InteractionByInput: InteractionByInput;
+  InteractionInput: InteractionInput;
   InteractionSubscriptionPayload: InteractionSubscriptionPayload;
   Mutation: {};
   Post: Post;
   PostByInput: PostByInput;
+  PostInput: PostInput;
   PostSubscriptionPayload: PostSubscriptionPayload;
   Query: {};
   String: Scalars['String'];

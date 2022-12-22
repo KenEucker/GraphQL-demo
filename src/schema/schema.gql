@@ -54,11 +54,11 @@ type Post {
 
 type Query {
   author(id: ID!): Author
-  authors(by: AuthorByInput): [Author]
+  authors(where: AuthorByInput): [Author]
   interaction(id: ID!): Interaction
-  interactions(by: InteractionByInput): [Interaction]
+  interactions(where: InteractionByInput): [Interaction]
   post(id: ID!): Post
-  posts(by: PostByInput): [Post]
+  posts(where: PostByInput): [Post]
 }
 
 type Mutation {
@@ -82,9 +82,9 @@ type Mutation {
 
 type Subscription {
   countdown(from: Int): Int!
-  author(by: AuthorByInput): AuthorSubscriptionPayload
-  interaction(by: InteractionByInput): InteractionSubscriptionPayload
-  post(by: PostByInput): PostSubscriptionPayload
+  author(where: AuthorByInput): AuthorSubscriptionPayload
+  interaction(where: InteractionByInput): InteractionSubscriptionPayload
+  post(where: PostByInput): PostSubscriptionPayload
 }
 
 type AuthorSubscriptionPayload {
@@ -109,13 +109,32 @@ input AuthorByInput {
 }
 
 input InteractionByInput {
-  author: String
-  post: String
+  author: AuthorInput
+  post: PostInput
 }
 
 input PostByInput {
-  author: String
+  id: ID
+  author: AuthorInput
   title: String
+}
+
+input AuthorInput {
+  id: ID
+  handle: String
+  email: String
+}
+
+input InteractionInput {
+  id: ID
+  post: PostInput
+  author: AuthorInput
+}
+
+input PostInput {
+  id: ID
+  title: String
+  author: AuthorInput
 }
 
 input CreateAuthorInput {

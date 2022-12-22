@@ -17,17 +17,17 @@ generates:
       enumsAsTypes: true
       immutableTypes: true
       useImplementingTypes: true
-  ./src/schema/generated/apollo.ts:
-    plugins:
-      - typescript-operations
-      - typescript-apollo-client-helpers
-      - typescript-vue-apollo
-      - named-operations-object
-    config:
-      enumsAsTypes: true
-      withCompositionFunctions: true
-      vueApolloComposableImportFrom: '@vue/apollo-composable'
-      vueCompositionApiImportFrom: vue
+  # ./src/schema/generated/apollo.ts:
+  #   plugins:
+  #     - typescript-operations
+  #     - typescript-apollo-client-helpers
+  #     - typescript-vue-apollo
+  #     - named-operations-object
+  #   config:
+  #     enumsAsTypes: true
+  #     withCompositionFunctions: true
+  #     vueApolloComposableImportFrom: '@vue/apollo-composable'
+  #     vueCompositionApiImportFrom: vue
   ./src/schema/generated/graphql.schema.json:
     plugins:
       - 'introspection'

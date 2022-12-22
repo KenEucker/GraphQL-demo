@@ -14,8 +14,8 @@ const router = useRouter()
 
 // Call the gql function with the GraphQL query
 const query = gql`
-  query AuthorPanelAuthor($email: String!) {
-    authors(by: { email: $email }) {
+  query SettingsPageAuthor($email: String!) {
+    authors(where: { email: $email }) {
       id
       name
       email

@@ -2,10 +2,7 @@
 import PointOfVue from '../components/app/PointOfVue.vue'
 </script>
 <template>
-  <div
-    class="leading-normal tracking-normal text-indigo-400 m-6 bg-cover bg-fixed"
-    style="background-image: url('header.png')"
-  >
+  <div class="leading-normal tracking-normal text-indigo-400 m-6 bg-cover bg-fixed">
     <div class="h-full">
       <!--Nav-->
       <div class="w-full container mx-auto">

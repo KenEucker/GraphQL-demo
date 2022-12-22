@@ -1,11 +1,30 @@
-import { Interaction } from '../generated/types'
+import { Interaction, Post } from '../generated/types'
 
 const Author = {
   // @ts-ignore
-  interactions: (parent, args, { db }, info) =>
-    db.interactions.filter((i: Interaction) => i.author === parent.id),
+  interactions: (parent, args, { prisma }, info) =>
+    prisma.interaction.findMany({
+      where: {
+        author: {
+          id: parent.id,
+        },
+        post: {
+          id: parent.post.id,
+        },
+      },
+      include: {
+        author: true,
+      },
+    }),
   // @ts-ignore
-  posts: (parent, args, { db }, info) => db.posts.filter((p) => p.author === parent.id),
+  posts: (parent, args, { prisma }, info) =>
+    prisma.post.findMany({
+      where: {
+        author: {
+          id: parent.id,
+        },
+      },
+    }),
 }
 
 export default Author

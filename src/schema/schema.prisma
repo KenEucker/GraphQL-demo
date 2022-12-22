@@ -50,18 +50,19 @@ model Author {
 model Interaction {
   id       Int     @id @default(autoincrement())
   author   Author  @relation(fields: [authorId], references: [id])
+  authorId Int
   post     Post    @relation(fields: [postId], references: [id])
+  postId   Int
   text     String  @default("")
   share    Boolean
   like     Boolean
-  authorId Int
-  postId   Int
 }
 
 model Post {
   id           Int           @id @default(autoincrement())
   published    Boolean       @default(false)
-  author       Author        @relation(fields: [id], references: [id])
+  author       Author        @relation(fields: [authorId], references: [id])
+  authorId     Int
   interactions Interaction[]
   tags         String[]
   title        String

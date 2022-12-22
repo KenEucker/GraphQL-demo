@@ -47,7 +47,9 @@ const generateText = () => {
         <more-icon h="30" w="30" class="absolute top-0 right-0" />
       </button>
     </div>
-    <p class="mt-2 m-auto -mb-3 flex justify-between text-gray-500 text-xs">
+    <p
+      class="mt-2 m-auto -mb-3 flex justify-between text-xs bg-gray-600 rounded text-white px-5 py-1"
+    >
       {{ props.post.title }}
     </p>
 

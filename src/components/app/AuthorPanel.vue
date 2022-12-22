@@ -15,7 +15,7 @@ const storedEmail = useStorage('author-email', '')
 // Call the gql function with the GraphQL query
 const query = gql`
   query AuthorPanelAuthor($email: String!) {
-    authors(by: { email: $email }) {
+    authors(where: { email: $email }) {
       name
       email
       handle
@@ -51,7 +51,6 @@ const author = ref()
 
 const loginWithEmail = () => {
   storedEmail.value = emailInput.value.value
-  console.log({ refetch: storedEmail.value })
   refetch({ email: storedEmail.value })
 }
 
