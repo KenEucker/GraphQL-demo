@@ -2,7 +2,7 @@
 module.exports = {
   client: {
     service: {
-      name: 'graphql-demo',
+      name: 'point-of-vue',
       // URL to the GraphQL API
       url: 'http://localhost:4000/graphql',
     },
