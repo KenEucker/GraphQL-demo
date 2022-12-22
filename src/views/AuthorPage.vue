@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import ArrowBack from 'vue-ionicons/dist/md-arrow-back.vue'
-import PovSelfPost from '../components/app/PovSelfPost.vue'
-import LoadingSpinner from '../components/app/LoadingSpinner.vue'
-import ErrorMessage from '../components/app/ErrorMessage.vue'
-import PovAuthor from '../components/app/PovAuthor.vue'
+import PovSelfPost from '../components/post/PovSelfPost.vue'
+import LoadingSpinner from '../components/atoms/LoadingSpinner.vue'
+import ErrorMessage from '../components/atoms/ErrorMessage.vue'
+import PovAuthor from '../components/author/PovAuthor.vue'
 import { reactive, watch, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuery } from '@vue/apollo-composable'

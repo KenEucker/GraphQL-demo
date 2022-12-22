@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import PointOfVue from './PointOfVue.vue'
-import PopButton from './PopButton.vue'
-import RouteButton from './RouteButton.vue'
+import PointOfVue from '../atoms/PointOfVue.vue'
+import PopButton from '../atoms/PopButton.vue'
+import RouteButton from '../atoms/RouteButton.vue'
 import MenuOpen from 'vue-ionicons/dist/md-funnel.vue'
 import SearchIcon from 'vue-ionicons/dist/md-search.vue'
 import { useWindowSize } from '@vueuse/core'

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted, reactive, watch } from 'vue'
 import PovPost from './PovPost.vue'
-import LoadingSpinner from './LoadingSpinner.vue'
-import ErrorMessage from './ErrorMessage.vue'
-import { Post } from '../../schema/generated/types.d'
+import LoadingSpinner from '../atoms/LoadingSpinner.vue'
+import ErrorMessage from '../atoms/ErrorMessage.vue'
+import { Post } from '../../schema/generated/types'
 import { useQuery } from '@vue/apollo-composable'
 import { gql } from '@apollo/client/core'
 

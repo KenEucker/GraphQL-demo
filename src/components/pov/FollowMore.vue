@@ -4,7 +4,7 @@ import { useQuery } from '@vue/apollo-composable'
 import { gql } from '@apollo/client/core'
 import { Author } from '../../schema/generated/types'
 import { useStorage } from '@vueuse/core'
-import PovAuthor from './PovAuthor.vue'
+import PovAuthor from '../author/PovAuthor.vue'
 
 const storedEmail = useStorage('author-email', '')
 

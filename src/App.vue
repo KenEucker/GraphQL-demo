@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import AppLayout from './components/layouts/AppLayout.vue'
-import HeaderBar from './components/app/HeaderBar.vue'
-import SlideMenuLeft from './components/app/SlideMenuLeft.vue'
-import SlideMenuRight from './components/app/SlideMenuRight.vue'
+import HeaderBar from './components/menu/HeaderBar.vue'
+import SlideMenuLeft from './components/menu/SlideMenuLeft.vue'
+import SlideMenuRight from './components/menu/SlideMenuRight.vue'
 import { useRouter } from 'vue-router'
 
 const { currentRoute } = useRouter()

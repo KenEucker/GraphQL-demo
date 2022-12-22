@@ -4,7 +4,7 @@ import Heart from 'vue-ionicons/dist/md-heart.vue'
 import HeartEmpty from 'vue-ionicons/dist/md-heart-empty.vue'
 import Points from 'vue-ionicons/dist/md-bonfire.vue'
 import Share from 'vue-ionicons/dist/md-share.vue'
-import PopButton from './PopButton.vue'
+import PopButton from '../atoms/PopButton.vue'
 import PovPostMedia from './PovPostMedia.vue'
 
 const props = defineProps({

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import PostFeed from '../components/app/PostFeed.vue'
-import CreatePost from '../components/app/CreatePost.vue'
+import PostFeed from '../components/post/PostFeed.vue'
+import CreatePost from '../components/post/CreatePost.vue'
 import { getCurrentInstance } from 'vue'
 import { useWindowSize } from '@vueuse/core'
 
