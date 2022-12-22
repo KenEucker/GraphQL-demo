@@ -80,7 +80,6 @@ const isLoggedIn = reactive(result)
 
 watch(isLoggedIn, (r) => {
   const loggedInAuthor = r?.author
-  console.log({ r })
   if (loggedInAuthor) {
     author.value = loggedInAuthor
   } else {
@@ -116,46 +115,48 @@ function selected(idx: number) {
 </script>
 
 <template>
-  <div v-if="loading">
-    <loading-spinner />
-  </div>
-  <div v-else-if="error">
-    <error-message title="Error Fetching Profile Data" :message="error.message" />
-  </div>
-  <div v-else class="w-full p-4 pr-6 max-w-[700px] mx-auto">
-    <div class="ml-10 md:ml-0">
-      <div class="flex p-1 text-twitter-gray">
-        <arrow-back
-          v-if="props.showBackButton || handleIsSet"
-          w="25"
-          h="25"
-          class="text-twitter-primary p-3 px-4 cursor-pointer"
-          @click="goBack"
-        />
-        <div>
-          <span class="block mb-0 font-bold text-xl">{{ author?.name }}</span>
-          <small>{{ author?.posts?.length ?? 0 }} Posts</small>
+  <div>
+    <div v-if="loading">
+      <loading-spinner />
+    </div>
+    <div v-else-if="error">
+      <error-message title="Error Fetching Profile Data" :message="error.message" />
+    </div>
+    <div v-else class="w-full p-4 pr-6 max-w-[700px] mx-auto">
+      <div class="ml-10 md:ml-0">
+        <div class="flex p-1 text-twitter-gray">
+          <arrow-back
+            v-if="props.showBackButton || handleIsSet"
+            w="25"
+            h="25"
+            class="text-twitter-primary p-3 px-4 cursor-pointer"
+            @click="goBack"
+          />
+          <div>
+            <span class="block mb-0 font-bold text-xl">{{ author?.name }}</span>
+            <small>{{ author?.posts?.length ?? 0 }} Posts</small>
+          </div>
+        </div>
+        <div class="banner bg-gray-700 min-h-50 h-50 object-fill">
+          <img :src="author?.banner" class="w-[100%]" />
+        </div>
+        <pov-author :author="author" size="medium" class="-mt-18 -ml-10" />
+        <div class="flex">
+          <button
+            v-for="(section, index) in state.sec"
+            :key="index"
+            type="button"
+            class="flex-grow transition border-twitter-primary duration-150 ease-in-out py-4 text-sm font-semibold hover:bg-twitter-hover hover:text-twitter-primary focus:outline-none"
+            :class="state.selected ? 'border-b-2 text-twitter-primary' : 'text-twitter-gray'"
+            @click="selected(index)"
+          >
+            {{ section }}
+          </button>
         </div>
       </div>
-      <div class="banner bg-gray-700 min-h-50 h-50 object-fill">
-        <img :src="author?.banner" class="w-[100%]" />
+      <div v-if="state.selected === 0" class="flex grid grid-cols-1">
+        <pov-self-post v-for="post in author?.posts" :key="post.id" :post="post"></pov-self-post>
       </div>
-      <pov-author :author="author" size="medium" class="-mt-18 -ml-10" />
-      <div class="flex">
-        <button
-          v-for="(section, index) in state.sec"
-          :key="index"
-          type="button"
-          class="flex-grow transition border-twitter-primary duration-150 ease-in-out py-4 text-sm font-semibold hover:bg-twitter-hover hover:text-twitter-primary focus:outline-none"
-          :class="state.selected ? 'border-b-2 text-twitter-primary' : 'text-twitter-gray'"
-          @click="selected(index)"
-        >
-          {{ section }}
-        </button>
-      </div>
-    </div>
-    <div v-if="state.selected === 0" class="flex grid grid-cols-1">
-      <pov-self-post v-for="post in author?.posts" :key="post.id" :post="post"></pov-self-post>
     </div>
   </div>
 </template>

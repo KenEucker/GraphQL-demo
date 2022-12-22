@@ -64,11 +64,7 @@ const logout = () => {
 <template>
   <div class="flex appjustify-center items-center">
     <div v-if="author" class="profile flex flex-col relative">
-      <button
-        v-if="props.isExpanded"
-        class="absolute -left-1/2 -top-1/5 md:-left-1/5"
-        @click="logout()"
-      >
+      <button v-if="props.isExpanded" class="absolute -top-1/5 md:-left-2" @click="logout()">
         <logout-icon h="32" w="32" />
       </button>
       <pov-author :author="author" size="small" :image-only="!props.isExpanded" />

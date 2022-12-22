@@ -19,6 +19,11 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  /// TODO: turn into variant
+  iconOnly: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 // /linear-gradient(to right, rgb(236, 72, 153), rgb(239, 68, 68), rgb(234, 179, 8))
@@ -36,6 +41,9 @@ const fancyClass = computed(() =>
     <!-- <pov class="mt-1 align-middle" w="40" h="40"></pov> -->
     <span class="point-of align-top" :class="fancyClass">f</span>
     <span class="point-of-view" :class="fancyClass">Vue</span>
+  </div>
+  <div v-else-if="props.iconOnly">
+    <img class="m-auto align-middle w-30 h-30 inline" src="/img/pov.svg" />
   </div>
   <div v-else-if="props.expanded">
     <!-- <span class="point">Point</span> -->

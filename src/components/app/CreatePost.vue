@@ -1,7 +1,49 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import { useNow, useDateFormat } from '@vueuse/core'
 import EmojiPicker from 'vue3-emoji-picker'
+import { useLazyQuery, useMutation } from '@vue/apollo-composable'
+import { gql } from '@apollo/client/core'
+import { useStorage } from '@vueuse/core'
+import { Author } from '../../schema/generated/types'
+
+const storedEmail = useStorage('author-email', '')
+const author = ref()
+const newPost = reactive({
+  result: null,
+  loading: ref(),
+})
+
+// Call the gql function with the GraphQL query
+const query = gql`
+  query AuthorPanelAuthor($email: String!) {
+    authors(where: { email: $email }) {
+      email
+      id
+    }
+  }
+`
+
+const mutation = gql`
+  mutation CreateNewPost($post: CreatePostInput!) {
+    createPost(post: $post) {
+      id
+    }
+  }
+`
+const { mutate: useCreatePostMutation, loading } = useMutation(mutation)
+
+const { result, load } = useLazyQuery(query, { email: storedEmail.value })
+const isLoggedIn = reactive(result)
+watch(isLoggedIn, (r) => {
+  const loggedInAuthor = r?.authors.find((a: Author) => a.email === storedEmail.value)
+  if (loggedInAuthor) {
+    author.value = loggedInAuthor
+    showPostCreate.value = true
+  } else {
+    showPostCreate.value = false
+  }
+})
 
 const emit = defineEmits(['onMenuClick', 'onCloseCreatePost'])
 const props = defineProps({
@@ -9,11 +51,20 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  // author: {
+  //   type: Object,
+  //   default: () => {
+  //     return {}
+  //   },
+  //   required: true,
+  // },
 })
+const showPostCreate = ref(false)
 
 const firstTitle = useDateFormat(useNow(), 'MMMM DD, YYYY').value
 const titleRef = ref()
 const statusRef = ref()
+const textRef = ref()
 const showEmojiPicker = reactive({
   show: false,
   emoji: null,
@@ -31,12 +82,28 @@ const getNewTitle = () => {
   const formatted = useDateFormat(useNow(), 'MMMM DD, YYYY @ hh:mm a')
   titleRef.value.value = formatted.value
 }
+
+async function createNewPost() {
+  const newPostData = {
+    authorId: author.value.id,
+    text: textRef.value.value,
+    status: statusRef.value.value,
+    title: titleRef.value.value,
+  }
+
+  console.log('creating new post', newPostData)
+
+  const newlyCreatedPost = await useCreatePostMutation({ post: newPostData })
+  newPost.loading = loading
+  console.log({ newlyCreatedPost })
+}
+load()
 </script>
 
 <template>
   <div
     class="transition-all mx-2 bg-ll-neutral dark:bg-ld-neutral rounded-md flex flex-col relative"
-    :class="props.showPostCreate ? 'h-70 p-5' : 'overflow-hidden h-0 p-0'"
+    :class="showPostCreate ? 'h-70 p-5' : 'overflow-hidden h-0 p-0'"
   >
     <div class="flex">
       <emoji-picker
@@ -63,6 +130,7 @@ const getNewTitle = () => {
       />
     </div>
     <textarea
+      ref="textRef"
       class="w-full h-full rounded-md bg-ll-base dark:bg-ld-base p-4 outline-none text-lg"
       placeholder="What's happening?"
       resize="none"
@@ -112,6 +180,7 @@ const getNewTitle = () => {
       <div class="flex">
         <button
           class="text-sm px-5 py-2 bg-ll-primary text-white dark:bg-ld-primary rounded-md flex items-center active:scale-95 transform transition-transform"
+          @click="createNewPost"
         >
           Post
         </button>
@@ -119,7 +188,7 @@ const getNewTitle = () => {
     </div>
     <button
       class="w-8 h-8 absolute -top-0 -right-1 bg-ll-neutral dark:bg-ld-neutral text-sm border-ll-border dark:border-ld-border border rounded-full flex items-center mr-2 active:scale-95 transform transition-transform"
-      @click="emit('onCloseCreatePost')"
+      @click="emit('onCloseCreatePost'), (showPostCreate = false)"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

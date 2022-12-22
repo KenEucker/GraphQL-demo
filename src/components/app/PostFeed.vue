@@ -87,7 +87,7 @@ onMounted(sortPosts)
 
 <template>
   <div>
-    <div v-if="loading">
+    <div v-if="loading" class="mt-20">
       <loading-spinner />
     </div>
     <div v-else-if="error">
