@@ -15,7 +15,7 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "server.ts", "server.ts"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "index.ts, "iindex.ts,
   "exclude": ["src/schema/generated/**/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
