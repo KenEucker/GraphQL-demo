@@ -37,7 +37,7 @@
         >GraphQL Yoga</a
       >
       runs the development Apollo server including a
-      <a href="http://localhost:4000/graphql" target="_blank"> playground </a>
+      <a href="/graphql" target="_blank"> playground </a>
     </p>
     <p class="p-2">
       Frontend powered by

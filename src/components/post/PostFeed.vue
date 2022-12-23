@@ -34,7 +34,7 @@ const newPostSubscription = `
   }
 `
 
-const url = new URL('http://localhost:4000/graphql')
+const url = new URL(`${process.env.GRAPH_URL}:${process.env.GRAPH_PORT}/${process.env.GRAPH_PATH}`)
 
 url.searchParams.append('query', newPostSubscription)
 const eventsource = new EventSource(url.toString(), {

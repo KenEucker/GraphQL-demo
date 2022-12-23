@@ -45,7 +45,9 @@ const beginCountdown = () => {
   apply('glowing')
   counting = true
 
-  const url = new URL('http://localhost:4000/graphql')
+  const url = new URL(
+    `${process.env.GRAPH_URL}:${process.env.GRAPH_PORT}/${process.env.GRAPH_PATH}`
+  )
 
   url.searchParams.append(
     'query',
