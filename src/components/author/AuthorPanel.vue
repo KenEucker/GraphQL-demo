@@ -11,11 +11,13 @@ import PovAuthor from './PovAuthor.vue'
 
 const emailInput = ref()
 const storedEmail = useStorage('author-email', '')
+const storedId = useStorage('author-id', '')
 
 // Call the gql function with the GraphQL query
 const query = gql`
   query AuthorPanelAuthor($email: String!) {
-    authors(where: { email: $email }) {
+    author(where: { email: $email }) {
+      id
       name
       email
       handle
@@ -34,12 +36,15 @@ const emit = defineEmits(['onLoginButtonClick', 'onAuthorLoggedIn', 'onAuthorLog
 const { result, refetch } = useQuery(query, { email: storedEmail.value })
 const isLoggedIn = reactive(result)
 watch(isLoggedIn, (r) => {
-  const loggedInAuthor = r?.authors.find((a: Author) => a.email === storedEmail.value)
+  const loggedInAuthor = r?.author
   if (loggedInAuthor) {
     author.value = loggedInAuthor
+    storedId.value = loggedInAuthor.id
+    storedEmail.value = loggedInAuthor.email
     emit('onAuthorLoggedIn', loggedInAuthor)
   } else {
     storedEmail.value = null
+    storedId.value = null
   }
 })
 
@@ -56,6 +61,7 @@ const loginWithEmail = () => {
 
 const logout = () => {
   storedEmail.value = null
+  storedId.value = null
   author.value = null
   emit('onAuthorLoggedOut')
 }

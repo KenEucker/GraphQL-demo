@@ -14,11 +14,11 @@ export class Interaction {
   authorId!: number
 
   @IsDefined()
-  post!: Post
-
-  @IsDefined()
   @IsInt()
   postId!: number
+
+  @IsDefined()
+  post!: Post
 
   @IsDefined()
   @IsString()
@@ -26,9 +26,17 @@ export class Interaction {
 
   @IsDefined()
   @IsBoolean()
-  share!: boolean
+  like!: boolean
 
   @IsDefined()
   @IsBoolean()
-  like!: boolean
+  love!: boolean
+
+  @IsDefined()
+  @IsBoolean()
+  repost!: boolean
+
+  @IsDefined()
+  @IsBoolean()
+  share!: boolean
 }

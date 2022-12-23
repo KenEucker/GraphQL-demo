@@ -51,12 +51,15 @@ model Author {
 model Interaction {
   id       Int     @id @default(autoincrement())
   author   Author  @relation(fields: [authorId], references: [id])
-  authorId Int
+  authorId Int     
+  postId   Int     
   post     Post    @relation(fields: [postId], references: [id])
-  postId   Int
   text     String  @default("")
-  share    Boolean @default(false)
   like     Boolean @default(false)
+  love     Boolean @default(false)
+  repost   Boolean @default(false)
+  share    Boolean @default(false)
+  @@unique([authorId, postId])
 }
 
 model Post {
@@ -70,4 +73,5 @@ model Post {
   text         String        @default("")
   status       String        @default("")
   media        String[]      @default([])
+  @@unique([authorId, title])
 }

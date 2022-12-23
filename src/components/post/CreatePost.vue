@@ -12,7 +12,6 @@ const storedEmail = useStorage('author-email', '')
 const author = ref()
 let newPostLoading = ref(false)
 
-// Call the gql function with the GraphQL query
 const query = gql`
   query AuthorPanelAuthor($email: String!) {
     authors(where: { email: $email }) {
@@ -44,19 +43,6 @@ watch(isLoggedIn, (r) => {
 })
 
 const emit = defineEmits(['onMenuClick', 'onCloseCreatePost', 'onNewPostCreated'])
-const props = defineProps({
-  showPostCreate: {
-    type: Boolean,
-    default: true,
-  },
-  // author: {
-  //   type: Object,
-  //   default: () => {
-  //     return {}
-  //   },
-  //   required: true,
-  // },
-})
 const showPostCreate = ref(false)
 
 const firstTitle = useDateFormat(useNow(), 'MMMM DD, YYYY').value
@@ -82,6 +68,7 @@ const getNewTitle = () => {
 }
 
 async function createNewPost() {
+  newPostLoading.value = true
   const newPostData = {
     authorId: author.value.id,
     text: textRef.value.value,
@@ -89,8 +76,6 @@ async function createNewPost() {
     title: titleRef.value.value,
     published: true,
   }
-
-  console.log('creating new post', newPostData)
 
   const newlyCreatedPost = await useCreatePostMutation({ post: newPostData })
   newPostLoading.value = false

@@ -10,6 +10,4 @@ const props = defineProps({
 })
 </script>
 
-<template>
-  {{ props.author.handle }}
-</template>
+<template>@{{ props.author.handle }}</template>

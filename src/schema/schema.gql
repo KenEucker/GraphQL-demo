@@ -36,9 +36,10 @@ type Interaction {
   author: Author!
   post: Post!
   text: String
-  share: Boolean
   like: Boolean
   love: Boolean
+  repost: Boolean
+  share: Boolean
 }
 
 type Post {
@@ -152,6 +153,7 @@ input CreateInteractionInput {
   text: String
   like: Boolean
   love: Boolean
+  repost: Boolean
   share: Boolean
 }
 input CreatePostInput {
@@ -180,9 +182,12 @@ input UpdateInteractionInput {
   text: String
   like: Boolean
   love: Boolean
+  repost: Boolean
   share: Boolean
 }
 input UpdatePostInput {
+  authorId: Int!
+  postId: Int!
   title: String
   text: String
   status: String

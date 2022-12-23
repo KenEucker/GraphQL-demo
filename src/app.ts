@@ -9,7 +9,7 @@ import 'vue3-emoji-picker/css'
 
 import App from './App.vue'
 
-import { apolloClient, registerStore } from './store'
+import { apolloClient } from './store'
 import router from './router'
 
 import { MotionPlugin } from '@vueuse/motion'
@@ -24,7 +24,6 @@ app.use(router)
 
 // Store
 app.use(createPinia())
-registerStore()
 
 // other UI plugins
 app.use(MotionPlugin)

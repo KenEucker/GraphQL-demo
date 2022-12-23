@@ -4,7 +4,7 @@ import PovPost from './PovPost.vue'
 import LoadingSpinner from '../atoms/LoadingSpinner.vue'
 import ErrorMessage from '../atoms/ErrorMessage.vue'
 import { Post } from '../../schema/generated/types'
-import { useQuery, useSubscription } from '@vue/apollo-composable'
+import { useQuery } from '@vue/apollo-composable'
 import { gql } from '@apollo/client/core'
 
 const props = defineProps({
@@ -46,14 +46,6 @@ eventsource.onmessage = function (event) {
   const { data: newPostCreated, mutation } = data.data.post
   leftPosts.unshift(newPostCreated)
 }
-
-// const { result: newPostCreated, onResult } = useSubscription(newPostSubscription)
-// const feedNewPost = reactive(newPostCreated)
-// onResult(console.log)
-// watch(feedNewPost, (data) => {
-//   console.log({ newPostCreated: data })
-//   leftPosts.push(data)
-// })
 
 // Call the gql function with the GraphQL query
 const getPostsQuery = gql`

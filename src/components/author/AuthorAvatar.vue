@@ -8,8 +8,6 @@ const props = defineProps({
     required: true,
   },
 })
-
-// console.log('author-avatar', author)
 </script>
 
 <template>

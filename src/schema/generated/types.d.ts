@@ -65,6 +65,7 @@ export type CreateInteractionInput = {
   readonly like?: InputMaybe<Scalars['Boolean']>;
   readonly love?: InputMaybe<Scalars['Boolean']>;
   readonly postId: Scalars['Int'];
+  readonly repost?: InputMaybe<Scalars['Boolean']>;
   readonly share?: InputMaybe<Scalars['Boolean']>;
   readonly text?: InputMaybe<Scalars['String']>;
 };
@@ -85,6 +86,7 @@ export type Interaction = {
   readonly like?: Maybe<Scalars['Boolean']>;
   readonly love?: Maybe<Scalars['Boolean']>;
   readonly post: Post;
+  readonly repost?: Maybe<Scalars['Boolean']>;
   readonly share?: Maybe<Scalars['Boolean']>;
   readonly text?: Maybe<Scalars['String']>;
 };
@@ -326,12 +328,15 @@ export type UpdateInteractionInput = {
   readonly like?: InputMaybe<Scalars['Boolean']>;
   readonly love?: InputMaybe<Scalars['Boolean']>;
   readonly postId: Scalars['Int'];
+  readonly repost?: InputMaybe<Scalars['Boolean']>;
   readonly share?: InputMaybe<Scalars['Boolean']>;
   readonly text?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdatePostInput = {
+  readonly authorId: Scalars['Int'];
   readonly media?: InputMaybe<ReadonlyArray<Scalars['String']>>;
+  readonly postId: Scalars['Int'];
   readonly status?: InputMaybe<Scalars['String']>;
   readonly text?: InputMaybe<Scalars['String']>;
   readonly title?: InputMaybe<Scalars['String']>;
@@ -493,6 +498,7 @@ export type InteractionResolvers<ContextType = any, ParentType extends Resolvers
   like?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   love?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   post?: Resolver<ResolversTypes['Post'], ParentType, ContextType>;
+  repost?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   share?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   text?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
