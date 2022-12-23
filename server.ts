@@ -37,3 +37,5 @@ const port = 4000
 server.listen(port, () => {
   console.info(`GraphQL Server (yoga) is running on http://localhost:${port}/graphql`)
 })
+
+export default server

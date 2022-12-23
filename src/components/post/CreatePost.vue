@@ -10,7 +10,7 @@ import { Author } from '../../schema/generated/types'
 
 const storedEmail = useStorage('author-email', '')
 const author = ref()
-let newPostLoading = ref()
+let newPostLoading = ref(false)
 
 // Call the gql function with the GraphQL query
 const query = gql`
@@ -87,12 +87,13 @@ async function createNewPost() {
     text: textRef.value.value,
     status: statusRef.value.value,
     title: titleRef.value.value,
+    published: true,
   }
 
   console.log('creating new post', newPostData)
 
   const newlyCreatedPost = await useCreatePostMutation({ post: newPostData })
-  newPostLoading.value = loading
+  newPostLoading.value = false
   emit('onNewPostCreated', newlyCreatedPost)
 }
 load()

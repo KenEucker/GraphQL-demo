@@ -61,10 +61,17 @@ const Query = {
             search: where.text,
           },
         },
+        orderBy: {
+          id: 'desc',
+        },
       })
     }
 
-    return prisma.post.findMany()
+    return prisma.post.findMany({
+      orderBy: {
+        id: 'desc',
+      },
+    })
   },
   // @ts-ignore
   interactions: (parent, { where }, { prisma }, info) => {

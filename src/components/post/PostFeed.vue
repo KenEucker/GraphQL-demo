@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { onMounted, reactive, watch } from 'vue'
+import { onMounted, reactive, watch, ref } from 'vue'
 import PovPost from './PovPost.vue'
 import LoadingSpinner from '../atoms/LoadingSpinner.vue'
 import ErrorMessage from '../atoms/ErrorMessage.vue'
 import { Post } from '../../schema/generated/types'
-import { useQuery } from '@vue/apollo-composable'
+import { useQuery, useSubscription } from '@vue/apollo-composable'
 import { gql } from '@apollo/client/core'
 
 const props = defineProps({
@@ -14,8 +14,49 @@ const props = defineProps({
   },
 })
 
+const newPostSubscription = `
+  subscription NewPostPostFeed {
+    post {
+      mutation
+      data {
+        id
+        title
+        author {
+          name
+          handle
+          verified
+          avatar
+        }
+        text
+        media
+      }
+    }
+  }
+`
+
+const url = new URL('http://localhost:4000/graphql')
+
+url.searchParams.append('query', newPostSubscription)
+const eventsource = new EventSource(url.toString(), {
+  withCredentials: true, // This is required for cookies
+})
+
+eventsource.onmessage = function (event) {
+  const data = JSON.parse(event.data)
+  const { data: newPostCreated, mutation } = data.data.post
+  leftPosts.unshift(newPostCreated)
+}
+
+// const { result: newPostCreated, onResult } = useSubscription(newPostSubscription)
+// const feedNewPost = reactive(newPostCreated)
+// onResult(console.log)
+// watch(feedNewPost, (data) => {
+//   console.log({ newPostCreated: data })
+//   leftPosts.push(data)
+// })
+
 // Call the gql function with the GraphQL query
-const query = gql`
+const getPostsQuery = gql`
   query posts {
     posts {
       id
@@ -32,8 +73,8 @@ const query = gql`
   }
 `
 
-const { result, loading, error, refetch } = useQuery(query)
-const feedPosts = reactive(result)
+const { result: allPosts, loading, error, refetch } = useQuery(getPostsQuery)
+const feedPosts = reactive(allPosts)
 
 let leftPosts: Post[] = reactive([])
 let rightPosts: Post[] = reactive([])
