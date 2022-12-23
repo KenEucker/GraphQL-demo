@@ -32,10 +32,10 @@ const yoga = createYoga({
 
 // Pass it into a server to hook into request handlers.
 const server = createServer(yoga)
-const port = 4000
-// Start the server and you're done!
+const port = Number.parseInt(process.env.PORT) || 4000
+
 server.listen(port, () => {
-  console.info(`GraphQL Server (yoga) is running on http://localhost:${port}/graphql`)
+  console.info(`🚀 GraphQL Server (yoga) is running on http://localhost:${port}/graphql`)
 })
 
 export default server
