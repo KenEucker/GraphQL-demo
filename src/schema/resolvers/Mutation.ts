@@ -76,19 +76,17 @@ const Mutation = {
   // @ts-ignore
   async createPost(parent, args, { prisma, pubsub }, info) {
     const { authorId, title, text, status, published } = args.post
-    const author = await prisma.author.findUnique({
-      where: {
-        id: authorId,
-      },
+    const authorExists = await prisma.exists.author({
+      id: authorId,
     })
-    if (!author) {
+    if (!authorExists) {
       throw new GraphQLError(`Author does not exist.`)
     }
 
     const postAlreadyExists = await prisma.post.findFirst({
       where: {
         author: {
-          id: author.id,
+          id: authorId,
         },
         title,
       },
@@ -99,7 +97,7 @@ const Mutation = {
     }
 
     const newPost = {
-      authorId: author.id,
+      authorId,
       title,
       text: text ?? '',
       status,
@@ -162,14 +160,9 @@ const Mutation = {
 
   // @ts-ignore
   async deleteAuthor(parent, args, { prisma, pubsub }, info) {
-    const { data, id } = args
-    const authorToDelete = await prisma.author.findUnique({ where: { id } })
+    const { id, where } = args
 
-    if (!authorToDelete) {
-      throw new GraphQLError(`Author does not exist.`)
-    }
-
-    const deletedAuthor = await prisma.author.delete({ where: { id } })
+    const deletedAuthor = await prisma.author.delete({ where: { ...where, id: id } })
 
     /// Publish the deleted event
     pubsub.publish(`author`, { mutation: 'DELETED', data: deletedAuthor })
@@ -204,17 +197,20 @@ const Mutation = {
       throw new GraphQLError('You must specify which post to delete.')
     }
 
-    const postToDelete = await prisma.post.findUnique({ where: { id: args.postId } })
+    /// Let's just set it and forget it, allowing for the response to be enough
+    /// indication of any need for letting them know the target post
+    /// does not exist
+    // const postToDeleteExists = await prisma.exists.post({ id: args.postId })
 
-    if (!postToDelete) {
-      throw new GraphQLError(`Post does not exist.`)
-    }
+    // if (!postToDeleteExists) {
+    //   throw new GraphQLError(`Post does not exist.`)
+    // }
 
     const deletedPost = await prisma.post.delete({
       where: { id: args.postId },
     })
 
-    if (postToDelete.published) {
+    if (deletedPost.published) {
       pubsub.publish(`post`, { mutation: 'DELETED', data: deletedPost })
     }
 
@@ -291,52 +287,44 @@ const Mutation = {
 
   // @ts-ignore
   async verifyAuthor(parent, args, { prisma, pubsub }, info) {
-    const { data, id } = args
-    const authorToUpdate = await prisma.author.findUnique({ where: { id } })
+    const { id } = args
+    const authorToVerifyExists = await prisma.exists.author({ id })
 
-    if (!authorToUpdate) {
+    if (!authorToVerifyExists) {
       throw new GraphQLError(`Author does not exist.`)
     }
 
-    // First, do nothing
-    if (authorToUpdate.verified) {
-      return authorToUpdate
-    }
-    authorToUpdate.verified = true
-
-    const updatedAuthor = await prisma.author.update({
+    const verifiedAuthor = await prisma.author.update({
       where: { id },
-      data: authorToUpdate,
+      data: {
+        verified: true,
+      },
     })
 
-    pubsub.publish('author', { mutation: 'UPDATED', data: updatedAuthor })
+    pubsub.publish('author', { mutation: 'UPDATED', data: verifiedAuthor })
 
-    return updatedAuthor
+    return verifiedAuthor
   },
 
   // @ts-ignore
   async unVerifyAuthor(parent, args, { prisma, pubsub }, info) {
-    const { data, id } = args
-    const authorToUpdate = await prisma.author.findUnique({ where: { id } })
+    const { id } = args
+    const authorToUnVerifyExists = await prisma.exists.author({ id })
 
-    if (!authorToUpdate) {
+    if (!authorToUnVerifyExists) {
       throw new GraphQLError(`Author does not exist.`)
     }
 
-    // First, do nothing
-    if (!authorToUpdate.verified) {
-      return authorToUpdate
-    }
-    authorToUpdate.verified = false
-
-    const updatedAuthor = await prisma.author.update({
+    const unVerifiedAuthor = await prisma.author.update({
       where: { id },
-      data: authorToUpdate,
+      data: {
+        verified: false,
+      },
     })
 
-    pubsub.publish('author', { mutation: 'UPDATED', data: updatedAuthor })
+    pubsub.publish('author', { mutation: 'UPDATED', data: unVerifiedAuthor })
 
-    return updatedAuthor
+    return unVerifiedAuthor
   },
 }
 

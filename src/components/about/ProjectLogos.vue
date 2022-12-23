@@ -114,5 +114,3 @@ const hoverered = (index: number) => {
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped></style>

@@ -92,6 +92,7 @@ const fancyClass = computed(() =>
       }
     }
   }
-  color: linear-gradient(to right, rgb(236, 72, 153), rgb(239, 68, 68), rgb(234, 179, 8));
+
+  color: linear-gradient(to right, rgb(236 72 153), rgb(239 68 68), rgb(234 179 8));
 }
 </style>
