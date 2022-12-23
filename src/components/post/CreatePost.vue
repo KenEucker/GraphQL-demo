@@ -5,7 +5,7 @@ import EmojiPicker from 'vue3-emoji-picker'
 import { useLazyQuery, useMutation } from '@vue/apollo-composable'
 import { gql } from '@apollo/client/core'
 import { useStorage } from '@vueuse/core'
-import LoadingSpinner from '../atoms/LoadingSpinner.vue'
+import LoadingSpinner from '../atomic/LoadingSpinner.vue'
 import { Author } from '../../schema/generated/types'
 
 const storedEmail = useStorage('author-email', '')

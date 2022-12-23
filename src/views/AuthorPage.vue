@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import ArrowBack from 'vue-ionicons/dist/md-arrow-back.vue'
 import PovSelfPost from '../components/post/PovSelfPost.vue'
-import LoadingSpinner from '../components/atoms/LoadingSpinner.vue'
-import ErrorMessage from '../components/atoms/ErrorMessage.vue'
+import LoadingSpinner from '../components/atomic/LoadingSpinner.vue'
+import ErrorMessage from '../components/atomic/ErrorMessage.vue'
 import PovAuthor from '../components/author/PovAuthor.vue'
 import { reactive, watch, ref } from 'vue'
 import { useRouter } from 'vue-router'

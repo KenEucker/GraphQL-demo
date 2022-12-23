@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import ExtraSpecialCheckmark from '../atoms/VerifiedCheckmark.vue'
+import ExtraSpecialCheckmark from '../atomic/VerifiedCheckmark.vue'
 import AuthorAvatar from './AuthorAvatar.vue'
 import AuthorHandle from './AuthorHandle.vue'
 import AuthorStatus from './AuthorStatus.vue'

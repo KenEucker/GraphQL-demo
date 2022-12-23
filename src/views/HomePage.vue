@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PointOfVue from '../components/atoms/PointOfVue.vue'
+import PointOfVue from '../components/atomic/PointOfVue.vue'
 </script>
 <template>
   <div class="leading-normal tracking-normal text-indigo-400 m-6 bg-cover bg-fixed">

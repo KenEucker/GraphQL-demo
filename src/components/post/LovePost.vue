@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PopButton from '../atoms/PopButton.vue'
+import PopButton from '../atomic/PopButton.vue'
 import Heart from 'vue-ionicons/dist/md-heart.vue'
 import HeartEmpty from 'vue-ionicons/dist/md-heart-empty.vue'
 import { useMutation } from '@vue/apollo-composable'

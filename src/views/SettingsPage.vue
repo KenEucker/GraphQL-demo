@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ImageIcon from 'vue-ionicons/dist/md-image.vue'
-import LoadingSpinner from '../components/atoms/LoadingSpinner.vue'
-import ErrorMessage from '../components/atoms/ErrorMessage.vue'
+import LoadingSpinner from '../components/atomic/LoadingSpinner.vue'
+import ErrorMessage from '../components/atomic/ErrorMessage.vue'
 import PovAuthor from '../components/author/PovAuthor.vue'
 import { reactive, watch, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'

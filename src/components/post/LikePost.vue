@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Points from 'vue-ionicons/dist/md-bonfire.vue'
-import PopButton from '../atoms/PopButton.vue'
+import PopButton from '../atomic/PopButton.vue'
 import { useMutation } from '@vue/apollo-composable'
 import { gql } from '@apollo/client/core'
 

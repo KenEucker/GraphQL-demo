@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import PostPov from 'vue-ionicons/dist/md-bonfire.vue'
-import RouteButton from '../atoms/RouteButton.vue'
+import RouteButton from '../atomic/RouteButton.vue'
 import AuthorPanel from '../author/AuthorPanel.vue'
 
 const router = useRouter()

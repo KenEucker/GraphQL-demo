@@ -6,7 +6,7 @@ import { useStorage } from '@vueuse/core'
 import LoginIcon from 'vue-ionicons/dist/md-log-in.vue'
 import LogoutIcon from 'vue-ionicons/dist/md-log-out.vue'
 import { Author } from '../../schema/generated/types'
-import PointOfVue from '../atoms/PointOfVue.vue'
+import PointOfVue from '../atomic/PointOfVue.vue'
 import PovAuthor from './PovAuthor.vue'
 
 const emailInput = ref()
