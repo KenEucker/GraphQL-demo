@@ -5,9 +5,9 @@ import RouteButton from '../atomic/RouteButton.vue'
 import MenuOpen from 'vue-ionicons/dist/md-funnel.vue'
 import SearchIcon from 'vue-ionicons/dist/md-search.vue'
 import { useWindowSize } from '@vueuse/core'
-import { useMenusState } from '../../store/state'
+import { useMenuState } from '../../store/state'
 
-const menuState = useMenusState()
+const menuState = useMenuState()
 
 const props = defineProps({
   displayRightMenuButton: {

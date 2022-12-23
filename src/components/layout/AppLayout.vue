@@ -2,8 +2,8 @@
 import { useDark, useToggle } from '@vueuse/core'
 import LightIcon from 'vue-ionicons/dist/md-sunny.vue'
 import DarkIcon from 'vue-ionicons/dist/md-moon.vue'
-import { useMenusState } from '../../store/state'
-const state = useMenusState()
+import { useMenuState } from '../../store/state'
+const state = useMenuState()
 
 const isDark = useDark()
 const toggleDark = useToggle(isDark)

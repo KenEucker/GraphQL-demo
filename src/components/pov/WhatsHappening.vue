@@ -29,7 +29,7 @@ const trending = reactive([
       <p>What's happening</p>
     </li>
     <li class="mb-4 mt-2">
-      <p class="text-lg dark:text-gray-200 text-gray-700 font-bold">#WorldWar</p>
+      <p class="text-lg dark:text-gray-200 text-gray-700 font-bold">#WorldWarIII</p>
       <p class="text-xs">Will there be nukes?</p>
     </li>
     <li v-for="(trend, index) in trending" :key="index" class="mb-4">

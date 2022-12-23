@@ -17,9 +17,3 @@ export const apolloClient = new ApolloClient({
   /// TODO: grab from env
   connectToDevTools: true,
 })
-
-export const appStore: any = {}
-
-export const registerStore = () => {
-  console.log('store registered')
-}

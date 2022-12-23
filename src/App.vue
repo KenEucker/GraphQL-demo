@@ -5,10 +5,10 @@ import HeaderBar from './components/menu/HeaderBar.vue'
 import SlideMenuLeft from './components/menu/SlideMenuLeft.vue'
 import SlideMenuRight from './components/menu/SlideMenuRight.vue'
 import { useRouter } from 'vue-router'
-import { useMenusState } from './store/state'
+import { useMenuState } from './store/state'
 
 const { currentRoute } = useRouter()
-const menuState = useMenusState()
+const menuState = useMenuState()
 </script>
 <template>
   <app-layout

@@ -1,78 +1,43 @@
 <script setup lang="ts">
-import { reactive, watch, ref } from 'vue'
-import { useQuery } from '@vue/apollo-composable'
-import { gql } from '@apollo/client/core'
-import { useStorage } from '@vueuse/core'
+import { ref, watch } from 'vue'
 import LoginIcon from 'vue-ionicons/dist/md-log-in.vue'
 import LogoutIcon from 'vue-ionicons/dist/md-log-out.vue'
 import PointOfVue from '../atomic/PointOfVue.vue'
 import PovAuthor from './PovAuthor.vue'
-import { useMenusState, useAuthorState } from '../../store/state'
+import { useMenuState, useAuthorState } from '../../store/state'
+import { storeToRefs } from 'pinia'
 
-const menuState = useMenusState()
-const authorState = useAuthorState()
 const emailInput = ref()
-const storedEmail = useStorage('author-email', '')
-const storedId = useStorage('author-id', 0)
-
-// Call the gql function with the GraphQL query
-const query = gql`
-  query AuthorPanelAuthor($email: String!) {
-    author(where: { email: $email }) {
-      id
-      name
-      email
-      handle
-      verified
-      status
-      avatar
-      posts {
-        id
-      }
-    }
-  }
-`
-
-const { result, refetch } = useQuery(query, { email: storedEmail.value })
-const isLoggedIn = reactive(result)
-watch(isLoggedIn, (r) => {
-  const loggedInAuthor = r?.author
-  if (loggedInAuthor) {
-    author.value = loggedInAuthor
-    storedId.value = loggedInAuthor.id
-    storedEmail.value = loggedInAuthor.email
-    authorState.login(loggedInAuthor)
-    menuState.openCreatePost()
-  } else {
-    storedEmail.value = null
-    storedId.value = 0
-    menuState.closeCreatePost()
-  }
-})
+const menuState = useMenuState()
+const authorState = useAuthorState()
 
 const props = defineProps({
   isExpanded: Boolean,
 })
 
-const author = ref()
+const { author } = storeToRefs(authorState)
+watch(author, () => {
+  if (authorState.isLoggedIn) {
+    menuState.openCreatePost()
+  } else {
+    menuState.closeCreatePost()
+  }
+})
 
 const loginWithEmail = () => {
-  storedEmail.value = emailInput.value.value
-  refetch({ email: storedEmail.value })
+  authorState.loginWithEmail(emailInput.value.value)
 }
 
 const logout = () => {
-  menuState.closeCreatePost()
-  authorState.logout(storedId.value)
-  storedEmail.value = null
-  storedId.value = 0
-  author.value = null
+  authorState.logout()
 }
+
+authorState.login()
 </script>
 
 <template>
   <div class="flex appjustify-center items-center">
-    <div v-if="author" class="profile flex flex-col relative">
+    <div v-if="authorState.isLoggedIn" class="profile flex flex-col relative">
       <button v-if="props.isExpanded" class="absolute -top-1/5 md:-left-2" @click="logout()">
         <logout-icon h="32" w="32" />
       </button>

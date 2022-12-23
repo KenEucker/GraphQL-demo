@@ -2,9 +2,9 @@
 import PostFeed from '../components/post/PostFeed.vue'
 import CreatePost from '../components/post/CreatePost.vue'
 import { useWindowSize } from '@vueuse/core'
-import { useMenusState } from '../store/state'
+import { useMenuState } from '../store/state'
 
-const state = useMenusState()
+const state = useMenuState()
 const { width } = useWindowSize()
 </script>
 

@@ -4,9 +4,9 @@ import { useRouter } from 'vue-router'
 import PostPov from 'vue-ionicons/dist/md-bonfire.vue'
 import RouteButton from '../atomic/RouteButton.vue'
 import AuthorPanel from '../author/AuthorPanel.vue'
-import { useMenusState, useAuthorState } from '../../store/state'
+import { useMenuState, useAuthorState } from '../../store/state'
 
-const menuState = useMenusState()
+const menuState = useMenuState()
 const authorState = useAuthorState()
 const router = useRouter()
 const routes = computed(() =>
