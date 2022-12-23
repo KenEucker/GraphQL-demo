@@ -54,13 +54,13 @@ authorState.login()
         </div>
         <div class="flex flex-col justify-center items-center">
           <p class="text-lg font-bold text-gray-800 dark:text-gray-300">
-            {{ author.followers ?? 0 }}
+            {{ 0 }}
           </p>
           <p class="-mt-1 text-xs">Followers</p>
         </div>
         <div class="flex flex-col justify-center items-center">
           <p class="text-lg font-bold text-gray-800 dark:text-gray-300">
-            {{ author.following ?? 0 }}
+            {{ 0 }}
           </p>
           <p class="-mt-1 text-xs">Following</p>
         </div>
