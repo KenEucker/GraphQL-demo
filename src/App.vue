@@ -5,43 +5,29 @@ import HeaderBar from './components/menu/HeaderBar.vue'
 import SlideMenuLeft from './components/menu/SlideMenuLeft.vue'
 import SlideMenuRight from './components/menu/SlideMenuRight.vue'
 import { useRouter } from 'vue-router'
+import { useMenusState } from './store/state'
 
 const { currentRoute } = useRouter()
-
-/// TODO: get these values from the route config
-const leftMenuOpen = ref(false)
-const rightMenuOpen = ref(false)
-const showCreatePost = ref(false)
+const menuState = useMenusState()
 </script>
 <template>
   <app-layout
-    :left-menu-open="leftMenuOpen"
-    :right-menu-open="rightMenuOpen"
-    :show-create-post="showCreatePost"
+    :left-menu-open="menuState.leftMenuOpen"
+    :right-menu-open="menuState.rightMenuOpen"
+    :show-create-post="menuState.isCreatePostOpen"
   >
     <template #header>
       <header-bar
         :display-right-menu-button="!currentRoute.meta.hideRightMenu"
-        :left-menu-open="leftMenuOpen"
-        :right-menu-open="rightMenuOpen"
-        @on-menu-click="leftMenuOpen = !leftMenuOpen"
-        @on-right-menu-click="rightMenuOpen = !rightMenuOpen"
+        :left-menu-open="menuState.leftMenuOpen"
+        :right-menu-open="menuState.rightMenuOpen"
+        @on-menu-click="menuState.closeRightMenu()"
+        @on-right-menu-click="menuState.closeRightMenu()"
       >
       </header-bar>
     </template>
     <template #leftMenu>
-      <slide-menu-left
-        :is-expanded="leftMenuOpen"
-        @on-login-click="leftMenuOpen = true"
-        @on-author-logged-in="showCreatePost = true"
-        @on-open-create-post="showCreatePost = true"
-        @on-close-menu="
-          (v) => {
-            leftMenuOpen = v
-          }
-        "
-      >
-      </slide-menu-left>
+      <slide-menu-left :is-expanded="menuState.leftMenuOpen"> </slide-menu-left>
     </template>
     <template v-if="!currentRoute.meta.hideRightMenu" #rightMenu>
       <slide-menu-right> </slide-menu-right>

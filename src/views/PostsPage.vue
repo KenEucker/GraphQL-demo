@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import PostFeed from '../components/post/PostFeed.vue'
 import CreatePost from '../components/post/CreatePost.vue'
-import { getCurrentInstance } from 'vue'
 import { useWindowSize } from '@vueuse/core'
+import { useMenusState } from '../store/state'
 
-const instance = getCurrentInstance()
-const pageData = instance?.parent?.parent?.props
+const state = useMenusState()
 const { width } = useWindowSize()
 </script>
 
@@ -13,13 +12,12 @@ const { width } = useWindowSize()
   <div class="w-full">
     <create-post
       class="mt-2"
-      :show-post-create="pageData?.showCreatePost === true"
-      @on-close-create-post="pageData ? (pageData.showCreatePost = false) : false"
+      :is-open="state.isCreatePostOpen"
+      @on-open="state.openCreatePost()"
+      @on-close="state.closeCreatePost()"
     />
     <post-feed
-      :one-column="
-        pageData?.leftMenuOpen === true && pageData?.rightMenuOpen === true && width < 1300
-      "
+      :one-column="state.leftMenuOpen === true && state.rightMenuOpen === true && width < 1300"
     />
   </div>
 </template>

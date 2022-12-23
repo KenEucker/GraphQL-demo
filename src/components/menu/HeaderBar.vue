@@ -5,25 +5,18 @@ import RouteButton from '../atomic/RouteButton.vue'
 import MenuOpen from 'vue-ionicons/dist/md-funnel.vue'
 import SearchIcon from 'vue-ionicons/dist/md-search.vue'
 import { useWindowSize } from '@vueuse/core'
+import { useMenusState } from '../../store/state'
+
+const menuState = useMenusState()
 
 const props = defineProps({
   displayRightMenuButton: {
     type: Boolean,
     default: false,
   },
-  leftMenuOpen: {
-    type: Boolean,
-    default: false,
-  },
-  rightMenuOpen: {
-    type: Boolean,
-    default: false,
-  },
 })
 
 const { width } = useWindowSize()
-
-const emit = defineEmits(['onMenuClick', 'onRightMenuClick'])
 </script>
 
 <template>
@@ -31,8 +24,8 @@ const emit = defineEmits(['onMenuClick', 'onRightMenuClick'])
     <div class="flex items-center">
       <button
         class="w-10 h-10 mr-2 border rounded-md flex justify-center items-center ml-2 border-ll-border dark:border-ld-border bg-ll-base dark:bg-ld-base dark:text-gray-200 active:scale-95 transition-transform transform"
-        :class="leftMenuOpen ? 'rotate-90' : 'rotate-270'"
-        @click="emit('onMenuClick')"
+        :class="menuState.leftMenuOpen ? 'rotate-90' : 'rotate-270'"
+        @click="menuState.toggleLeftMenu()"
       >
         <menu-open h="20" w="20" />
       </button>
@@ -61,8 +54,8 @@ const emit = defineEmits(['onMenuClick', 'onRightMenuClick'])
       <button
         v-if="props.displayRightMenuButton"
         class="w-10 h-10 mr-2 border rounded-md flex justify-center items-center ml-2 border-ll-border dark:border-ld-border bg-ll-base dark:bg-ld-base dark:text-gray-200 active:scale-95 transition-transform transform"
-        :class="rightMenuOpen ? 'rotate-270' : 'rotate-90'"
-        @click="emit('onRightMenuClick')"
+        :class="menuState.rightMenuOpen ? 'rotate-270' : 'rotate-90'"
+        @click="menuState.toggleRightMenu()"
       >
         <menu-open h="20" w="20" class="rotate-120" />
       </button>

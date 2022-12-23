@@ -1,23 +1,12 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
 import { useDark, useToggle } from '@vueuse/core'
 import LightIcon from 'vue-ionicons/dist/md-sunny.vue'
 import DarkIcon from 'vue-ionicons/dist/md-moon.vue'
+import { useMenusState } from '../../store/state'
+const state = useMenusState()
 
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
-
-const props = defineProps({
-  leftMenuOpen: Boolean,
-  rightMenuOpen: Boolean,
-  showCreatePost: Boolean,
-})
-
-const pageData = reactive({
-  rightMenuOpen: props.rightMenuOpen,
-  leftMenuOpen: props.leftMenuOpen,
-  showCreatePost: props.showCreatePost,
-})
 </script>
 
 <template>
@@ -25,7 +14,7 @@ const pageData = reactive({
     <div class="w-full flex h-full relative overflow-hidden">
       <div
         class="absolute left-0 top-0 z-10 w-full md:relative origin-left overflow-x-hidden transition-all border-r h-full bg-ll-neutral dark:bg-ld-neutral border-ll-border dark:border-ld-border flex flex-col"
-        :class="props.leftMenuOpen ? 'min-w-30 md:w-80' : 'w-0 md:w-25'"
+        :class="state.leftMenuOpen ? 'min-w-30 md:w-80' : 'w-0 md:w-25'"
       >
         <slot name="leftMenu"></slot>
       </div>
@@ -44,14 +33,14 @@ const pageData = reactive({
         </div>
 
         <div class="w-full h-full flex flex-col overflow-auto">
-          <slot :page-data="pageData" name="body"></slot>
+          <slot name="body"></slot>
         </div>
       </div>
 
       <div
         v-if="$slots.rightMenu"
         class="`origin-left overflow-x-hidden transition-all border-l h-full bg-ll-neutral dark:bg-ld-neutral border-ll-border dark:border-ld-border flex flex-col"
-        :class="props.rightMenuOpen ? 'w-130' : 'w-0'"
+        :class="state.rightMenuOpen ? 'w-130' : 'w-0'"
       >
         <slot name="rightMenu"></slot>
       </div>

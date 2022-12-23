@@ -5,13 +5,15 @@ import { gql } from '@apollo/client/core'
 import { useStorage } from '@vueuse/core'
 import LoginIcon from 'vue-ionicons/dist/md-log-in.vue'
 import LogoutIcon from 'vue-ionicons/dist/md-log-out.vue'
-import { Author } from '../../schema/generated/types'
 import PointOfVue from '../atomic/PointOfVue.vue'
 import PovAuthor from './PovAuthor.vue'
+import { useMenusState, useAuthorState } from '../../store/state'
 
+const menuState = useMenusState()
+const authorState = useAuthorState()
 const emailInput = ref()
 const storedEmail = useStorage('author-email', '')
-const storedId = useStorage('author-id', '')
+const storedId = useStorage('author-id', 0)
 
 // Call the gql function with the GraphQL query
 const query = gql`
@@ -31,8 +33,6 @@ const query = gql`
   }
 `
 
-const emit = defineEmits(['onLoginButtonClick', 'onAuthorLoggedIn', 'onAuthorLoggedOut'])
-
 const { result, refetch } = useQuery(query, { email: storedEmail.value })
 const isLoggedIn = reactive(result)
 watch(isLoggedIn, (r) => {
@@ -41,10 +41,12 @@ watch(isLoggedIn, (r) => {
     author.value = loggedInAuthor
     storedId.value = loggedInAuthor.id
     storedEmail.value = loggedInAuthor.email
-    emit('onAuthorLoggedIn', loggedInAuthor)
+    authorState.login(loggedInAuthor)
+    menuState.openCreatePost()
   } else {
     storedEmail.value = null
-    storedId.value = null
+    storedId.value = 0
+    menuState.closeCreatePost()
   }
 })
 
@@ -60,10 +62,11 @@ const loginWithEmail = () => {
 }
 
 const logout = () => {
+  menuState.closeCreatePost()
+  authorState.logout(storedId.value)
   storedEmail.value = null
-  storedId.value = null
+  storedId.value = 0
   author.value = null
-  emit('onAuthorLoggedOut')
 }
 </script>
 
@@ -127,7 +130,7 @@ const logout = () => {
       class="rounded-lg py-3 text-tight active:scale-95 transform transition-transform flex"
       type="button"
     >
-      <login-icon h="24" w="24" @click="emit('onLoginButtonClick')" />
+      <login-icon h="24" w="24" @click="menuState.openLeftMenu()" />
     </button>
   </div>
 </template>

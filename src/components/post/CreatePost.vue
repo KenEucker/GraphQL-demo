@@ -2,24 +2,19 @@
 import { ref, reactive, watch } from 'vue'
 import { useNow, useDateFormat } from '@vueuse/core'
 import EmojiPicker from 'vue3-emoji-picker'
-import { useLazyQuery, useMutation } from '@vue/apollo-composable'
+import { useMutation } from '@vue/apollo-composable'
 import { gql } from '@apollo/client/core'
-import { useStorage } from '@vueuse/core'
 import LoadingSpinner from '../atomic/LoadingSpinner.vue'
-import { Author } from '../../schema/generated/types'
+import { useAuthorState } from '../../store/state'
 
-const storedEmail = useStorage('author-email', '')
-const author = ref()
+const authorState = useAuthorState()
 let newPostLoading = ref(false)
-
-const query = gql`
-  query AuthorPanelAuthor($email: String!) {
-    authors(where: { email: $email }) {
-      email
-      id
-    }
-  }
-`
+const props = defineProps({
+  isOpen: {
+    type: Boolean,
+    default: false,
+  },
+})
 
 const mutation = gql`
   mutation CreateNewPost($post: CreatePostInput!) {
@@ -28,22 +23,8 @@ const mutation = gql`
     }
   }
 `
-const { mutate: useCreatePostMutation, loading } = useMutation(mutation)
-
-const { result, load } = useLazyQuery(query, { email: storedEmail.value })
-const isLoggedIn = reactive(result)
-watch(isLoggedIn, (r) => {
-  const loggedInAuthor = r?.authors.find((a: Author) => a.email === storedEmail.value)
-  if (loggedInAuthor) {
-    author.value = loggedInAuthor
-    showPostCreate.value = true
-  } else {
-    showPostCreate.value = false
-  }
-})
-
-const emit = defineEmits(['onMenuClick', 'onCloseCreatePost', 'onNewPostCreated'])
-const showPostCreate = ref(false)
+const { mutate: useCreatePostMutation } = useMutation(mutation)
+const emit = defineEmits(['onMenuClick', 'onClose', 'onOpen', 'onNewPostCreated'])
 
 const firstTitle = useDateFormat(useNow(), 'MMMM DD, YYYY').value
 const titleRef = ref()
@@ -53,6 +34,7 @@ const showEmojiPicker = reactive({
   show: false,
   emoji: null,
 })
+
 const onSelectEmoji = (emoji: any) => {
   showEmojiPicker.show = false
   showEmojiPicker.emoji = emoji
@@ -67,10 +49,18 @@ const getNewTitle = () => {
   titleRef.value.value = formatted.value
 }
 
+const closeCreatePost = () => {
+  emit('onClose')
+}
+
+const openCreatePost = () => {
+  emit('onOpen')
+}
+
 async function createNewPost() {
   newPostLoading.value = true
   const newPostData = {
-    authorId: author.value.id,
+    authorId: authorState.getAuthorId,
     text: textRef.value.value,
     status: statusRef.value.value,
     title: titleRef.value.value,
@@ -80,8 +70,8 @@ async function createNewPost() {
   const newlyCreatedPost = await useCreatePostMutation({ post: newPostData })
   newPostLoading.value = false
   emit('onNewPostCreated', newlyCreatedPost)
+  closeCreatePost()
 }
-load()
 </script>
 
 <template>
@@ -92,7 +82,7 @@ load()
     <div
       v-else
       class="transition-all mx-2 bg-ll-neutral dark:bg-ld-neutral rounded-md flex flex-col relative"
-      :class="showPostCreate ? 'h-70 p-5' : 'overflow-hidden h-0 p-0'"
+      :class="props.isOpen ? 'h-70 p-5' : 'overflow-hidden h-0 p-0'"
     >
       <div class="flex">
         <emoji-picker
@@ -177,7 +167,7 @@ load()
       </div>
       <button
         class="w-8 h-8 absolute -top-0 -right-1 bg-ll-neutral dark:bg-ld-neutral text-sm border-ll-border dark:border-ld-border border rounded-full flex items-center mr-2 active:scale-95 transform transition-transform"
-        @click="emit('onCloseCreatePost'), (showPostCreate = false)"
+        @click="closeCreatePost"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

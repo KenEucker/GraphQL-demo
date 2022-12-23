@@ -4,15 +4,15 @@ import { useRouter } from 'vue-router'
 import PostPov from 'vue-ionicons/dist/md-bonfire.vue'
 import RouteButton from '../atomic/RouteButton.vue'
 import AuthorPanel from '../author/AuthorPanel.vue'
+import { useMenusState, useAuthorState } from '../../store/state'
 
+const menuState = useMenusState()
+const authorState = useAuthorState()
 const router = useRouter()
-const authorLoggedIn = ref(false)
 const routes = computed(() =>
-  router.getRoutes().filter((r) => r.meta.mainMenu && (authorLoggedIn.value || !r.meta.protected))
+  router.getRoutes().filter((r) => r.meta.mainMenu && (authorState.isLoggedIn || !r.meta.protected))
 )
 const currentRoute = router.currentRoute
-
-const emit = defineEmits(['onLoginClick', 'onOpenCreatePost', 'onCloseMenu', 'onAuthorLoggedIn'])
 
 const props = defineProps({
   isExpanded: {
@@ -23,22 +23,10 @@ const props = defineProps({
 })
 
 function postButtonClick() {
-  emit('onOpenCreatePost')
-  emit('onCloseMenu', false)
+  menuState.openCreatePost()
+  menuState.closeLeftMenu()
 
   router.push('/posts')
-}
-
-function onAuthorLoggedIn() {
-  authorLoggedIn.value = true
-  emit('onAuthorLoggedIn')
-}
-
-function onAuthorLoggedOut() {
-  authorLoggedIn.value = false
-  if (router.currentRoute.value.meta.protected) {
-    router.push('/about')
-  }
 }
 </script>
 <template>
@@ -46,12 +34,7 @@ function onAuthorLoggedOut() {
     class="w-full h-full flex flex-col relative overflow-y-auto overflow-x-hidden items-center"
     :class="props.isExpanded ? 'p-10 px-5' : 'p-2'"
   >
-    <author-panel
-      :is-expanded="props.isExpanded"
-      @on-login-button-click="emit('onLoginClick')"
-      @on-author-logged-in="onAuthorLoggedIn"
-      @on-author-logged-out="onAuthorLoggedOut"
-    />
+    <author-panel :is-expanded="props.isExpanded" />
     <ul class="flex flex-col pt-5" :class="props.isExpanded ? '' : 'justify-center flex '">
       <li
         v-for="route in routes"
@@ -60,7 +43,7 @@ function onAuthorLoggedOut() {
         :class="`${props.isExpanded ? 'mb-2' : 'justify-center mb-4'} ${
           route.name == currentRoute.name ? 'text-ll-primary' : ''
         }`"
-        @click="emit('onCloseMenu')"
+        @click="menuState.closeLeftMenu()"
       >
         <route-button
           :path="route.path"
@@ -72,7 +55,7 @@ function onAuthorLoggedOut() {
     </ul>
 
     <button
-      v-if="authorLoggedIn"
+      v-if="authorState.isLoggedIn"
       class="w-full max-w-50 md:max-w-90 bg-ll-primary dark:bg-ld-primary text-white rounded-lg py-3 px-2 active:scale-95 transform transition-transform flex items-center justify-center"
       @click="postButtonClick"
     >
@@ -82,7 +65,7 @@ function onAuthorLoggedOut() {
 
     <button
       class="md:hidden w-8 h-8 absolute top-2 -right-1 bg-ll-neutral dark:bg-ld-neutral text-sm border-ll-border dark:border-ld-border border rounded-full flex items-center mr-2 active:scale-95 transform transition-transform"
-      @click="emit('onCloseMenu', false)"
+      @click="menuState.closeLeftMenu()"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
