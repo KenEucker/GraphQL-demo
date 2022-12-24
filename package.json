@@ -25,7 +25,7 @@
     "dev:client": "vite",
     "compile": "npm run compile:prisma && npm run compile:graphql",
     "compile:graphql": "npx graphql-codegen",
-    "compile:prisma": "npx prisma generate",
+    "compile:prisma": "npx prisma generate --schema=./src/schema/schema.prisma",
     "lint": "npm run lint:js && npm run lint:style",
     "lint:js": "eslint --ext .ts,.js,.vue src --fix",
     "lint:style": "stylelint \"./src/**/*.vue\" \"./src/**/*.scss\" --fix"
