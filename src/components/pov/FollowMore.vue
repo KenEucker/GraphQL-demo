@@ -2,7 +2,7 @@
 import { reactive, watch } from 'vue'
 import { useQuery } from '@vue/apollo-composable'
 import { gql } from '@apollo/client/core'
-import { Author } from '../../schema/generated/types'
+import { Author } from '../../schema/generated/types.d'
 import { useStorage } from '@vueuse/core'
 import PovAuthor from '../author/PovAuthor.vue'
 

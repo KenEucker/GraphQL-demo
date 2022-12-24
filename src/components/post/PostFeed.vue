@@ -3,7 +3,7 @@ import { onMounted, reactive, watch, ref } from 'vue'
 import PovPost from './PovPost.vue'
 import LoadingSpinner from '../atomic/LoadingSpinner.vue'
 import ErrorMessage from '../atomic/ErrorMessage.vue'
-import { Post } from '../../schema/generated/types'
+import { Post } from '../../schema/generated/types.d'
 import { useQuery } from '@vue/apollo-composable'
 import { gql } from '@apollo/client/core'
 
