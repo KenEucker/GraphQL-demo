@@ -24,12 +24,7 @@ const yoga = createYoga({
     pubsub,
     prisma,
   },
-  cors: {
-    origin: `${process.env.ORIGIN}${
-      process.env.ORIGIN_PORT !== '80' ? `:${process.env.ORIGIN_PORT}` : ''
-    }`,
-    credentials: true,
-  },
+  cors: false,
 })
 
 // Pass it into a server to hook into request handlers.
