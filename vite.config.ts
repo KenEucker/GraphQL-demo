@@ -17,7 +17,7 @@ export default defineConfig({
       ORIGIN_PORT: process.env.ORIGIN_PORT ?? port.toString(),
       PORT: port.toString(),
       GRAPH_URL: process.env.GRAPH_URL ?? 'http://localhost',
-      GRAPH_PORT: process.env.GRAPH_PORT ?? '4000',
+      GRAPH_PORT: process.env.GRAPH_PORT ?? '8080',
       GRAPH_PATH: process.env.GRAPH_PATH ?? 'graphql',
       STUDIO_URL: process.env.STUDIO_URL ?? 'http://localhost:5555',
     }),
