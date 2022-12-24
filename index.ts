@@ -34,7 +34,7 @@ const yoga = createYoga({
 
 // Pass it into a server to hook into request handlers.
 const server = createServer(yoga)
-const port = Number.parseInt(process.env.GRAPH_PORT || process.env.PORT)
+const port = Number.parseInt(process.env.PORT || process.env.GRAPH_PORT) ?? 80
 const url = `${process.env.GRAPH_URL}:${port}/${process.env.GRAPH_PATH}`
 
 server.listen(port, () => {
