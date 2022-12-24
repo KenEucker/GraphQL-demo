@@ -14,7 +14,7 @@ const mutation = gql`
 const { mutate: useUpdateInteractionMutation } = useMutation(mutation)
 
 const props = defineProps({
-  post: {
+  interactions: {
     type: Object,
     default: () => {
       return {}
@@ -25,6 +25,14 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  postId: {
+    type: Number,
+    default: 0,
+  },
+  active: {
+    type: Boolean,
+    defaiult: false,
+  },
 })
 
 const emit = defineEmits(['iLikeIt'])
@@ -32,7 +40,7 @@ const iLikeIt =
   props.authorId !== 0
     ? async () => {
         const updatingInteraction = {
-          postId: props.post.id,
+          postId: props.postId,
           authorId: props.authorId,
           like: true,
         }
@@ -49,11 +57,9 @@ const iLikeIt =
 
 <template>
   <pop-button variant="red">
-    <points
-      w="25"
-      h="25"
-      :class="props.post.iLikeIt ? 'text-yellow-600' : ''"
-      @click="iLikeIt"
-    /><span class="ml-1">{{ props.post?.likes ?? 0 }}</span>
+    <points w="25" h="25" :class="props.active ? 'text-yellow-600' : ''" @click="iLikeIt" /><span
+      class="ml-1"
+      >{{ props.interactions?.like ?? 0 }}</span
+    >
   </pop-button>
 </template>

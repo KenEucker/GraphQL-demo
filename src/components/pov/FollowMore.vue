@@ -8,7 +8,6 @@ import PovAuthor from '../author/PovAuthor.vue'
 
 const storedEmail = useStorage('author-email', '')
 
-// Call the gql function with the GraphQL query
 const query = gql`
   query FollowMoreAuthors {
     authors {

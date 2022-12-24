@@ -16,7 +16,6 @@ const handleParam = useRouteParams('handle')
 const handleParamIsSet = handleParam.value?.length
 const handle = handleParamIsSet ? handleParamIsSet : authorState.getAuthor.handle
 
-// Call the gql function with the GraphQL query
 const authorByHandleQuery = gql`
   query AuthorByHandle($handle: String!) {
     author(where: { handle: $handle }) {

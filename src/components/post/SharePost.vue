@@ -14,7 +14,7 @@ const mutation = gql`
 const { mutate: useUpdateInteractionMutation } = useMutation(mutation)
 
 const props = defineProps({
-  post: {
+  interactions: {
     type: Object,
     default: () => {
       return {}
@@ -25,6 +25,14 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  postId: {
+    type: Number,
+    default: 0,
+  },
+  active: {
+    type: Boolean,
+    defaiult: false,
+  },
 })
 
 const emit = defineEmits(['iWantToShareIt'])
@@ -32,7 +40,7 @@ const iWantToShareIt =
   props.authorId !== 0
     ? async () => {
         const updatingInteraction = {
-          postId: props.post.id,
+          postId: props.postId,
           authorId: props.authorId,
           share: true,
         }

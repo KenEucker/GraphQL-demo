@@ -110,6 +110,24 @@ const Query = {
 
     return prisma.interactions.findMany()
   },
+
+  // @ts-ignore
+  getNumberOfInteractionsForPost: async (parent, { from }, { prisma }, info) => {
+    const counters: any = {}
+    if (from.like) counters.like = true
+    if (from.love) counters.love = true
+    if (from.repost) counters.repost = true
+    if (from.share) counters.share = true
+
+    const { _count } = await prisma.interaction.findMany({
+      _count: counters,
+      where: {
+        postId: from.id,
+      },
+    })
+
+    return _count
+  },
 }
 
 export default Query

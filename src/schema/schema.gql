@@ -61,6 +61,8 @@ type Query {
   interactions(where: InteractionByInput): [Interaction]
   post(where: PostByInput, id: Int): Post
   posts(where: PostByInput): [Post]
+
+  getNumberOfInteractionsForPost(from: GetNumberInteractionsForPostInput): GetNumberOfInteractionsForPostPayload
 }
 
 type Mutation {
@@ -103,6 +105,13 @@ type InteractionSubscriptionPayload {
 type PostSubscriptionPayload {
   mutation: MutationType!
   data: Post
+}
+
+type GetNumberOfInteractionsForPostPayload {
+  like: Int
+  love: Int
+  repost: Int
+  share: Int
 }
 
 input AuthorByInput {
@@ -192,6 +201,13 @@ input UpdatePostInput {
   text: String
   status: String
   media: [String!]
+}
+input GetNumberInteractionsForPostInput {
+  id: Int!
+  like: Boolean
+  love: Boolean
+  share: Boolean
+  repost: Boolean
 }
 
 schema {

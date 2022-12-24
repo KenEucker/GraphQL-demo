@@ -3,7 +3,6 @@ import { defineStore } from 'pinia'
 import { gql } from '@apollo/client/core'
 import { useStorage } from '@vueuse/core'
 import { Author } from '../schema/generated/types.d'
-import { useMutation } from '@vue/apollo-composable'
 
 // Local storage state
 const storedEmail = useStorage('author-email', '')

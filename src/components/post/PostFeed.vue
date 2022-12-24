@@ -48,7 +48,6 @@ eventsource.onmessage = function (event) {
   leftPosts.unshift(newPostCreated)
 }
 
-// Call the gql function with the GraphQL query
 const getPostsQuery = gql`
   query posts {
     posts {
@@ -66,7 +65,7 @@ const getPostsQuery = gql`
   }
 `
 
-const { result: allPosts, loading, error, refetch } = useQuery(getPostsQuery)
+const { result: allPosts, loading, error } = useQuery(getPostsQuery)
 const feedPosts = reactive(allPosts)
 
 let leftPosts: Post[] = reactive([])
