@@ -20,6 +20,7 @@ export default defineConfig({
       GRAPH_PORT: process.env.GRAPH_PORT ?? '4000',
       GRAPH_PATH: process.env.GRAPH_PATH ?? 'graphql',
       DATABASE_URL: process.env.DATABASE_URL ?? null,
+      STUDIO_URL: process.env.DATABASE_URL ?? 'http://localhost:5555',
     }),
   ],
   server: {

@@ -57,6 +57,7 @@ export const useAuthorState = defineStore({
       if (data?.author) {
         this.author = data.author
         storedId.value = this.author.id
+        storedEmail.value = this.author.email
         this.loggedIn = true
       }
     },

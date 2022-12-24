@@ -1,9 +1,9 @@
 <script setup lang="ts">
-const url = `${process.env.GRAPH_URL}:${process.env.GRAPH_PORT}/${process.env.GRAPH_PATH}`
+import { graphUrl } from '../utilities'
 </script>
 
 <template>
   <div class="w-full h-600">
-    <iframe class="w-full h-full" :src="url" />
+    <iframe class="w-full h-full" :src="graphUrl" />
   </div>
 </template>

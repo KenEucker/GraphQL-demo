@@ -6,6 +6,7 @@ import ErrorMessage from '../atomic/ErrorMessage.vue'
 import { Post } from '../../schema/generated/types.d'
 import { useQuery } from '@vue/apollo-composable'
 import { gql } from '@apollo/client/core'
+import { graphUrl } from '../../utilities'
 
 const props = defineProps({
   oneColumn: {
@@ -34,7 +35,7 @@ const newPostSubscription = `
   }
 `
 
-const url = new URL(`${process.env.GRAPH_URL}:${process.env.GRAPH_PORT}/${process.env.GRAPH_PATH}`)
+const url = new URL(graphUrl)
 
 url.searchParams.append('query', newPostSubscription)
 const eventsource = new EventSource(url.toString(), {

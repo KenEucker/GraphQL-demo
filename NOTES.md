@@ -12,6 +12,7 @@ Learn how to build GraphQL applications using Node.js. Includes Prisma v1, authe
 - Apollo Server
 - GraphQL Yoga
 - Vue Apollo
+- Prisma ORM
 
 # development decisions
 
@@ -40,9 +41,17 @@ https://cloud.hasura.io/
 Deploying Prisma to Heroku
 https://github.com/prisma/prisma-examples/tree/latest/deployment-platforms/heroku
 
+Render.com ended up being the only place that I was able to get the graphql server running
+https://point-of-view-graphql.onrender.com
+
+With the frontend
+https://point-of-vue-web.onrender.com
+
 # potential hosting solutions
 
 - https://nhost.io/
+
+- Render.com
 
 # tools used
 

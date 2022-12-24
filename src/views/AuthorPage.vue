@@ -8,46 +8,18 @@ import { reactive, watch, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuery } from '@vue/apollo-composable'
 import { gql } from '@apollo/client/core'
-import { useStorage } from '@vueuse/core'
 import { useRouteParams } from '@vueuse/router'
+import { useAuthorState } from '../store/state'
 
-const storedEmail = useStorage('author-email', '')
-const handle = useRouteParams('handle')
-const handleIsSet = handle.value?.length
-const authorByTerm = handleIsSet ? handle.value : storedEmail.value
+const authorState = useAuthorState()
+const handleParam = useRouteParams('handle')
+const handleParamIsSet = handleParam.value?.length
+const handle = handleParamIsSet ? handleParamIsSet : authorState.getAuthor.handle
 
-// Call the gql function with the GraphQL query
-const authorByEmailQuery = gql`
-  query AuthorByEmail($term: String!) {
-    author(where: { email: $term }) {
-      id
-      name
-      email
-      handle
-      avatar
-      status
-      verified
-      banner
-      posts {
-        id
-        title
-        text
-        media
-        author {
-          id
-          handle
-          avatar
-          status
-          verified
-        }
-      }
-    }
-  }
-`
 // Call the gql function with the GraphQL query
 const authorByHandleQuery = gql`
-  query AuthorByHandle($term: String!) {
-    author(where: { handle: $term }) {
+  query AuthorByHandle($handle: String!) {
+    author(where: { handle: $handle }) {
       id
       name
       email
@@ -72,26 +44,19 @@ const authorByHandleQuery = gql`
     }
   }
 `
-
-const query = handleIsSet ? authorByHandleQuery : authorByEmailQuery
-
-const { result, loading, error } = useQuery(query, { term: authorByTerm })
-const isLoggedIn = reactive(result)
-
-watch(isLoggedIn, (r) => {
-  const loggedInAuthor = r?.author
-  if (loggedInAuthor) {
-    author.value = loggedInAuthor
-  } else {
-    if (!handleIsSet) {
-      storedEmail.value = null
-    }
-    router.push('/')
-  }
-})
 
 const author = ref()
 const router = useRouter()
+const { result, loading, error } = useQuery(authorByHandleQuery, { handle })
+const authorQuery = reactive(result)
+
+watch(authorQuery, (r) => {
+  if (r?.author) {
+    author.value = r.author
+  } else {
+    router.push('/')
+  }
+})
 
 const state = reactive({
   sec: ['Posts', 'Threads', 'Groups', 'Favorites'],
@@ -126,7 +91,7 @@ function selected(idx: number) {
       <div class="ml-10 md:ml-0">
         <div class="flex p-1 text-twitter-gray">
           <arrow-back
-            v-if="props.showBackButton || handleIsSet"
+            v-if="props.showBackButton"
             w="25"
             h="25"
             class="text-twitter-primary p-3 px-4 cursor-pointer"
