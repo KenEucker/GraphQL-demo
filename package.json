@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "type": "module",
   "license": "AGPL-3.0-or-later",
-  "npx prisma": {
+  "prisma": {
     "schema": "src/schema/schema.prisma"
   },
   "scripts": {
@@ -25,7 +25,7 @@
     "dev:client": "vite",
     "compile": "npm run compile:prisma && npm run compile:graphql",
     "compile:graphql": "npx graphql-codegen",
-    "compile:prisma": "npx prisma generate --schema=./src/schema/schema.prisma",
+    "compile:prisma": "npx prisma generate",
     "lint": "npm run lint:js && npm run lint:style",
     "lint:js": "eslint --ext .ts,.js,.vue src --fix",
     "lint:style": "stylelint \"./src/**/*.vue\" \"./src/**/*.scss\" --fix"
