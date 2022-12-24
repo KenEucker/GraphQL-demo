@@ -57,4 +57,4 @@ is the server (apollo/graphql-yoga + playground), client (vite powered frontend)
 
 # Thanks for reading!
 
-Demo: 
+Demo: https://point-of-vue-web.onrender.com/
