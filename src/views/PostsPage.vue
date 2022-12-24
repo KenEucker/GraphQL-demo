@@ -2,22 +2,30 @@
 import PostFeed from '../components/post/PostFeed.vue'
 import CreatePost from '../components/post/CreatePost.vue'
 import { useWindowSize } from '@vueuse/core'
-import { useMenuState } from '../store/state'
+import { useMenuState, usePostsState } from '../store/state'
+import { ref, reactive } from 'vue'
 
-const state = useMenuState()
 const { width } = useWindowSize()
+const menuState = useMenuState()
+// const postsState = usePostsState()
+// postsState.getAllPosts()
+// console.log(postsState.init)
+// const loaded = ref(postsState.init)
+// const posts = reactive(postsState.getPosts)
 </script>
 
 <template>
   <div class="w-full">
     <create-post
       class="mt-2"
-      :is-open="state.isCreatePostOpen"
-      @on-open="state.openCreatePost()"
-      @on-close="state.closeCreatePost()"
+      :is-open="menuState.isCreatePostOpen"
+      @on-open="menuState.openCreatePost()"
+      @on-close="menuState.closeCreatePost()"
     />
     <post-feed
-      :one-column="state.leftMenuOpen === true && state.rightMenuOpen === true && width < 1300"
+      :one-column="
+        menuState.leftMenuOpen === true && menuState.rightMenuOpen === true && width < 1300
+      "
     />
   </div>
 </template>

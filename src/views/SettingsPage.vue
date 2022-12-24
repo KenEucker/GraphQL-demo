@@ -1,11 +1,18 @@
 <script setup lang="ts">
-// import LoadingSpinner from '../components/atomic/LoadingSpinner.vue'
-// import ErrorMessage from '../components/atomic/ErrorMessage.vue'
 import PovAuthor from '../components/author/PovAuthor.vue'
 import { ref, computed } from 'vue'
 import { useAuthorState } from '../store/state'
+import { Author } from '../schema/generated/types.d'
 
 const authorState = useAuthorState()
+const emailRef = ref()
+const handleRef = ref()
+const nameRef = ref()
+const linkRef = ref()
+const birthdayRef = ref()
+const locationRef = ref()
+const bioRef = ref()
+const avatarRef = ref()
 
 const fields = computed(() => [
   {
@@ -15,7 +22,7 @@ const fields = computed(() => [
     value: authorState.getAuthor.email,
     required: true,
     placeholder: 'email',
-    ref: ref(),
+    ref: emailRef,
     fullWidth: true,
   },
   {
@@ -25,21 +32,21 @@ const fields = computed(() => [
     prefix: '@',
     value: authorState.getAuthor.handle,
     placeholder: 'handle',
-    ref: ref(),
+    ref: handleRef,
   },
   {
     name: 'name',
     label: 'Display Name',
     value: authorState.getAuthor.name,
     placeholder: 'name',
-    ref: ref(),
+    ref: nameRef,
   },
   {
     name: 'location',
     label: 'Location',
     value: authorState.getAuthor.location,
     placeholder: 'location',
-    ref: ref(),
+    ref: locationRef,
   },
   {
     name: 'birthday',
@@ -47,7 +54,7 @@ const fields = computed(() => [
     label: 'Birthday',
     value: authorState.getAuthor.birthday,
     placeholder: 'birthday',
-    ref: ref(),
+    ref: birthdayRef,
   },
   {
     name: 'link',
@@ -55,26 +62,46 @@ const fields = computed(() => [
     value: authorState.getAuthor.link,
     placeholder: 'website',
     fullWidth: true,
-    ref: ref(),
+    ref: linkRef,
+  },
+  {
+    name: 'bio',
+    label: 'Biography',
+    type: 'textarea',
+    value: authorState.getAuthor.bio,
+    placeholder: 'bio',
+    ref: bioRef,
+    fullWidth: true,
   },
 ])
 
-function saveImages(e: Event) {
-  e.preventDefault()
+const setValueIfChanged = (reference: any, original: any) => {
+  if (reference.value?.length) {
+    if (reference.value[0].value && reference.value[0].value !== original) {
+      return reference.value[0].value
+    }
+  }
+  return undefined
 }
 
 function saveFields(e: Event) {
   e.preventDefault()
+
+  const authorFieldsToUpdate = {
+    avatar: setValueIfChanged(avatarRef, authorState.getAuthor.avatar),
+    name: setValueIfChanged(nameRef, authorState.getAuthor.name),
+    link: setValueIfChanged(linkRef, authorState.getAuthor.link),
+    birthday: setValueIfChanged(birthdayRef, authorState.getAuthor.birthday),
+    location: setValueIfChanged(locationRef, authorState.getAuthor.location),
+    bio: setValueIfChanged(bioRef, authorState.getAuthor.bio),
+    email: setValueIfChanged(emailRef, authorState.getAuthor.email),
+  }
+
+  authorState.updateAuthor(authorFieldsToUpdate as Author)
 }
 </script>
 
 <template>
-  <!-- <div v-if="loading">
-    <loading-spinner />
-  </div>
-  <div v-else-if="error">
-    <error-message title="Error Fetching Account Data" :message="error.message" />
-  </div> -->
   <div>
     <section
       class="max-w-4xl p-6 mx-auto rounded-md shadow-md mx-auto dark:bg-gray-800 mt-20"

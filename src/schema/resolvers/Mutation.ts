@@ -1,6 +1,5 @@
 // import { v4 as uuidv4 } from 'uuid'
 import { GraphQLError } from 'graphql'
-import { MutationType } from '../generated/types.d'
 
 const Mutation = {
   // @ts-ignore
@@ -244,8 +243,9 @@ const Mutation = {
     authorToUpdate.name = data.name ?? authorToUpdate.name
     authorToUpdate.link = data.link ?? authorToUpdate.link
     authorToUpdate.location = data.location ?? authorToUpdate.location
-    authorToUpdate.bio = data.bio ?? authorToUpdate.status
-    authorToUpdate.status = data.name ?? authorToUpdate.status
+    authorToUpdate.birthday = data.birthday ?? authorToUpdate.birthday
+    authorToUpdate.bio = data.bio ?? authorToUpdate.bio
+    authorToUpdate.status = data.status ?? authorToUpdate.status
 
     const updatedAuthor = await prisma.author.update({ where: { id }, data: authorToUpdate })
     pubsub.publish('author', { mutation: 'UPDATED', data: updatedAuthor })

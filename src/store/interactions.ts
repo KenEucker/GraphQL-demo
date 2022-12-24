@@ -1,16 +1,15 @@
 import { apolloClient } from '.'
 import { defineStore } from 'pinia'
 import { gql } from '@apollo/client/core'
-import { useStorage } from '@vueuse/core'
 import { Interaction } from '../schema/generated/types.d'
 
-export const getInitialInteractionState = (): { interactions: Interaction[] } => ({
+export const getInitialInteractionsState = (): { interactions: Interaction[] } => ({
   interactions: [],
 })
 
-export const useInteractionState = defineStore({
-  id: 'useInteractionState',
-  state: getInitialInteractionState,
+export const useInteractionsState = defineStore({
+  id: 'useInteractionsState',
+  state: getInitialInteractionsState,
   getters: {
     getInteractions: (s) => s.interactions,
   },

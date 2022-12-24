@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { gql } from '@apollo/client/core'
 import { useStorage } from '@vueuse/core'
 import { Author } from '../schema/generated/types.d'
+import { useMutation } from '@vue/apollo-composable'
 
 // Local storage state
 const storedEmail = useStorage('author-email', '')
@@ -34,7 +35,7 @@ export const useAuthorState = defineStore({
     async login(author?: Author) {
       author = author ?? ({ id: storedId.value, email: storedEmail.value } as Author)
       const loginViaEmailQuery = gql`
-        query AuthorPanelAuthor($email: String!) {
+        query StoreAuthor($email: String!) {
           author(where: { email: $email }) {
             id
             name
@@ -43,6 +44,10 @@ export const useAuthorState = defineStore({
             verified
             status
             avatar
+            location
+            bio
+            birthday
+            link
             posts {
               id
             }
@@ -60,6 +65,20 @@ export const useAuthorState = defineStore({
         storedEmail.value = this.author.email
         this.loggedIn = true
       }
+    },
+    async updateAuthor(author: Author) {
+      const updateAuthorMutation = gql`
+        mutation StoreUpdateAuthor($data: UpdateAuthorInput!, $id: Int!) {
+          updateAuthor(data: $data, id: $id) {
+            id
+          }
+        }
+      `
+      console.log('updating author', author)
+      const data = await apolloClient.mutate({
+        mutation: updateAuthorMutation,
+        variables: { data: author, id: this.author.id },
+      })
     },
     logout() {
       this.author = getInitialAuthorState().author
