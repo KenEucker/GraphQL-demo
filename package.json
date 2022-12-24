@@ -8,7 +8,7 @@
   },
   "scripts": {
     "analyze": "windicss-analysis",
-    "build": "npm run build:compile && npm run build:client",
+    "build": "npm run compile && npm run build:client",
     "build:client": "vue-tsc && vite build",
     "build:prisma": "npx prisma db push",
     "build:prod": "npx prisma generate",
