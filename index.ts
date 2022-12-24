@@ -25,15 +25,17 @@ const yoga = createYoga({
     prisma,
   },
   cors: {
-    origin: `${process.env.ORIGIN}${process.env.PORT !== '80' ? `:${process.env.PORT}` : ''}`,
+    origin: `${process.env.ORIGIN}${
+      process.env.ORIGIN_PORT !== '80' ? `:${process.env.ORIGIN_PORT}` : ''
+    }`,
     credentials: true,
   },
 })
 
 // Pass it into a server to hook into request handlers.
 const server = createServer(yoga)
-const port = Number.parseInt(process.env.GRAPH_PORT) || 4000
-const url = `${process.env.GRAPH_URL}:${process.env.GRAPH_PORT}/${process.env.GRAPH_PATH}`
+const port = Number.parseInt(process.env.GRAPH_PORT || process.env.PORT)
+const url = `${process.env.GRAPH_URL}:${port}/${process.env.GRAPH_PATH}`
 
 server.listen(port, () => {
   console.info(`🚀 GraphQL Server (yoga) is running on ${url}`)
