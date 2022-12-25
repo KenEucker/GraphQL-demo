@@ -36,11 +36,11 @@ npm install
 
 2a. Optionally, these are other environment variables that can be configured:
 - `ORIGIN="http://localhost"`
-- `ORIGIN_PORT=8000`
+- `ORIGIN_PORT=8080`
 - `GRAPH_URL="http://localhost"`
+- `GRAPH_PORT=8100`
 - `GRAPH_PATH="graphql"`
-- `GRAPH_PORT=8080`
-- `STUDIO_URL="http://localhost:5555"`
+- `STUDIO_URL="http://localhost:8200"`
 
 2b. The ORIGIN is the vite server or static webserver for the client app. If port 80 is used for any 
 of the PORT variables, it will be omitted from the constructred url. The STUDIO_URL is for Prisma Studio 
@@ -50,10 +50,10 @@ and I don't know of a way to change this value or port.
 is the server (apollo/graphql-yoga + playground), client (vite powered frontend), studio (prisma studio for editing data tables). `npm run dev` will run all three applications simultaneously with live reload. Any changes made to the files in schema will trigger a reload of the server and client applications. 
 
 4. If you run the defaults, the following urls are reachable:
-- http://localhost:8000  -- [client]
-- http://localhost:8080  -- [server]
-- http://localhost:8080/graphql  -- [playground]
-- http://localhost:5555  -- [studio]
+- http://localhost:8080  -- [client]
+- http://localhost:8100  -- [server]
+- http://localhost:8100/graphql  -- [playground]
+- http://localhost:8200  -- [studio]
 
 # Thanks for reading!
 

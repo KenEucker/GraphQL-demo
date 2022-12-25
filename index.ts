@@ -16,6 +16,10 @@ import db from './src/store/seed'
 // TODO: convert to NextJs project?
 // import type { NextApiRequest, NextApiResponse } from 'next'
 
+const graphUrl = process.env.GRAPH_URL ?? 'http://localhost'
+const graphPort = process.env.GRAPH_PORT ?? 8100
+const graphPath = process.env.GRAPH_URL ?? 'graphql'
+
 // Create a Yoga instance with a GraphQL schema.
 const yoga = createYoga({
   schema,
@@ -34,8 +38,8 @@ const yoga = createYoga({
 
 // Pass it into a server to hook into request handlers.
 const server = createServer(yoga)
-const port = Number.parseInt(process.env.PORT || process.env.GRAPH_PORT) ?? 80
-const url = `${process.env.GRAPH_URL}:${port}/${process.env.GRAPH_PATH}`
+const port = process.env.PORT ?? graphPort
+const url = `${graphUrl}:${port}/${graphPath}`
 
 server.listen(port, () => {
   console.info(`🚀 GraphQL Server (yoga) is running on ${url}`)

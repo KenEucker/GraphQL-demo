@@ -5,7 +5,7 @@ import EnvironmentPlugin from 'vite-plugin-environment'
 import env from 'dotenv'
 env.config()
 
-const port = parseInt(process.env.PORT ?? '80')
+const port = process.env.PORT ? parseInt(process.env.PORT) : 8080
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -17,13 +17,14 @@ export default defineConfig({
       ORIGIN_PORT: process.env.ORIGIN_PORT ?? port.toString(),
       PORT: port.toString(),
       GRAPH_URL: process.env.GRAPH_URL ?? 'http://localhost',
-      GRAPH_PORT: process.env.GRAPH_PORT ?? '8080',
+      GRAPH_PORT: process.env.GRAPH_PORT ?? '8100',
       GRAPH_PATH: process.env.GRAPH_PATH ?? 'graphql',
       STUDIO_URL: process.env.STUDIO_URL ?? 'http://localhost:5555',
     }),
   ],
   server: {
     port: process.env.ORIGIN_PORT ? parseInt(process.env.ORIGIN_PORT) : port,
+    // host: process.env.ORIGIN_HOST ?? 'localhost',
   },
   preview: {
     port: process.env.ORIGIN_PORT ? parseInt(process.env.ORIGIN_PORT) : port,
