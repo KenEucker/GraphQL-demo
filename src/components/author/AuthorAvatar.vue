@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AuthorStatus from './AuthorStatus.vue'
 const props = defineProps({
   author: {
     type: Object,
@@ -6,6 +7,10 @@ const props = defineProps({
       return {}
     },
     required: true,
+  },
+  showStatus: {
+    type: Boolean,
+    default: false,
   },
 })
 </script>
@@ -16,7 +21,7 @@ const props = defineProps({
   >
     <img
       :src="props.author.avatar"
-      class="w-full h-full rounded-full object-cover"
+      class="rounded-full object-cover w-full h-full"
       :alt="`${props.author.avatar} profile picture`"
     />
   </div>

@@ -33,6 +33,10 @@ const props = defineProps({
     type: Boolean,
     defaiult: false,
   },
+  disableInteraction: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const emit = defineEmits(['iWantToShareIt'])

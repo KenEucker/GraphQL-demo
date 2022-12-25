@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ArrowBack from 'vue-ionicons/dist/md-arrow-back.vue'
-import PovSelfPost from '../components/post/PovSelfPost.vue'
+import PovPost from '../components/post/PovPost.vue'
 import LoadingSpinner from '../components/atomic/LoadingSpinner.vue'
 import ErrorMessage from '../components/atomic/ErrorMessage.vue'
 import PovAuthor from '../components/author/PovAuthor.vue'
@@ -35,6 +35,7 @@ const authorByHandleQuery = gql`
         author {
           id
           handle
+          name
           avatar
           status
           verified
@@ -119,7 +120,12 @@ function selected(idx: number) {
         </div>
       </div>
       <div v-if="state.selected === 0" class="flex grid grid-cols-1">
-        <pov-self-post v-for="post in author?.posts" :key="post.id" :post="post"></pov-self-post>
+        <pov-post
+          v-for="post in author?.posts"
+          :key="post.id"
+          :post="post"
+          :disable-interaction="true"
+        />
       </div>
     </div>
   </div>

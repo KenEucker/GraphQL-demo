@@ -33,11 +33,15 @@ const props = defineProps({
     type: Boolean,
     defaiult: false,
   },
+  disableInteraction: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const emit = defineEmits(['iWantSomeMoreOfIt'])
 const iWantSomeMoreOfIt =
-  props.authorId !== 0
+  props.authorId !== 0 && !props.disableInteraction
     ? async () => {
         const updatingInteraction = {
           postId: props.postId,

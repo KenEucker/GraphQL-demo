@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import MoreIcon from 'vue-ionicons/dist/md-more.vue'
 import PovPostInteraction from './PovPostInteraction.vue'
+import PostText from './PostText.vue'
 import PovAuthor from '../author/PovAuthor.vue'
 import PovPostMedia from './PovPostMedia.vue'
 import { useRouter } from 'vue-router'
 import { useStorage } from '@vueuse/core'
-import { gql } from '@apollo/client/core'
-import { useQuery } from '@vue/apollo-composable'
-import { reactive, ref, watch } from 'vue'
 
 const router = useRouter()
 const storedAuthorId = useStorage('author-id', 0)
@@ -25,35 +23,6 @@ const props = defineProps({
     required: true,
   },
 })
-
-// const getPostInteractionsQuery = gql`
-//   query PovPostGetInteractionNumbers($postId: Int!) {
-//     getNumberOfInteractionsForPost(
-//       from: { id: $postId, like: true, love: true, share: true, repost: true }
-//     ) {
-//       like
-//       love
-//       repost
-//       share
-//     }
-//   }
-// `
-
-// const { result } = useQuery(getPostInteractionsQuery, {
-//   postId: props.post.id,
-// })
-// const interactionsNumbersResult = reactive(result)
-// const interactions = ref()
-// watch(interactionsNumbersResult, (r) => {
-//   interactions.value = r.getNumberOfInteractionsForPost
-// })
-
-const generateText = () => {
-  return props.post?.text?.replace(
-    /#(\S*)/g,
-    '<a class="text-ll-primary" href="/search/$1">#$1</a>'
-  )
-}
 </script>
 
 <template>
@@ -70,8 +39,12 @@ const generateText = () => {
       {{ props.post.title }}
     </p>
 
-    <p :class="props.post?.text ? ' my-4 text-xl' : ''">{{ generateText() }}</p>
+    <post-text :post="props.post" />
     <pov-post-media :media="props.post?.media" />
-    <pov-post-interaction :author-id="storedAuthorId" :post-id="props.post.id" />
+    <pov-post-interaction
+      :author-id="storedAuthorId"
+      :post-id="props.post.id"
+      :disable-interaction="true"
+    />
   </div>
 </template>

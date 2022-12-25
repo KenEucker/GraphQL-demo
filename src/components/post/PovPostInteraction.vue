@@ -29,6 +29,10 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  disableInteraction: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const interactions = ref()
@@ -55,24 +59,28 @@ const emit = defineEmits(['iLikeIt', 'iLoveIt', 'iWantSomeMoreOfIt', 'iWantToSha
       :author-id="props.authorId"
       :interactions="interactions"
       :post-id="props.postId"
+      :disable-interaction="props.disableInteraction"
       @i-like-it="emit('iLikeIt')"
     />
     <love-post
       :author-id="props.authorId"
       :interactions="interactions"
       :post-id="props.postId"
+      :disable-interaction="props.disableInteraction"
       @i-love-it="emit('iLoveIt')"
     />
     <re-post
       :post-id="props.postId"
       :author-id="props.authorId"
       :interactions="interactions"
+      :disable-interaction="props.disableInteraction"
       @i-want-some-more-of-it="emit('iWantSomeMoreOfIt')"
     />
     <share-post
       :post-id="props.postId"
       :author-id="props.authorId"
       :interactions="interactions"
+      :disable-interaction="props.disableInteraction"
       @i-want-to-share-it="emit('iWantToShareIt')"
     />
   </div>
