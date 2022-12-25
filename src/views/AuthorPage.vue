@@ -14,7 +14,7 @@ import { useAuthorState } from '../store/state'
 const authorState = useAuthorState()
 const handleParam = useRouteParams('handle')
 const handleParamIsSet = handleParam.value?.length
-const handle = handleParamIsSet ? handleParamIsSet : authorState.getAuthor.handle
+const handle = handleParamIsSet ? handleParam : authorState.getAuthor.handle
 
 const authorByHandleQuery = gql`
   query AuthorByHandle($handle: String!) {
