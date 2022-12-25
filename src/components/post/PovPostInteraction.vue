@@ -33,7 +33,9 @@ const props = defineProps({
 
 const interactions = ref()
 
-if (props.postId !== 0) {
+// eslint-disable-next-line no-constant-condition
+if (false) {
+  //props.postId !== 0) {
   const { result } = useQuery(getPostInteractionsQuery, {
     postId: props.postId,
   })

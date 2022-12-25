@@ -3,8 +3,13 @@ import { defineStore } from 'pinia'
 import { gql } from '@apollo/client/core'
 import { Post } from '../schema/generated/types.d'
 
-export const getInitialPostsState = (): { posts: Post[]; postsInitialized: boolean } => ({
-  postsInitialized: false,
+export const getInitialPostsState = (): {
+  posts: Post[]
+  postsLoading: boolean
+  postsQueryError: any
+} => ({
+  postsLoading: false,
+  postsQueryError: {},
   posts: [],
 })
 
@@ -12,11 +17,13 @@ export const usePostsState = defineStore({
   id: 'usePostsState',
   state: getInitialPostsState,
   getters: {
-    init: (s) => s.postsInitialized,
+    getPostsLoading: (s) => s.postsLoading,
     getPosts: (s) => s.posts,
   },
   actions: {
     async getAllPosts() {
+      this.postsLoading = true
+
       const getPostsQuery = gql`
         query posts {
           posts {
@@ -33,16 +40,18 @@ export const usePostsState = defineStore({
           }
         }
       `
-      const { data } = await apolloClient.query({
+      const queryResult = await apolloClient.query({
         query: getPostsQuery,
       })
 
-      if (data?.posts?.length) {
-        console.log({ data })
-        this.posts = data.posts
+      this.postsQueryError = queryResult.error
+
+      if (queryResult.data?.posts?.length) {
+        console.log({ data: queryResult.data })
+        this.posts = queryResult.data.posts
       }
 
-      this.postsInitialized = true
+      this.postsLoading = false
     },
   },
 })

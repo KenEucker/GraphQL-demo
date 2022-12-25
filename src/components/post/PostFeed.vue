@@ -44,8 +44,15 @@ const eventsource = new EventSource(url.toString(), {
 
 eventsource.onmessage = function (event) {
   const data = JSON.parse(event.data)
-  const { data: result, mutation } = data
-  sortPosts(result)
+  const { data: post, mutation } = data.data.post
+
+  if (mutation === 'CREATED') {
+    if (leftPosts.length > rightPosts.length) {
+      leftPosts.unshift(post)
+    } else {
+      rightPosts.unshift(post)
+    }
+  }
 }
 
 const getPostsQuery = gql`
@@ -67,29 +74,29 @@ const getPostsQuery = gql`
 
 const { result: allPosts, loading, error } = useQuery(getPostsQuery)
 const feedPosts = reactive(allPosts)
-const posts = ref()
+// const posts = ref()
 
-// let leftPosts: Post[] = reactive([])
-// let rightPosts: Post[] = reactive([])
+let leftPosts: Post[] = reactive([])
+let rightPosts: Post[] = reactive([])
 
-const sortPosts = (r: any) => {
-  if (r.posts) {
-    posts.value = []
-    posts.value = r.posts
-  } else if (r.post) {
-    posts.value.unshift(r.post)
-  }
-}
-
-// const sortPosts = () => {
-//   feedPosts.value?.posts?.forEach((post: Post, index: number) => {
-//     if (index % 2 != 0) {
-//       leftPosts.push(post)
-//     } else {
-//       rightPosts.push(post)
-//     }
-//   })
+// const sortPosts = (r: any) => {
+//   if (r.posts) {
+//     posts.value = []
+//     posts.value = r.posts
+//   } else if (r.post) {
+//     posts.value.unshift(r.post)
+//   }
 // }
+
+const sortPosts = () => {
+  feedPosts.value?.posts?.forEach((post: Post, index: number) => {
+    if (index % 2 != 0) {
+      leftPosts.push(post)
+    } else {
+      rightPosts.push(post)
+    }
+  })
+}
 
 const likePost = (post: Post) => {
   // const likePostMutation = gql`
@@ -125,7 +132,7 @@ const sharePost = (post: Post) => {
 }
 
 watch(feedPosts, sortPosts)
-// onMounted(sortPosts)
+onMounted(sortPosts)
 </script>
 
 <template>
@@ -141,17 +148,17 @@ watch(feedPosts, sortPosts)
       class="w-full grid transition-all"
       :class="props.oneColumn ? 'md:grid-cols-1 px-20 pt-5' : 'md:grid-cols-2'"
     >
-      <pov-post
+      <!-- <pov-post
         v-for="(post, index) in posts"
         :key="index"
-        class="flex flex-col p-2"
+        class="flex flex-col"
         :post="post"
         @i-like-it="likePost(post)"
         @i-love-it="lovePost(post)"
         @i-want-some-more-of-it="rePost(post)"
         @i-want-to-share-it="sharePost"
-      ></pov-post>
-      <!-- <div class="flex flex-col p-2">
+      ></pov-post> -->
+      <div class="flex flex-col p-2">
         <pov-post
           v-for="(post, index) in rightPosts"
           :key="index"
@@ -172,7 +179,7 @@ watch(feedPosts, sortPosts)
           @i-want-some-more-of-it="rePost(post)"
           @i-want-to-share-it="sharePost"
         ></pov-post>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
