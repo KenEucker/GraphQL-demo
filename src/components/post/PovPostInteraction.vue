@@ -31,15 +31,18 @@ const props = defineProps({
   },
 })
 
-const { result } = useQuery(getPostInteractionsQuery, {
-  postId: props.postId,
-})
-const interactionsNumbersResult = reactive(result)
 const interactions = ref()
-watch(interactionsNumbersResult, (r) => {
-  console.log({ interactions: r.getNumberOfInteractionsForPost })
-  interactions.value = r.getNumberOfInteractionsForPost
-})
+
+if (props.postId !== 0) {
+  const { result } = useQuery(getPostInteractionsQuery, {
+    postId: props.postId,
+  })
+  const interactionsNumbersResult = reactive(result)
+  watch(interactionsNumbersResult, (r) => {
+    console.log({ interactions: r.getNumberOfInteractionsForPost })
+    interactions.value = r.getNumberOfInteractionsForPost
+  })
+}
 
 const emit = defineEmits(['iLikeIt', 'iLoveIt', 'iWantSomeMoreOfIt', 'iWantToShareIt'])
 </script>

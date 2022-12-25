@@ -7,14 +7,27 @@ const props = defineProps({
   },
 })
 const classes = computed(() => {
-  let color = 'green-600'
-  switch (props.variant) {
-    case 'green':
+  const [color, size] = props.variant.split('-')
+  let hoverColor = ''
+  let hoverSize = ''
+  console.log({ size, color })
+  switch (color) {
     default:
+      hoverColor = color ? `${color}-600` : ''
+      break
+  }
+  switch (size) {
+    case 'thick':
+      hoverSize = '-xl'
+      break
+    default:
+      hoverSize = ''
       break
   }
 
-  return `hover:shadow-${color} h-${props.variant}`
+  return `${hoverColor.length ? `hover:shadow-${hoverColor}` : ''} ${
+    hoverSize.length ? `hover:shadow${hoverSize}` : ''
+  } h-${color}`
 })
 </script>
 

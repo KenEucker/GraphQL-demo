@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useNow, useDateFormat } from '@vueuse/core'
 import EmojiPicker from 'vue3-emoji-picker'
 import { useMutation } from '@vue/apollo-composable'
@@ -11,6 +11,10 @@ const authorState = useAuthorState()
 let newPostLoading = ref(false)
 const props = defineProps({
   isOpen: {
+    type: Boolean,
+    default: false,
+  },
+  isFocused: {
     type: Boolean,
     default: false,
   },
@@ -72,6 +76,12 @@ async function createNewPost() {
   emit('onNewPostCreated', newlyCreatedPost)
   closeCreatePost()
 }
+
+onMounted(() => {
+  if (props.isFocused) {
+    textRef.value.focus()
+  }
+})
 </script>
 
 <template>
@@ -110,6 +120,7 @@ async function createNewPost() {
       </div>
       <textarea
         ref="textRef"
+        :focused="focusRef"
         class="w-full h-full rounded-md bg-ll-base dark:bg-ld-base p-4 outline-none text-lg"
         placeholder="What's happening?"
         resize="none"

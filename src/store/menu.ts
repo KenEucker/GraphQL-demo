@@ -6,8 +6,8 @@ export const getInitialMenuState = (): {
   rightMenuOpen: boolean
 } => ({
   createPostOpen: false,
-  leftMenuOpen: true,
-  rightMenuOpen: true,
+  leftMenuOpen: false,
+  rightMenuOpen: false,
 })
 
 export const useMenuState = defineStore('useMenuState', {

@@ -1,73 +1,84 @@
 <script setup lang="ts">
 import { vElementHover } from '@vueuse/components'
+import PopButton from '../../components/atomic/PopButton.vue'
 
 const logos = [
   {
     name: 'vite',
     description:
       'Builds the frontend client scripts and files and provides plugins for local development.',
-    href: 'https://vitejs.dev',
+    url: 'https://vitejs.dev',
     src: '/img/vite.svg',
+    variant: 'purple',
   },
   {
     name: 'typescript',
     description: 'All of the source code for this project is written in TypeScript',
-    href: 'https://typescriptlang.org',
+    url: 'https://typescriptlang.org',
     src: '/img/typescript.svg',
+    variant: 'blue',
   },
   {
     name: 'graphql-yoga',
-    description: 'A graphql server runs locally, in vite, with the help of graphql-yoga',
-    href: 'https://the-guild.dev/graphql/yoga-server',
+    description: 'A graphql server runs locally using graphql-yoga bundled with a playground',
+    url: 'https://the-guild.dev/graphql/yoga-server',
     src: '/img/graphql-yoga.svg',
+    variant: 'pink',
   },
   {
     name: 'prisma',
     description:
       'Prisma is the ORM that creates and maintains the db and generating models in TypeScript.',
-    href: 'https://prisma.io',
+    url: 'https://prisma.io',
     src: '/img/prisma.png',
+    variant: 'white',
   },
   {
     name: 'graphql',
     description: 'GraphQl queries power the frontend application, making it very extensible.',
-    href: 'https://graphql.org',
+    url: 'https://graphql.org',
     src: '/img/GraphQL_Logo.svg',
+    variant: 'pink',
   },
   {
     name: 'vue',
     description:
       'The frontend is written in Vue with TypeScript using the composition API and the most modern best practices.',
-    href: 'https://vuejs.org',
+    url: 'https://vuejs.org',
     src: '/img/vue.svg',
+    variant: 'green',
   },
   {
     name: 'vueuse',
     description:
       "VueUse is like VueJs's version of jQuery providing both computational utilities as well as UI utilities.",
-    href: 'https://vueuse.org',
+    url: 'https://vueuse.org',
     src: '/img/vueuse-icon.svg',
+    variant: 'green',
   },
   {
     name: 'windicss',
     description:
       'WindiCss provides class based styling and easy theming in the lightest set of deliverables for a rich visual experience and rapid development.',
-    href: 'https://windicss.org',
+    url: 'https://windicss.org',
     src: '/img/windicss-logo.svg',
+    variant: 'blue',
   },
   {
     name: 'pinia',
     description:
       'Pinia stores the state of the frontend for components to remain up to date with data subscriptions to the backend GraphQL server.',
-    href: 'https://pinia.vuejs.org',
+    url: 'https://pinia.vuejs.org',
     src: '/img/pinia-logo.svg',
+    variant: 'yellow',
   },
   {
     name: 'render',
     description:
       "Render.com powers the demo for this project. I've deployed a postgres database for the datastore, a graphql server running graphql-yoga and accompanying playground, a static web server for the frontend, and another web server for the prisma studio.",
-    href: 'https://pinia.vuejs.org',
+    url: 'https://render.com',
     src: '/img/render-com-logo.png',
+    variant: 'green',
   },
 ]
 
@@ -80,6 +91,10 @@ const hoverered = (index: number) => {
     logoEl?.classList.remove('hovered')
   }, 500)
 }
+
+const goTo = (link: string) => {
+  window.open(link, '_blank')
+}
 </script>
 
 <template>
@@ -91,7 +106,11 @@ const hoverered = (index: number) => {
       class="items-center justify-between space-between flex grid grid-cols-2 md:grid-cols-3 md:pl-10 lg:pr-30"
     >
       <div v-for="(logo, i) in logos" :key="`logo-${i}`" class="text-center m-auto">
-        <a v-element-hover="() => hoverered(i)" :href="logo.href" target="_blank">
+        <pop-button
+          v-element-hover="() => hoverered(i)"
+          :variant="`${logo.variant}-thick`"
+          @click="goTo(logo.url)"
+        >
           <img
             v-motion
             :initial="{
@@ -116,7 +135,7 @@ const hoverered = (index: number) => {
             :class="logo.name"
             :alt="`${logo.name} logo`"
           />
-        </a>
+        </pop-button>
         <span class="text-lg">{{ logo.name }}</span>
         <p class="text-sm">{{ logo.description }}</p>
       </div>

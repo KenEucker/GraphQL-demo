@@ -44,8 +44,8 @@ const eventsource = new EventSource(url.toString(), {
 
 eventsource.onmessage = function (event) {
   const data = JSON.parse(event.data)
-  const { data: newPostCreated, mutation } = data.data.post
-  leftPosts.unshift(newPostCreated)
+  const { data: result, mutation } = data
+  sortPosts(result)
 }
 
 const getPostsQuery = gql`
@@ -67,19 +67,29 @@ const getPostsQuery = gql`
 
 const { result: allPosts, loading, error } = useQuery(getPostsQuery)
 const feedPosts = reactive(allPosts)
+const posts = ref()
 
-let leftPosts: Post[] = reactive([])
-let rightPosts: Post[] = reactive([])
+// let leftPosts: Post[] = reactive([])
+// let rightPosts: Post[] = reactive([])
 
-const sortPosts = () => {
-  feedPosts.value?.posts?.forEach((post: Post, index: number) => {
-    if (index % 2 != 0) {
-      leftPosts.push(post)
-    } else {
-      rightPosts.push(post)
-    }
-  })
+const sortPosts = (r: any) => {
+  if (r.posts) {
+    posts.value = []
+    posts.value = r.posts
+  } else if (r.post) {
+    posts.value.unshift(r.post)
+  }
 }
+
+// const sortPosts = () => {
+//   feedPosts.value?.posts?.forEach((post: Post, index: number) => {
+//     if (index % 2 != 0) {
+//       leftPosts.push(post)
+//     } else {
+//       rightPosts.push(post)
+//     }
+//   })
+// }
 
 const likePost = (post: Post) => {
   // const likePostMutation = gql`
@@ -115,7 +125,7 @@ const sharePost = (post: Post) => {
 }
 
 watch(feedPosts, sortPosts)
-onMounted(sortPosts)
+// onMounted(sortPosts)
 </script>
 
 <template>
@@ -132,6 +142,17 @@ onMounted(sortPosts)
       :class="props.oneColumn ? 'md:grid-cols-1 px-20 pt-5' : 'md:grid-cols-2'"
     >
       <div class="flex flex-col p-2">
+        <pov-post
+          v-for="(post, index) in feedPosts"
+          :key="index"
+          :post="post"
+          @i-like-it="likePost(post)"
+          @i-love-it="lovePost(post)"
+          @i-want-some-more-of-it="rePost(post)"
+          @i-want-to-share-it="sharePost"
+        ></pov-post>
+      </div>
+      <!-- <div class="flex flex-col p-2">
         <pov-post
           v-for="(post, index) in rightPosts"
           :key="index"
@@ -152,7 +173,7 @@ onMounted(sortPosts)
           @i-want-some-more-of-it="rePost(post)"
           @i-want-to-share-it="sharePost"
         ></pov-post>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

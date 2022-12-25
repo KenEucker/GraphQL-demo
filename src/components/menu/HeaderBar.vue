@@ -52,7 +52,7 @@ const { width } = useWindowSize()
     </div>
     <div>
       <button
-        v-if="props.displayRightMenuButton"
+        v-if="props.displayRightMenuButton && width > 480"
         class="w-10 h-10 mr-2 border rounded-md flex justify-center items-center ml-2 border-ll-border dark:border-ld-border bg-ll-base dark:bg-ld-base dark:text-gray-200 active:scale-95 transition-transform transform"
         :class="menuState.rightMenuOpen ? 'rotate-270' : 'rotate-90'"
         @click="menuState.toggleRightMenu()"

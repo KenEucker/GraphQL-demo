@@ -16,9 +16,14 @@ import db from './src/store/seed'
 // TODO: convert to NextJs project?
 // import type { NextApiRequest, NextApiResponse } from 'next'
 
+/// Environment Variables and their Defaults
+const originUrl = process.env.ORIGIN_URL ?? 'http://localhost'
+const originPort = process.env.ORIGIN_PORT ?? 8080
 const graphUrl = process.env.GRAPH_URL ?? 'http://localhost'
 const graphPort = process.env.GRAPH_PORT ?? 8100
-const graphPath = process.env.GRAPH_URL ?? 'graphql'
+const graphPath = process.env.GRAPH_PATH ?? 'graphql'
+const port = process.env.PORT ?? graphPort
+const serverUrl = `${graphUrl}:${port}/${graphPath}`
 
 // Create a Yoga instance with a GraphQL schema.
 const yoga = createYoga({
@@ -29,20 +34,16 @@ const yoga = createYoga({
     prisma,
   },
   cors: {
-    origin: `${process.env.ORIGIN}${
-      process.env.ORIGIN_PORT !== '80' ? `:${process.env.ORIGIN_PORT}` : ''
-    }`,
+    origin: `${originUrl}:${originPort}`,
     credentials: true,
   },
 })
 
 // Pass it into a server to hook into request handlers.
 const server = createServer(yoga)
-const port = process.env.PORT ?? graphPort
-const url = `${graphUrl}:${port}/${graphPath}`
 
 server.listen(port, () => {
-  console.info(`🚀 GraphQL Server (yoga) is running on ${url}`)
+  console.info(`🚀 GraphQL Server (yoga) is running on ${serverUrl}`)
 })
 
 export default server
