@@ -141,17 +141,16 @@ watch(feedPosts, sortPosts)
       class="w-full grid transition-all"
       :class="props.oneColumn ? 'md:grid-cols-1 px-20 pt-5' : 'md:grid-cols-2'"
     >
-      <div class="flex flex-col p-2">
-        <pov-post
-          v-for="(post, index) in feedPosts"
-          :key="index"
-          :post="post"
-          @i-like-it="likePost(post)"
-          @i-love-it="lovePost(post)"
-          @i-want-some-more-of-it="rePost(post)"
-          @i-want-to-share-it="sharePost"
-        ></pov-post>
-      </div>
+      <pov-post
+        v-for="(post, index) in posts"
+        :key="index"
+        class="flex flex-col p-2"
+        :post="post"
+        @i-like-it="likePost(post)"
+        @i-love-it="lovePost(post)"
+        @i-want-some-more-of-it="rePost(post)"
+        @i-want-to-share-it="sharePost"
+      ></pov-post>
       <!-- <div class="flex flex-col p-2">
         <pov-post
           v-for="(post, index) in rightPosts"
