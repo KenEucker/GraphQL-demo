@@ -120,7 +120,6 @@ onMounted(() => {
       </div>
       <textarea
         ref="textRef"
-        :focused="focusRef"
         class="w-full h-full rounded-md bg-ll-base dark:bg-ld-base p-4 outline-none text-lg"
         placeholder="What's happening?"
         resize="none"
