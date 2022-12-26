@@ -28,6 +28,26 @@ export const useAuthorState = defineStore({
     getAuthorId: (s) => s.author?.id ?? 0,
   },
   actions: {
+    async authorSignup(email: string) {
+      const SignUpAuthorQuery = gql`
+        query SignUpAuthor($email: String!) {
+          createAuthor(data: {
+            email,
+          })
+        }
+      `
+      const { data } = await apolloClient.query({
+        query: SignUpAuthorQuery,
+        variables: { email },
+      })
+
+      if (data?.author) {
+        this.author = data.author
+        storedId.value = this.author.id
+        storedEmail.value = this.author.email
+        this.loggedIn = true
+      }
+    },
     loginWithEmail(email: string) {
       return this.login({ email } as Author)
     },
@@ -82,6 +102,8 @@ export const useAuthorState = defineStore({
     logout() {
       this.author = getInitialAuthorState().author
       this.loggedIn = false
+      storedId.value = null
+      storedEmail.value = null
     },
   },
 })

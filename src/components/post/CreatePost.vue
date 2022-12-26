@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { useNow, useDateFormat } from '@vueuse/core'
+import LoadingSpinner from '../atomic/LoadingSpinner.vue'
 import EmojiPicker from 'vue3-emoji-picker'
 import { useMutation } from '@vue/apollo-composable'
 import { gql } from '@apollo/client/core'
-import LoadingSpinner from '../atomic/LoadingSpinner.vue'
 import { useAuthorState } from '../../store/state'
 
 const authorState = useAuthorState()
@@ -28,7 +28,7 @@ const mutation = gql`
   }
 `
 const { mutate: useCreatePostMutation } = useMutation(mutation)
-const emit = defineEmits(['onMenuClick', 'onClose', 'onOpen', 'onNewPostCreated'])
+const emit = defineEmits(['onClose', 'onOpen', 'onNewPostCreated'])
 
 const firstTitle = useDateFormat(useNow(), 'MMMM DD, YYYY').value
 const titleRef = ref()
@@ -91,7 +91,7 @@ onMounted(() => {
     </div>
     <div
       v-else
-      class="transition-all mx-2 bg-ll-neutral dark:bg-ld-neutral rounded-md flex flex-col relative"
+      class="relative flex flex-col mx-2 transition-all rounded-md bg-ll-neutral dark:bg-ld-neutral"
       :class="props.isOpen ? 'h-70 p-5' : 'overflow-hidden h-0 p-0'"
     >
       <div class="flex">
@@ -104,7 +104,7 @@ onMounted(() => {
         <input
           ref="statusRef"
           type="text"
-          class="w-20 rounded-md bg-ll-base dark:bg-ld-base text-center p-2 mb-2 outline-none text-lg"
+          class="w-20 p-2 mb-2 text-lg text-center rounded-md outline-none bg-ll-base dark:bg-ld-base"
           placeholder="status"
           resize="none"
           @focus="showEmojiPicker.show = true"
@@ -112,7 +112,7 @@ onMounted(() => {
         <input
           ref="titleRef"
           type="text"
-          class="w-3/4 mx-auto mb-2 rounded-md bg-ll-base dark:bg-ld-base p-2 outline-none text-lg"
+          class="w-3/4 p-2 mx-auto mb-2 text-lg rounded-md outline-none bg-ll-base dark:bg-ld-base"
           :placeholder="firstTitle"
           :value="''"
           resize="none"
@@ -120,16 +120,15 @@ onMounted(() => {
       </div>
       <textarea
         ref="textRef"
-        class="w-full h-full rounded-md bg-ll-base dark:bg-ld-base p-4 outline-none text-lg"
+        class="w-full h-full p-4 text-lg rounded-md outline-none bg-ll-base dark:bg-ld-base"
         placeholder="What's happening?"
         resize="none"
         @input="getNewTitle"
       ></textarea>
-      <div class="w-full flex items-center justify-between pt-3">
+      <div class="flex items-center justify-between w-full pt-3">
         <div class="flex">
           <button
-            class="w-10 h-10 mr-2 border rounded-md flex justify-center items-center border-ll-border dark:border-ld-border bg-ll-base dark:bg-ld-base dark:text-gray-500 active:scale-95 transition-transform transform"
-            @click="emit('onMenuClick')"
+            class="flex items-center justify-center w-10 h-10 mr-2 transition-transform transform border rounded-md border-ll-border dark:border-ld-border bg-ll-base dark:bg-ld-base dark:text-gray-500 active:scale-95"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -147,8 +146,7 @@ onMounted(() => {
             </svg>
           </button>
           <button
-            class="w-10 h-10 mr-2 border rounded-md flex justify-center items-center border-ll-border dark:border-ld-border bg-ll-base dark:bg-ld-base dark:text-gray-500 active:scale-95 transition-transform transform"
-            @click="emit('onMenuClick')"
+            class="flex items-center justify-center w-10 h-10 mr-2 transition-transform transform border rounded-md border-ll-border dark:border-ld-border bg-ll-base dark:bg-ld-base dark:text-gray-500 active:scale-95"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -168,7 +166,7 @@ onMounted(() => {
         </div>
         <div class="flex">
           <button
-            class="text-sm px-5 py-2 bg-ll-primary text-white dark:bg-ld-primary rounded-md flex items-center active:scale-95 transform transition-transform"
+            class="flex items-center px-5 py-2 text-sm text-white transition-transform transform rounded-md bg-ll-primary dark:bg-ld-primary active:scale-95"
             @click="createNewPost"
           >
             Post
@@ -176,7 +174,7 @@ onMounted(() => {
         </div>
       </div>
       <button
-        class="w-8 h-8 absolute -top-0 -right-1 bg-ll-neutral dark:bg-ld-neutral text-sm border-ll-border dark:border-ld-border border rounded-full flex items-center mr-2 active:scale-95 transform transition-transform"
+        class="absolute flex items-center w-8 h-8 mr-2 text-sm transition-transform transform border rounded-full -top-0 -right-1 bg-ll-neutral dark:bg-ld-neutral border-ll-border dark:border-ld-border active:scale-95"
         @click="closeCreatePost"
       >
         <svg

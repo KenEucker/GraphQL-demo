@@ -8,14 +8,27 @@ const props = defineProps({
 })
 const classes = computed(() => {
   const [color, size] = props.variant.split('-')
+  let hColor = color
   let hoverColor = ''
   let hoverSize = ''
-  console.log({ size, color })
+
   switch (color) {
+    case 'like':
+      hColor = 'red'
+      break
+    case 'love':
+      hColor = 'purple'
+      break
+    case 'repost':
+      hColor = 'green'
+      break
+    case 'share':
+      hColor = 'blue'
+      break
     default:
-      hoverColor = color ? `${color}-600` : ''
       break
   }
+  hoverColor = hColor ? `${hColor}-600` : ''
   switch (size) {
     case 'thick':
       hoverSize = '-xl'
@@ -27,14 +40,14 @@ const classes = computed(() => {
 
   return `${hoverColor.length ? `hover:shadow-${hoverColor}` : ''} ${
     hoverSize.length ? `hover:shadow${hoverSize}` : ''
-  } h-${color}`
+  } h-${hColor}`
 })
 </script>
 
 <template>
   <button
     v-motion
-    class="flex active:scale-95 transform transition-transform rounded-full"
+    class="flex transition-transform transform rounded-full active:scale-95"
     :class="classes"
     :initial="{
       y: 4,

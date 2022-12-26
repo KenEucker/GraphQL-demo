@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import PostPov from 'vue-ionicons/dist/md-bonfire.vue'
 import RouteButton from '../atomic/RouteButton.vue'
@@ -28,13 +28,23 @@ function postButtonClick() {
 
   router.push('/posts')
 }
+
+const authorPanelClick = () => {
+  if (!menuState.isLeftMenuOpen) {
+    menuState.openLeftMenu()
+  }
+}
 </script>
 <template>
   <div
     class="w-full h-full flex flex-col relative overflow-y-auto overflow-x-hidden items-center"
     :class="props.isExpanded ? 'p-10 px-5' : 'p-2'"
   >
-    <author-panel :is-expanded="props.isExpanded" />
+    <author-panel
+      class="cursor-pointer"
+      :is-expanded="props.isExpanded"
+      @click="authorPanelClick"
+    />
     <ul class="flex flex-col pt-5" :class="props.isExpanded ? '' : 'justify-center flex '">
       <li
         v-for="route in routes"

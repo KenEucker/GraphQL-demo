@@ -13,6 +13,13 @@ enum MutationType {
   UNPUBLISHED
 }
 
+enum InteractionType {
+  like
+  love
+  repost
+  share
+}
+
 type Author {
   id: Int!
   handle: String!

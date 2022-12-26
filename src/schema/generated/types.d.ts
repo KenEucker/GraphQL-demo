@@ -124,6 +124,12 @@ export type InteractionSubscriptionPayload = {
   readonly mutation: MutationType;
 };
 
+export type InteractionType =
+  | 'like'
+  | 'love'
+  | 'repost'
+  | 'share';
+
 export type Mutation = {
   readonly __typename?: 'Mutation';
   readonly createAuthor: Author;
@@ -448,6 +454,7 @@ export type ResolversTypes = {
   InteractionByInput: InteractionByInput;
   InteractionInput: InteractionInput;
   InteractionSubscriptionPayload: ResolverTypeWrapper<InteractionSubscriptionPayload>;
+  InteractionType: InteractionType;
   Mutation: ResolverTypeWrapper<{}>;
   MutationType: MutationType;
   Permissions: Permissions;

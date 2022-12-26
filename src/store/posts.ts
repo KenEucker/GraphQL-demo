@@ -9,7 +9,7 @@ export const getInitialPostsState = (): {
   postsQueryError: any
 } => ({
   postsLoading: false,
-  postsQueryError: {},
+  postsQueryError: null,
   posts: [],
 })
 
@@ -18,6 +18,7 @@ export const usePostsState = defineStore({
   state: getInitialPostsState,
   getters: {
     getPostsLoading: (s) => s.postsLoading,
+    getPostsError: (s) => s.postsQueryError,
     getPosts: (s) => s.posts,
   },
   actions: {

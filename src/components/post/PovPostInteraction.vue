@@ -1,26 +1,18 @@
 <script setup lang="ts">
-import LikePost from './LikePost.vue'
-import LovePost from './LovePost.vue'
-import SharePost from './SharePost.vue'
-import RePost from './RePost.vue'
+import Points from 'vue-ionicons/dist/md-bonfire.vue'
+import Heart from 'vue-ionicons/dist/md-heart.vue'
+import HeartEmpty from 'vue-ionicons/dist/md-heart-empty.vue'
+import Share from 'vue-ionicons/dist/md-share.vue'
+import Repost from 'vue-ionicons/dist/md-sync.vue'
+import PopButton from '../atomic/PopButton.vue'
 import { gql } from '@apollo/client/core'
-import { useQuery } from '@vue/apollo-composable'
-import { reactive, ref, watch } from 'vue'
-
-const getPostInteractionsQuery = gql`
-  query PovPostGetInteractionNumbers($postId: Int!) {
-    getNumberOfInteractionsForPost(
-      from: { id: $postId, like: true, love: true, share: true, repost: true }
-    ) {
-      like
-      love
-      repost
-      share
-    }
-  }
-`
+import { useMutation } from '@vue/apollo-composable'
 
 const props = defineProps({
+  count: {
+    type: Number,
+    default: 0,
+  },
   authorId: {
     type: Number,
     default: 0,
@@ -29,59 +21,70 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  active: {
+    type: Boolean,
+    default: false,
+  },
   disableInteraction: {
     type: Boolean,
     default: false,
   },
+  variant: {
+    type: String,
+    default: 'like',
+  },
 })
 
-const interactions = ref()
+const mutation = gql`
+  mutation UpdateInteractionPovPost($data: UpdateInteractionInput!) {
+    updateInteraction(data: $data) {
+      id
+    }
+  }
+`
 
-// eslint-disable-next-line no-constant-condition
-if (false) {
-  //props.postId !== 0) {
-  const { result } = useQuery(getPostInteractionsQuery, {
+const { mutate: useUpdateInteractionMutation } = useMutation(mutation)
+
+async function onPostInteraction() {
+  if (props.authorId === 0 || props.disableInteraction) {
+    return
+  }
+
+  const updatingInteraction = {
     postId: props.postId,
+    authorId: props.authorId,
+    like: true,
+  }
+
+  const updatedPostInteraction = await useUpdateInteractionMutation({
+    data: updatingInteraction,
   })
-  const interactionsNumbersResult = reactive(result)
-  watch(interactionsNumbersResult, (r) => {
-    console.log({ interactions: r.getNumberOfInteractionsForPost })
-    interactions.value = r.getNumberOfInteractionsForPost
-  })
+
+  emit('onInteraction', props.variant)
 }
 
-const emit = defineEmits(['iLikeIt', 'iLoveIt', 'iWantSomeMoreOfIt', 'iWantToShareIt'])
+const emit = defineEmits(['onInteraction'])
 </script>
 
 <template>
-  <div class="flex justify-between pt-4 border-t border-ll-border dark:border-ld-border mt-4">
-    <like-post
-      :author-id="props.authorId"
-      :interactions="interactions"
-      :post-id="props.postId"
-      :disable-interaction="props.disableInteraction"
-      @i-like-it="emit('iLikeIt')"
-    />
-    <love-post
-      :author-id="props.authorId"
-      :interactions="interactions"
-      :post-id="props.postId"
-      :disable-interaction="props.disableInteraction"
-      @i-love-it="emit('iLoveIt')"
-    />
-    <re-post
-      :post-id="props.postId"
-      :author-id="props.authorId"
-      :interactions="interactions"
-      :disable-interaction="props.disableInteraction"
-      @i-want-some-more-of-it="emit('iWantSomeMoreOfIt')"
-    />
-    <share-post
-      :post-id="props.postId"
-      :author-id="props.authorId"
-      :interactions="interactions"
-      :disable-interaction="props.disableInteraction"
-      @i-want-to-share-it="emit('iWantToShareIt')"
-    />
-  </div>
+  <pop-button :variant="variant" @click="onPostInteraction">
+    <div v-if="props.variant === 'like'">
+      <points w="25" h="25" :class="props.active ? 'text-yellow-600' : ''" class="align-middle" />
+      <span class="ml-1 align-middle">{{ props.count }}</span>
+    </div>
+    <div v-if="props.variant === 'love'" class="ml-1">
+      <span v-if="props.active" class="ml-1 align-middle">
+        <heart w="25" h="25" class="align-middle text-amber-300" />
+        {{ props.count }}
+      </span>
+      <span v-else class="align-middle">
+        <heart-empty class="mr-1 align-bottom" w="25" h="25" />{{ props.count }}
+      </span>
+    </div>
+    <div v-if="props.variant === 'repost'">
+      <repost w="25" h="25" class="align-middle" :class="active ? 'text-yellow-600' : ''" />
+      <span class="ml-1 align-middle">{{ props.count }}</span>
+    </div>
+    <share v-if="props.variant === 'share'" w="25" h="25" />
+  </pop-button>
 </template>

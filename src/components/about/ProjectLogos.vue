@@ -82,9 +82,8 @@ const logos = [
   },
 ]
 
-const hoverered = (index: number) => {
-  const logo = logos[index]
-  const logoEl = document.querySelector(`.name.${logo.name}`)
+const hoverered = (name: string) => {
+  const logoEl = document.querySelector(`.name.${name}`)
 
   logoEl?.classList.add('hovered')
   setTimeout(() => {
@@ -105,9 +104,9 @@ const goTo = (link: string) => {
     <div
       class="items-center justify-between space-between flex grid grid-cols-2 md:grid-cols-3 md:pl-10 lg:pr-30"
     >
-      <div v-for="(logo, i) in logos" :key="`logo-${i}`" class="text-center m-auto">
+      <div v-for="logo in logos" :key="`logo-${logo.name}`" class="text-center m-auto">
         <pop-button
-          v-element-hover="() => hoverered(i)"
+          v-element-hover="() => hoverered(logo.name)"
           :variant="`${logo.variant}-thick`"
           @click="goTo(logo.url)"
         >
