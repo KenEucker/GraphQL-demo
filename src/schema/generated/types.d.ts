@@ -210,7 +210,7 @@ export type MutationUpdateInteractionArgs = {
 
 export type MutationUpdatePostArgs = {
   data: UpdatePostInput;
-  id: Scalars['Int'];
+  id?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -563,7 +563,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   unVerifyAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationUnVerifyAuthorArgs, 'id'>>;
   updateAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationUpdateAuthorArgs, 'data'>>;
   updateInteraction?: Resolver<ResolversTypes['Interaction'], ParentType, ContextType, RequireFields<MutationUpdateInteractionArgs, 'data'>>;
-  updatePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationUpdatePostArgs, 'data' | 'id'>>;
+  updatePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationUpdatePostArgs, 'data'>>;
   verifyAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationVerifyAuthorArgs, 'id'>>;
 };
 

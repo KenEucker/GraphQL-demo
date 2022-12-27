@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import PostPov from 'vue-ionicons/dist/md-bonfire.vue'
 import RouteButton from '../atomic/RouteButton.vue'
-import AuthorPanel from '../author/AuthorPanel.vue'
+import AuthorCard from '../author/AuthorCard.vue'
 import { useMenuState, useAuthorState } from '../../store/state'
 
 const menuState = useMenuState()
@@ -37,14 +37,10 @@ const authorPanelClick = () => {
 </script>
 <template>
   <div
-    class="w-full h-full flex flex-col relative overflow-y-auto overflow-x-hidden items-center"
+    class="relative flex flex-col items-center w-full h-full overflow-x-hidden overflow-y-auto"
     :class="props.isExpanded ? 'p-10 px-5' : 'p-2'"
   >
-    <author-panel
-      class="cursor-pointer"
-      :is-expanded="props.isExpanded"
-      @click="authorPanelClick"
-    />
+    <author-card class="cursor-pointer" :is-expanded="props.isExpanded" @click="authorPanelClick" />
     <ul class="flex flex-col pt-5" :class="props.isExpanded ? '' : 'justify-center flex '">
       <li
         v-for="route in routes"
@@ -66,7 +62,7 @@ const authorPanelClick = () => {
 
     <button
       v-if="authorState.isLoggedIn"
-      class="w-full max-w-50 md:max-w-90 bg-ll-primary dark:bg-ld-primary text-white rounded-lg py-3 px-2 active:scale-95 transform transition-transform flex items-center justify-center"
+      class="flex items-center justify-center w-full px-2 py-3 text-white transition-transform transform rounded-lg max-w-50 md:max-w-90 bg-ll-primary dark:bg-ld-primary active:scale-95"
       @click="postButtonClick"
     >
       <p v-if="props.isExpanded" class="mr-4">Post</p>
@@ -74,7 +70,7 @@ const authorPanelClick = () => {
     </button>
 
     <button
-      class="md:hidden w-8 h-8 absolute top-2 -right-1 bg-ll-neutral dark:bg-ld-neutral text-sm border-ll-border dark:border-ld-border border rounded-full flex items-center mr-2 active:scale-95 transform transition-transform"
+      class="absolute flex items-center w-8 h-8 mr-2 text-sm transition-transform transform border rounded-full md:hidden top-2 -right-1 bg-ll-neutral dark:bg-ld-neutral border-ll-border dark:border-ld-border active:scale-95"
       @click="menuState.closeLeftMenu()"
     >
       <svg

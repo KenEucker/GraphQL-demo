@@ -36,30 +36,30 @@ const fancyClass = computed(() =>
 <template>
   <div v-if="props.full">
     <span class="point" :class="fancyClass">Point</span>
-    <span class="point-o align-top" :class="fancyClass">o</span>
-    <img class="mt-1 align-middle w-10 h-10 inline" src="/img/pov.svg" />
+    <span class="align-top point-o" :class="fancyClass">o</span>
+    <img class="inline w-10 h-10 mt-1 align-middle" src="/img/pov.svg" />
     <!-- <pov class="mt-1 align-middle" w="40" h="40"></pov> -->
-    <span class="point-of align-top" :class="fancyClass">f</span>
+    <span class="align-top point-of" :class="fancyClass">f</span>
     <span class="point-of-view" :class="fancyClass">Vue</span>
   </div>
   <div v-else-if="props.iconOnly">
-    <img class="m-auto align-middle w-30 h-30 inline" src="/img/pov.svg" />
+    <img src="/img/pov.svg" />
   </div>
   <div v-else-if="props.expanded">
     <!-- <span class="point">Point</span> -->
-    <!-- <span class="point-o align-top">o</span> -->
+    <!-- <span class="align-top point-o">o</span> -->
     <span
       class="text-xl ml-2 -mr-2.65 font-bold"
       :class="`${fancyClass} ${props.condensed ? '-skew-x-330 -skew-y-330' : ''}`"
       >P</span
     >
     <img
-      class="mt-1 align-middle w-10 h-10 inline"
+      class="inline w-10 h-10 mt-1 align-middle"
       src="/img/pov.svg"
       :class="props.condensed ? '-rotate-5 skew-y-5' : ''"
     />
     <!-- <pov class="mt-1 align-middle" w="40" h="40"></pov> -->
-    <!-- <span class="point-of align-top">f</span> -->
+    <!-- <span class="align-top point-of">f</span> -->
     <span
       class="text-xl -ml-2.5 font-bold"
       :class="`${fancyClass} ${props.condensed ? 'skew-x-330 skew-y-330' : ''}`"
@@ -69,7 +69,7 @@ const fancyClass = computed(() =>
     <!-- <span class="point-of-view">Vue</span> -->
   </div>
   <div v-else>
-    <img class="m-auto align-middle w-10 h-10 inline" src="/img/pov.svg" />
+    <img class="inline w-10 h-10 m-auto align-middle" src="/img/pov.svg" />
     <!-- <pov class="align-middle" w="40" h="40"></pov> -->
   </div>
 </template>

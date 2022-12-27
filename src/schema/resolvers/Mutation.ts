@@ -4,9 +4,10 @@ import { GraphQLError } from 'graphql'
 const Mutation = {
   // @ts-ignore
   async createAuthor(parent, args, { prisma, pubsub }, info) {
+    console.log('createAuthor', args)
     const emailTaken = await prisma.author.findUnique({
       where: {
-        email: args.data.email,
+        email: args.author.email,
       },
     })
     if (emailTaken) {
@@ -15,20 +16,14 @@ const Mutation = {
 
     const handleTaken = await prisma.author.findUnique({
       where: {
-        handle: args.data.handle,
+        handle: args.author.handle,
       },
     })
     if (handleTaken) {
       throw new GraphQLError(`Handle is already in use.`)
     }
 
-    const newAuthor = {
-      ...args.author,
-      interactions: [],
-      posts: [],
-    }
-
-    const createdAuthor = await prisma.author.create({ data: newAuthor })
+    const createdAuthor = await prisma.author.create({ data: args.author })
     pubsub.publish(`author`, { mutation: 'CREATED', data: createdAuthor })
 
     return createdAuthor

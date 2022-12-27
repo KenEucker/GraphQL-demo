@@ -28,25 +28,43 @@ export const useAuthorState = defineStore({
     getAuthorId: (s) => s.author?.id ?? 0,
   },
   actions: {
-    async authorSignup(email: string) {
+    async authorSignup(author: Author) {
       const SignUpAuthorQuery = gql`
-        query SignUpAuthor($email: String!) {
-          createAuthor(data: {
-            email,
-          })
+        mutation SignUpAuthor($author: CreateAuthorInput!) {
+          createAuthor(author: $author) {
+            id
+            name
+            email
+            handle
+            verified
+            status
+            avatar
+            location
+            bio
+            birthday
+            link
+            posts {
+              id
+            }
+          }
         }
       `
-      const { data } = await apolloClient.query({
-        query: SignUpAuthorQuery,
-        variables: { email },
+      console.log({ SignUpAuthorQuery, author })
+      const data = await apolloClient.mutate({
+        mutation: SignUpAuthorQuery,
+        variables: { author },
       })
 
-      if (data?.author) {
-        this.author = data.author
-        storedId.value = this.author.id
-        storedEmail.value = this.author.email
-        this.loggedIn = true
-      }
+      console.log('singup', data)
+
+      // if (data?) {
+      //   this.author = data
+      //   storedId.value = this.author.id
+      //   storedEmail.value = this.author.email
+      //   this.loggedIn = true
+      // }
+
+      return data
     },
     loginWithEmail(email: string) {
       return this.login({ email } as Author)
@@ -73,17 +91,24 @@ export const useAuthorState = defineStore({
           }
         }
       `
-      const { data } = await apolloClient.query({
+      const { data, error: queryError } = await apolloClient.query({
         query: loginViaEmailQuery,
         variables: { email: author.email },
       })
+      let error = null
 
       if (data?.author) {
         this.author = data.author
         storedId.value = this.author.id
         storedEmail.value = this.author.email
         this.loggedIn = true
+      } else if (queryError) {
+        error = queryError.message
+      } else {
+        error = 'no author found with that email address'
       }
+
+      return error
     },
     async updateAuthor(author: Author) {
       const updateAuthorMutation = gql`
@@ -98,12 +123,29 @@ export const useAuthorState = defineStore({
         mutation: updateAuthorMutation,
         variables: { data: author, id: this.author.id },
       })
+
+      return data
     },
     logout() {
       this.author = getInitialAuthorState().author
       this.loggedIn = false
       storedId.value = null
       storedEmail.value = null
+    },
+    async isEmailInUse(email: string) {
+      const checkForEmailInUseQuery = gql`
+        query StoreAuthorEmailInUse($email: String!) {
+          author(where: { email: $email }) {
+            email
+          }
+        }
+      `
+      const { data, error } = await apolloClient.query({
+        query: checkForEmailInUseQuery,
+        variables: { email },
+      })
+
+      return error ?? data?.author
     },
   },
 })

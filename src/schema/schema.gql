@@ -83,7 +83,7 @@ type Mutation {
 
   updateAuthor(data: UpdateAuthorInput!, id: Int): Author!
   updateInteraction(data: UpdateInteractionInput!, id: Int): Interaction!
-  updatePost(id: Int!, data: UpdatePostInput!): Post!
+  updatePost(data: UpdatePostInput!, id: Int): Post!
 
   publishPost(id: Int!): Post!
   unPublishPost(id: Int!): Post!

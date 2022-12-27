@@ -47,7 +47,7 @@ const classes = computed(() => {
 <template>
   <button
     v-motion
-    class="flex transition-transform transform rounded-full active:scale-95"
+    class="flex m-auto transition-transform transform rounded-full active:scale-95"
     :class="classes"
     :initial="{
       y: 4,

@@ -4,10 +4,12 @@ export const getInitialMenuState = (): {
   createPostOpen: boolean
   leftMenuOpen: boolean
   rightMenuOpen: boolean
+  signupOpen: boolean
 } => ({
   createPostOpen: false,
   leftMenuOpen: false,
   rightMenuOpen: false,
+  signupOpen: false,
 })
 
 export const useMenuState = defineStore('useMenuState', {
@@ -16,6 +18,7 @@ export const useMenuState = defineStore('useMenuState', {
     isCreatePostOpen: (s) => s.createPostOpen,
     isLeftMenuOpen: (s) => s.leftMenuOpen,
     isRightMenuOpen: (s) => s.rightMenuOpen,
+    isSignupOpen: (s) => s.signupOpen,
   },
   actions: {
     closeCreatePost() {
@@ -41,6 +44,12 @@ export const useMenuState = defineStore('useMenuState', {
     },
     openRightMenu() {
       this.rightMenuOpen = true
+    },
+    closeSignup() {
+      this.signupOpen = false
+    },
+    openSignup() {
+      this.signupOpen = true
     },
   },
 })

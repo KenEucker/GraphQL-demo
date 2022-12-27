@@ -21,7 +21,7 @@
     "release:prod": "npm run release:prisma",
     "release:prisma": "npx prisma migrate deploy",
     "dev": "concurrently \"npm:dev:server\" \"npm:dev:client\"  \"graphql-codegen -w\" \"npm run dev:studio\" -n \"server, client, codegen, studio\" -c \"auto\"",
-    "dev:server": "nodemon --watch './src/schema/**/*.ts,./index.ts' --exec 'ts-node --experimental-specifier-resolution=node --project tsconfig-server.json' index.ts",
+    "dev:server": "nodemon --watch './src/schema/**/*.ts' --exec 'ts-node --experimental-specifier-resolution=node --project tsconfig-server.json' index.ts",
     "dev:client": "vite --host localhost",
     "dev:studio": "npx prisma studio --browser none",
     "compile": "npm run compile:prisma && npm run compile:graphql",
