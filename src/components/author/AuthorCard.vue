@@ -76,7 +76,7 @@ authorState.login()
       v-else-if="props.isExpanded"
       class="flex flex-col w-full p-2 rounded shadow-md dark:bg-ld-base sm:w-100 md:w-40 lg:w-60 lg:p-4 lg:pt-6 lg:mb-4"
     >
-      <loading-spinner v-if="loggingIn" :full-screen="false" class="-mt-3/4" />
+      <loading-spinner v-if="loggingIn" :full-screen="false" />
       <div v-else-if="errorMessage" @click="errorMessage = null">{{ errorMessage }}</div>
       <div v-else class="mb-4">
         <label class="block mb-2 text-sm font-bold text-center text-grey-darker" for="email">

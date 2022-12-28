@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, useAttrs } from 'vue'
 const props = defineProps({
   variant: {
     type: String,
@@ -42,6 +42,8 @@ const classes = computed(() => {
     hoverSize.length ? `hover:shadow${hoverSize}` : ''
   } h-${hColor}`
 })
+
+const attrs = useAttrs()
 </script>
 
 <template>
@@ -49,6 +51,7 @@ const classes = computed(() => {
     v-motion
     class="flex m-auto transition-transform transform rounded-full active:scale-95"
     :class="classes"
+    :v-bind="attrs"
     :initial="{
       y: 4,
       scale: 1,

@@ -120,7 +120,7 @@ function getRandomIntInclusive(min: number, max: number): number {
 
 <template>
   <div>
-    <div v-if="postsState.getPostsLoading" class="mt-20">
+    <div v-if="postsState.getPostsLoading" class="mt-5">
       <loading-spinner />
     </div>
     <div v-else-if="postsState.getPostsError">

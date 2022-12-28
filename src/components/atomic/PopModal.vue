@@ -14,7 +14,7 @@ const menuStore = useMenuState()
     <transition name="pop" appear>
       <div
         v-show="menuStore.isSignupOpen"
-        class="absolute top-0 bottom-0 left-0 right-0 p-2 m-auto text-center bg-white shadow-lg opacity-100 w-[90%] md:w-1/2 rounded-xl border-1 z-999 h-2/3 md:h-2/3 transform-scale-1 transform-translate-y-0 h-3/5"
+        class="absolute top-0 bottom-0 left-0 right-0 p-2 m-auto text-center bg-white shadow-lg opacity-100 w-[90%] md:w-1/2 rounded-xl border-1 z-999 h-2/3 md:h-2/3 transform-scale-1 transform-translate-y-0 h-140"
         role="dialog"
       >
         <slot clas="z-1000"></slot>

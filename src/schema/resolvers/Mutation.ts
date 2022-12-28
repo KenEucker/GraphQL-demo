@@ -4,7 +4,6 @@ import { GraphQLError } from 'graphql'
 const Mutation = {
   // @ts-ignore
   async createAuthor(parent, args, { prisma, pubsub }, info) {
-    console.log('createAuthor', args)
     const emailTaken = await prisma.author.findUnique({
       where: {
         email: args.author.email,

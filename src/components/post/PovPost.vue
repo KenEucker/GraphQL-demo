@@ -14,8 +14,6 @@ const authorState = useAuthorState()
 const router = useRouter()
 const storedAuthorId = useStorage('author-id', 0)
 
-// console.log({ authorId: authorState.getAuthorId })
-
 function goToAuthorPage() {
   router.push(`/${props.post.author.handle}`)
 }

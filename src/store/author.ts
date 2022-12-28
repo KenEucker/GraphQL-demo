@@ -49,22 +49,26 @@ export const useAuthorState = defineStore({
           }
         }
       `
-      console.log({ SignUpAuthorQuery, author })
-      const data = await apolloClient.mutate({
-        mutation: SignUpAuthorQuery,
-        variables: { author },
-      })
 
-      console.log('singup', data)
+      try {
+        const { data, errors } = await apolloClient.mutate({
+          mutation: SignUpAuthorQuery,
+          variables: { author },
+        })
 
-      // if (data?) {
-      //   this.author = data
-      //   storedId.value = this.author.id
-      //   storedEmail.value = this.author.email
-      //   this.loggedIn = true
-      // }
+        if (data?.createAuthor) {
+          this.author = data.createAuthor
+          storedId.value = this.author.id
+          storedEmail.value = this.author.email
+          this.loggedIn = true
+        } else {
+          return errors ?? data.error ?? 'unknown error'
+        }
 
-      return data
+        return null
+      } catch (err: any) {
+        return err.message ?? err
+      }
     },
     loginWithEmail(email: string) {
       return this.login({ email } as Author)
@@ -118,7 +122,6 @@ export const useAuthorState = defineStore({
           }
         }
       `
-      console.log('updating author', author)
       const data = await apolloClient.mutate({
         mutation: updateAuthorMutation,
         variables: { data: author, id: this.author.id },

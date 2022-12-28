@@ -17,7 +17,7 @@ const props = defineProps({
   >
     <div
       v-if="props.fullScreen"
-      class="flex w-full w-3/4 text-xl justify-center absolute top-[60%] md:top-[50%]"
+      class="flex w-full w-3/4 text-xl justify-center absolute top-[30%]"
     >
       {{ faker.hacker.phrase() }}
     </div>
@@ -26,10 +26,7 @@ const props = defineProps({
         :class="`${props.fullScreen ? 'w-full min-h-screen' : ''}`"
         class="flex justify-center items-center"
       >
-        <div
-          :class="`${props.fullScreen ? 'min-h-screen' : ''}`"
-          class="w-3/4 mt-3/4 lg:mt-1/2 justify-center flex"
-        >
+        <div :class="`${props.fullScreen ? 'min-h-screen' : ''}`" class="w-3/4 justify-center flex">
           <div
             :class="`${props.fullScreen ? 'h-50 w-50 ' : 'h-36 w-36'}`"
             class="flex items-center justify-center rounded-full bg-gradient-to-tr from-indigo-500 to-pink-500 animate-spin"
@@ -37,10 +34,13 @@ const props = defineProps({
             <div
               :class="`${props.fullScreen ? 'h-40 w-40 ' : 'h-28 w-28'}`"
               class="h-40 w-40 rounded-full bg-ll-base dark:bg-ld-base flex relative"
-            >
-              <point-of-vue :icon-only="true" class="m-auto animate-heart-beat" />
-            </div>
+            ></div>
           </div>
+          <point-of-vue
+            :icon-only="true"
+            class="absolute animate-heart-beat"
+            :class="`${props.fullScreen ? 'top-23' : 'top-15'}`"
+          />
         </div>
       </div>
     </div>

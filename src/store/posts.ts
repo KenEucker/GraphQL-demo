@@ -48,7 +48,6 @@ export const usePostsState = defineStore({
       this.postsQueryError = queryResult.error
 
       if (queryResult.data?.posts?.length) {
-        console.log({ data: queryResult.data })
         this.posts = queryResult.data.posts
       }
 

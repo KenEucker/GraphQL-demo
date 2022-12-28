@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import Pov from 'vue-ionicons/dist/md-bonfire.vue'
 
 const props = defineProps({
   expanded: {
@@ -34,16 +33,16 @@ const fancyClass = computed(() =>
 )
 </script>
 <template>
-  <div v-if="props.full">
+  <div v-if="props.iconOnly">
+    <img class="w-24 h-24" src="/img/pov.svg" />
+  </div>
+  <div v-else-if="props.full">
     <span class="point" :class="fancyClass">Point</span>
     <span class="align-top point-o" :class="fancyClass">o</span>
     <img class="inline w-10 h-10 mt-1 align-middle" src="/img/pov.svg" />
     <!-- <pov class="mt-1 align-middle" w="40" h="40"></pov> -->
     <span class="align-top point-of" :class="fancyClass">f</span>
     <span class="point-of-view" :class="fancyClass">Vue</span>
-  </div>
-  <div v-else-if="props.iconOnly">
-    <img src="/img/pov.svg" />
   </div>
   <div v-else-if="props.expanded">
     <!-- <span class="point">Point</span> -->
