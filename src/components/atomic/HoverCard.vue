@@ -140,8 +140,8 @@ onMounted(() => {
 </template>
 <style lang="scss" scoped>
 :root {
-  --bg-color: rgb(20, 20, 20);
-  --card-color: rgb(23, 23, 23);
+  --bg-color: rgb(20 20 20);
+  --card-color: rgb(23 23 23);
 }
 
 #cards {
@@ -152,42 +152,21 @@ onMounted(() => {
   width: calc(100% - 20px);
 }
 
-#cards:hover > .card::after {
-  opacity: 1;
-}
-
 .card {
-  background-color: rgba(255, 255, 255, 0.1);
+  width: 300px;
+  height: 260px;
+  background-color: rgb(255 255 255 / 10%);
   border-radius: 10px;
   cursor: pointer;
   display: flex;
-  height: 260px;
   flex-direction: column;
   position: relative;
-  width: 300px;
-}
-
-.card:hover::before {
-  opacity: 1;
-}
-
-.card::before,
-.card::after {
-  border-radius: inherit;
-  content: '';
-  height: 100%;
-  left: 0px;
-  opacity: 0;
-  position: absolute;
-  top: 0px;
-  transition: opacity 500ms;
-  width: 100%;
 }
 
 .card::before {
   background: radial-gradient(
     400px circle at var(--mouse-x) var(--mouse-y),
-    rgba(255, 255, 255, 0.06),
+    rgb(255 255 255 / 6%),
     transparent 99%
   );
   z-index: 3;
@@ -196,10 +175,31 @@ onMounted(() => {
 .card::after {
   background: radial-gradient(
     100px circle at var(--mouse-x) var(--mouse-y),
-    rgba(255, 255, 255, 0.1),
+    rgb(255 255 255 / 10%),
     transparent 99%
   );
   z-index: 1;
+}
+
+.card::before,
+.card::after {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  content: '';
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  transition: opacity 500ms;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+#cards:hover > .card::after {
+  opacity: 1;
 }
 
 .card > .card-content {
@@ -221,14 +221,14 @@ h2,
 h3,
 h4,
 span {
-  color: rgb(240, 240, 240);
-  font-family: 'Rubik', sans-serif;
+  color: rgb(240 240 240);
+  font-family: Rubik, sans-serif;
   font-weight: 400;
-  margin: 0px;
+  margin: 0;
 }
 
 i {
-  color: rgb(240, 240, 240);
+  color: rgb(240 240 240);
 }
 
 .card-image {
@@ -249,7 +249,7 @@ i {
   display: flex;
   flex-grow: 1;
   justify-content: flex-start;
-  padding: 0px 20px;
+  padding: 0 20px;
 }
 
 .card-info {
@@ -270,7 +270,7 @@ i {
 }
 
 .card-info-title > h4 {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgb(255 255 255 / 50%);
   font-size: 0.85em;
   margin-top: 8px;
 }
@@ -285,7 +285,7 @@ i {
 
   #cards {
     max-width: 1000px;
-    padding: 10px 0px;
+    padding: 10px 0;
   }
 
   .card {
@@ -308,7 +308,7 @@ i {
   }
 
   .card-info-wrapper {
-    padding: 0px 10px;
+    padding: 0 10px;
   }
 
   .card-info > i {
@@ -331,31 +331,13 @@ i {
   }
 }
 
-/* -- ↓ ↓ ↓ YouTube link styles ↓ ↓ ↓ -- */
-
-#youtube-link {
-  bottom: 10px;
-}
-
-#youtube-link > i {
-  color: rgb(239, 83, 80);
-}
-
-#source-link {
-  bottom: 60px;
-}
-
-#source-link > i {
-  color: rgb(94, 106, 210);
-}
-
 .link {
   align-items: center;
   backdrop-filter: blur(3px);
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgb(255 255 255 / 5%);
+  border: 1px solid rgb(255 255 255 / 10%);
   border-radius: 6px;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 2px 2px rgb(0 0 0 / 10%);
   cursor: pointer;
   display: inline-flex;
   gap: 5px;
@@ -366,9 +348,8 @@ i {
   z-index: 100;
 }
 
-.link:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+.link > span {
+  color: white;
 }
 
 .link > i,
@@ -377,7 +358,26 @@ i {
   line-height: 20px;
 }
 
-.link > span {
-  color: white;
+.link:hover {
+  background-color: rgb(255 255 255 / 10%);
+  border: 1px solid rgb(255 255 255 / 20%);
+}
+
+/* -- ↓ ↓ ↓ YouTube link styles ↓ ↓ ↓ -- */
+
+#source-link {
+  bottom: 60px;
+}
+
+#source-link > i {
+  color: rgb(94 106 210);
+}
+
+#youtube-link {
+  bottom: 10px;
+}
+
+#youtube-link > i {
+  color: rgb(239 83 80);
 }
 </style>

@@ -58,6 +58,7 @@ export type CreateAuthorInput = {
   readonly email: Scalars['String'];
   readonly handle: Scalars['String'];
   readonly name: Scalars['String'];
+  readonly verified?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type CreateInteractionInput = {

@@ -1,5 +1,5 @@
 import { IsInt, IsDefined, IsString, IsBoolean } from 'class-validator'
-import { Author, Interaction } from './'
+import { Author, Interaction, TagsOnPosts } from './'
 
 export class Post {
   @IsDefined()
@@ -26,10 +26,6 @@ export class Post {
 
   @IsDefined()
   @IsString()
-  tags!: string
-
-  @IsDefined()
-  @IsString()
   text!: string
 
   @IsDefined()
@@ -39,4 +35,7 @@ export class Post {
   @IsDefined()
   @IsString()
   media!: string
+
+  @IsDefined()
+  TagsOnPosts!: TagsOnPosts[]
 }

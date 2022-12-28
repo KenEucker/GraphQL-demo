@@ -3,12 +3,12 @@ import PointOfVue from '../components/atomic/PointOfVue.vue'
 import SignUp from '../components/pov/SignUp.vue'
 </script>
 <template>
-  <div class="m-6 leading-normal tracking-normal text-indigo-400 bg-fixed bg-cover">
+  <div class="m-6 leading-normal tracking-normal text-ll-primary bg-fixed bg-cover">
     <!--Nav-->
     <div class="container w-full mx-auto">
       <div class="flex items-center justify-between w-full">
         <a
-          class="flex items-center text-2xl font-bold text-indigo-400 no-underline hover:no-underline lg:text-4xl"
+          class="flex items-center text-2xl font-bold text-ll-primary no-underline hover:no-underline lg:text-4xl"
           href="#"
         >
           <point-of-vue :expanded="true" :full="true" />
@@ -16,7 +16,7 @@ import SignUp from '../components/pov/SignUp.vue'
 
         <div class="flex content-center justify-end w-1/2">
           <a
-            class="inline-block h-10 p-2 text-center text-blue-300 no-underline duration-300 ease-in-out transform hover:text-pink-500 hover:text-underline md:h-auto md:p-4 hover:scale-125"
+            class="inline-block h-10 p-2 text-center text-green-300 no-underline duration-300 ease-in-out transform hover:text-pink-500 hover:text-underline md:h-auto md:p-4 hover:scale-125"
             href="https://twitter.com/intent/tweet?url=#"
           >
             <svg class="h-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
@@ -26,7 +26,7 @@ import SignUp from '../components/pov/SignUp.vue'
             </svg>
           </a>
           <a
-            class="inline-block h-10 p-2 text-center text-blue-300 no-underline duration-300 ease-in-out transform hover:text-pink-500 hover:text-underline md:h-auto md:p-4 hover:scale-125"
+            class="inline-block h-10 p-2 text-center text-green-300 no-underline duration-300 ease-in-out transform hover:text-pink-500 hover:text-underline md:h-auto md:p-4 hover:scale-125"
             href="https://www.facebook.com/sharer/sharer.php?u=#"
           >
             <svg class="h-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
@@ -62,21 +62,21 @@ import SignUp from '../components/pov/SignUp.vue'
       </div>
 
       <!--Right Col-->
-      <div class="relative w-full p-12 overflow-hidden z-1 xl:w-3/5">
+      <div class="relative w-full p-12 overflow-hidden xl:w-3/5">
         <div
-          class="relative w-full mx-auto transition duration-700 ease-in-out transform z-1 md:w-4/5 -rotate-6 hover:scale-105 hover:rotate-6"
+          class="relative w-full mx-auto transition duration-700 ease-in-out transform md:w-4/5 -rotate-6 hover:scale-105 hover:rotate-6"
         >
-          <img class="relative z-1" src="/img/macbook.svg" />
+          <img class="relative" src="/img/macbook.svg" />
           <img
             src="/img/app-screenshot.png"
             alt="app screenshot"
-            class="absolute z-2 top-[7%] left-0 bottom-0 right-0 mx-auto w-[80%] h-[85%] overflow-hidden"
+            class="absolute top-[7%] left-0 bottom-0 right-0 mx-auto w-[80%] h-[85%] overflow-hidden"
           />
         </div>
       </div>
 
       <div class="mx-auto md:pt-16">
-        <p class="pb-8 font-bold text-center text-blue-400 lg:pb-6">Download our app:</p>
+        <p class="pb-8 font-bold text-center text-ll-primary lg:pb-6">Download our app:</p>
         <div class="flex justify-center w-full pb-24 md:justify-start lg:pb-0 fade-in">
           <img
             src="/img/App-Store.svg"

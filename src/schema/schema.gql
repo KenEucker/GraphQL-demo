@@ -162,6 +162,7 @@ input CreateAuthorInput {
   email: String!
   avatar: String
   banner: String
+  verified: Boolean
 }
 input CreateInteractionInput {
   authorId: Int!
