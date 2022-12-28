@@ -7,7 +7,7 @@ import { schema, pubsub, prisma } from './src/schema'
 import db from './src/store/seed'
 
 /// Environment Variables and their Defaults
-const originUrl = process.env.ORIGIN_URL ?? 'http://localhost'
+const originUrl = process.env.ORIGIN ?? 'http://localhost'
 const originPort = process.env.ORIGIN_PORT ?? 8080
 const graphUrl = process.env.GRAPH_URL ?? 'http://localhost'
 const graphPort = process.env.GRAPH_PORT ?? 8100
