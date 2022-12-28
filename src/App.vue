@@ -13,11 +13,7 @@ const povState = usePovState()
 povState.initPovState()
 </script>
 <template>
-  <app-layout
-    :left-menu-open="menuState.leftMenuOpen"
-    :right-menu-open="menuState.rightMenuOpen"
-    :show-create-post="menuState.isCreatePostOpen"
-  >
+  <app-layout :left-menu-open="menuState.leftMenuOpen" :right-menu-open="menuState.rightMenuOpen">
     <template #header>
       <header-bar
         :display-right-menu-button="!currentRoute.meta.hideRightMenu"

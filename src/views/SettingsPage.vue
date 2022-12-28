@@ -3,8 +3,10 @@ import PovAuthor from '../components/author/PovAuthor.vue'
 import { ref, computed } from 'vue'
 import { useAuthorState } from '../store/state'
 import { Author } from '../schema/generated/types.d'
+import { useRouter } from 'vue-router'
 
 const authorState = useAuthorState()
+const router = useRouter()
 const emailRef = ref()
 const handleRef = ref()
 const nameRef = ref()
@@ -13,6 +15,10 @@ const birthdayRef = ref()
 const locationRef = ref()
 const bioRef = ref()
 const avatarRef = ref()
+
+if (authorState.isLoggedIn && !authorState.isAuthorSignedUp) {
+  router.push('/')
+}
 
 const fields = computed(() => [
   {
@@ -107,7 +113,7 @@ function saveFields(e: Event) {
       class="max-w-4xl p-6 mx-auto rounded-md shadow-md mx-auto dark:bg-gray-800 mt-20"
       :style="{ background: `url(${authorState.getAuthor.banner}) no-repeat right` }"
     >
-      <pov-author :author="authorState.getAuthor" size="large" />
+      <pov-author :author="authorState.getAuthor" size="large" :go-to-author-page="false" />
     </section>
     <section class="max-w-4xl p-6 mx-auto rounded-md shadow-md dark:bg-gray-800 mt-20">
       <h1 class="text-xl font-bold capitalize dark:text-white">Profile settings</h1>

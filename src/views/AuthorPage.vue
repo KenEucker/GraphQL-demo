@@ -105,7 +105,12 @@ function selected(idx: number) {
         <div class="banner bg-gray-700 min-h-50 h-50 object-fill">
           <img :src="author?.banner" class="w-[100%]" />
         </div>
-        <pov-author :author="author" size="medium" class="-mt-18 -ml-10" />
+        <pov-author
+          :author="author"
+          size="medium"
+          class="-mt-18 -ml-10"
+          :go-to-author-page="false"
+        />
         <div class="flex">
           <button
             v-for="(section, index) in state.sec"

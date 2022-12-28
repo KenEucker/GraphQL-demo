@@ -19,7 +19,7 @@ import { createPinia } from 'pinia'
 const app = createApp(App)
 
 // Auth
-if (process.env.AUTH0_DOMAIN) {
+if (auth.initialized) {
   app.use(auth)
 }
 

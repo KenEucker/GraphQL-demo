@@ -5,6 +5,9 @@ import AuthorAvatar from './AuthorAvatar.vue'
 import AuthorHandle from './AuthorHandle.vue'
 import AuthorStatus from './AuthorStatus.vue'
 import AuthorName from './AuthorName.vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const props = defineProps({
   author: {
@@ -22,6 +25,10 @@ const props = defineProps({
     type: String,
     default: 'small',
   },
+  goToAuthorPage: {
+    type: Boolean,
+    default: true,
+  },
 })
 
 const classes = computed(() => {
@@ -35,11 +42,23 @@ const classes = computed(() => {
       return 'w-15 h-15'
   }
 })
+
+const goToAuthorPage = props.goToAuthorPage
+  ? () => {
+      router.push(`/${props.author.handle}`)
+    }
+  : () => {
+      /// nothing to do
+    }
 </script>
 <template>
   <div class="flex relative" :class="props.size === 'large' ? 'inline-grid' : 'items-center'">
     <extra-special-checkmark v-if="author.verified" :size="props.size" class="special-aint-ya" />
-    <author-avatar :author="props.author" :class="classes" />
+    <author-avatar
+      :author="props.author"
+      :class="`${props.goToAuthorPage ? 'cursor-pointer' : ''} ${classes}`"
+      @click="goToAuthorPage"
+    />
     <div
       v-if="!props.imageOnly"
       class="flex flex-col ml-2 text-left"

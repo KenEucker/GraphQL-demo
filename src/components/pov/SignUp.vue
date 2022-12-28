@@ -18,14 +18,11 @@ const errors = ref()
 const showSignupModal = ref(false)
 const authorState = useAuthorState()
 const router = useRouter()
+const author = reactive(authorState.getAuthor)
 
-const author = reactive({
-  email: '',
-  name: '',
-  handle: '',
-  avatar: '/img/add-profile.png',
-  verified: false,
-})
+if (authorState.isLoggedIn && !authorState.isAuthorSignedUp) {
+  showSignupModal.value = true
+}
 
 const signUp = async (e: Event) => {
   e.preventDefault()
@@ -43,7 +40,12 @@ const completeSignup = async (e: Event) => {
   e.stopPropagation()
 
   loadingRef.value = true
-  const result = await authorState.authorSignup({ ...author } as Author)
+  const result = await authorState.authorSignup({
+    email: author.email,
+    name: author.name,
+    handle: author.handle,
+    avatar: author.avatar,
+  } as Author)
   console.log({ result })
   if (result) {
     errors.value = result
@@ -62,7 +64,7 @@ const completeSignup = async (e: Event) => {
       class="absolute h-100vh w-100vw top-0 bottom-0 left-0 right-0"
       @click="showSignupModal = false"
     ></div>
-    <div v-if="authorState.isLoggedIn">
+    <div v-if="authorState.isLoggedIn && authorState.getAuthor.id !== 0">
       <div class="mb-4 text-center">
         <label class="block py-2 mb-2 font-bold text-green-300 text-2xl">
           Thank you for signing up!
@@ -103,7 +105,11 @@ const completeSignup = async (e: Event) => {
             class="w-full max-w-sm p-4border border-gray-200 rounded-lg shadow-md sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
             @submit="completeSignup"
           >
-            <pov-author :size="width < 500 ? 'medium' : 'large'" :author="author" />
+            <pov-author
+              :size="width < 500 ? 'medium' : 'large'"
+              :author="author"
+              :go-to-author-page="false"
+            />
             <div
               v-if="errors"
               class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
@@ -192,7 +198,7 @@ const completeSignup = async (e: Event) => {
                 <div class="flex items-start">
                   <div class="flex items-center h-5">
                     <input
-                      id="verify"
+                      id="verified"
                       v-model="author.verified"
                       type="checkbox"
                       class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-green-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-green-600 dark:ring-offset-gray-800"

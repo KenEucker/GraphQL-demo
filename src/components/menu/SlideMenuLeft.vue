@@ -43,7 +43,7 @@ const authorPanelClick = () => {
     <author-card
       class="cursor-pointer"
       :is-expanded="props.isExpanded"
-      :use-auth0="true"
+      :use-auth0="authorState.isAuth0"
       @click="authorPanelClick"
     />
     <ul class="flex flex-col pt-5" :class="props.isExpanded ? '' : 'justify-center flex '">

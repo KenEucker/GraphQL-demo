@@ -3,13 +3,6 @@ import MoreIcon from 'vue-ionicons/dist/md-more.vue'
 import Popper from 'vue3-popper'
 
 const props = defineProps({
-  post: {
-    type: Object,
-    default: () => {
-      return {}
-    },
-    required: true,
-  },
   canEdit: {
     type: Boolean,
     default: false,

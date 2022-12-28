@@ -1,9 +1,16 @@
 import { createAuth0 } from '@auth0/auth0-vue'
 
-const auth = createAuth0({
-  domain: process.env.AUTH0_DOMAIN ?? '',
-  client_id: process.env.AUTH0_CID ?? '',
-  redirect_uri: window.location.origin,
-})
+const auth: any =
+  process.env.AUTH0_DOMAIN && process.env.AUTH0_CID
+    ? createAuth0({
+        domain: process.env.AUTH0_DOMAIN ?? '',
+        client_id: process.env.AUTH0_CID ?? '',
+        redirect_uri: window.location.origin,
+      })
+    : {}
+
+if (process.env.AUTH0_DOMAIN && process.env.AUTH0_CID) {
+  auth.initialized = true
+}
 
 export default auth

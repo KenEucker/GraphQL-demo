@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import LoginIcon from 'vue-ionicons/dist/md-log-in.vue'
 import LogoutIcon from 'vue-ionicons/dist/md-log-out.vue'
 import PointOfVue from '../atomic/PointOfVue.vue'
@@ -8,7 +8,7 @@ import PovAuthor from './PovAuthor.vue'
 import { useMenuState, useAuthorState } from '../../store/state'
 import { storeToRefs } from 'pinia'
 import LoadingSpinner from '../atomic/LoadingSpinner.vue'
-
+import { watch } from 'vue'
 const emailInput = ref()
 const menuState = useMenuState()
 const authorState = useAuthorState()
@@ -24,7 +24,9 @@ const { author } = storeToRefs(authorState)
 watch(author, () => {
   if (authorState.isLoggedIn) {
     loggingIn.value = false
-    menuState.openCreatePost()
+    if (authorState.getAuthorId !== 0) {
+      menuState.openCreatePost()
+    }
   } else {
     menuState.closeCreatePost()
   }
@@ -40,10 +42,10 @@ const logout = () => {
   authorState.logout()
 }
 
-authorState.login()
+authorState.checkLogin()
 
-const useAuth0Login = () => {
-  authorState.loginWithAuth0()
+const useLogin = async () => {
+  await authorState.loginWithAuth0()
 }
 </script>
 
@@ -85,7 +87,7 @@ const useAuth0Login = () => {
       <loading-spinner v-if="loggingIn" :full-screen="false" />
       <div v-else-if="errorMessage" @click="errorMessage = null">{{ errorMessage }}</div>
       <div v-else-if="props.useAuth0">
-        <pop-button> Login <login-icon h="24" w="24" @click="useAuth0Login" /> </pop-button>
+        <pop-button> Login <login-icon h="24" w="24" @click="useLogin" /> </pop-button>
       </div>
       <div v-else class="mb-4">
         <label class="block mb-2 text-sm font-bold text-center text-grey-darker" for="email">

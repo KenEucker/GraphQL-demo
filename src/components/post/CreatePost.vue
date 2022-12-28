@@ -99,6 +99,7 @@ onMounted(() => {
           v-show="showEmojiPicker.show"
           :input="true"
           class="absolute z-2000"
+          :native="true"
           @select="onSelectEmoji"
         />
         <input
