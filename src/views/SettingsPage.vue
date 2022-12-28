@@ -105,7 +105,7 @@ function saveFields(e: Event) {
   <div>
     <section
       class="max-w-4xl p-6 mx-auto rounded-md shadow-md mx-auto dark:bg-gray-800 mt-20"
-      :style="{ background: `url(/img/twitter-banner.jpg) no-repeat right` }"
+      :style="{ background: `url(${authorState.getAuthor.banner}) no-repeat right` }"
     >
       <pov-author :author="authorState.getAuthor" size="large" />
     </section>

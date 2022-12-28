@@ -20,6 +20,9 @@ export default defineConfig({
       GRAPH_PORT: process.env.GRAPH_PORT ?? '8100',
       GRAPH_PATH: process.env.GRAPH_PATH ?? 'graphql',
       STUDIO_URL: process.env.STUDIO_URL ?? 'http://localhost:5555',
+      AUTH0_DOMAIN: process.env.AUTH0_DOMAIN,
+      AUTH0_CID: process.env.AUTH0_CID,
+      AUTH0_S: process.env.AUTH0_S,
     }),
   ],
   server: {

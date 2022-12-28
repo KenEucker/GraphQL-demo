@@ -40,7 +40,12 @@ const authorPanelClick = () => {
     class="relative flex flex-col items-center w-full h-full overflow-x-hidden overflow-y-auto"
     :class="props.isExpanded ? 'p-10 px-5' : 'p-2'"
   >
-    <author-card class="cursor-pointer" :is-expanded="props.isExpanded" @click="authorPanelClick" />
+    <author-card
+      class="cursor-pointer"
+      :is-expanded="props.isExpanded"
+      :use-auth0="true"
+      @click="authorPanelClick"
+    />
     <ul class="flex flex-col pt-5" :class="props.isExpanded ? '' : 'justify-center flex '">
       <li
         v-for="route in routes"

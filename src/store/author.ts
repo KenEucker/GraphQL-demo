@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { gql } from '@apollo/client/core'
 import { useStorage } from '@vueuse/core'
 import { Author } from '../schema/generated/types.d'
+import auth0 from '../auth'
 
 // Local storage state
 const storedEmail = useStorage('author-email', '')
@@ -69,6 +70,9 @@ export const useAuthorState = defineStore({
       } catch (err: any) {
         return err.message ?? err
       }
+    },
+    loginWithAuth0() {
+      auth0.loginWithRedirect()
     },
     loginWithEmail(email: string) {
       return this.login({ email } as Author)

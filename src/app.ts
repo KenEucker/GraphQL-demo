@@ -11,11 +11,18 @@ import App from './App.vue'
 
 import { apolloClient } from './store'
 import router from './router'
+import auth from './auth'
 
 import { MotionPlugin } from '@vueuse/motion'
 import { createPinia } from 'pinia'
 
 const app = createApp(App)
+
+// Auth
+if (process.env.AUTH0_DOMAIN) {
+  app.use(auth)
+}
+
 // GraphQL
 app.provide(DefaultApolloClient, apolloClient)
 

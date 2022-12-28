@@ -3,6 +3,7 @@ import { ref, watch } from 'vue'
 import LoginIcon from 'vue-ionicons/dist/md-log-in.vue'
 import LogoutIcon from 'vue-ionicons/dist/md-log-out.vue'
 import PointOfVue from '../atomic/PointOfVue.vue'
+import PopButton from '../atomic/PopButton.vue'
 import PovAuthor from './PovAuthor.vue'
 import { useMenuState, useAuthorState } from '../../store/state'
 import { storeToRefs } from 'pinia'
@@ -16,6 +17,7 @@ const errorMessage = ref()
 
 const props = defineProps({
   isExpanded: Boolean,
+  useAuth0: Boolean,
 })
 
 const { author } = storeToRefs(authorState)
@@ -39,6 +41,10 @@ const logout = () => {
 }
 
 authorState.login()
+
+const useAuth0Login = () => {
+  authorState.loginWithAuth0()
+}
 </script>
 
 <template>
@@ -78,6 +84,9 @@ authorState.login()
     >
       <loading-spinner v-if="loggingIn" :full-screen="false" />
       <div v-else-if="errorMessage" @click="errorMessage = null">{{ errorMessage }}</div>
+      <div v-else-if="props.useAuth0">
+        <pop-button> Login <login-icon h="24" w="24" @click="useAuth0Login" /> </pop-button>
+      </div>
       <div v-else class="mb-4">
         <label class="block mb-2 text-sm font-bold text-center text-grey-darker" for="email">
           <point-of-vue :expanded="props.isExpanded" />

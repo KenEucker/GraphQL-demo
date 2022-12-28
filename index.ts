@@ -6,16 +6,6 @@ import { createYoga } from 'graphql-yoga'
 import { schema, pubsub, prisma } from './src/schema'
 import db from './src/store/seed'
 
-// import { loadSchemaSync } from "@graphql-tools/load"
-// import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader"
-
-// const typeDefs = loadSchemaSync("src/schema/schema.gql", {
-//   loaders: [new GraphQLFileLoader()],
-// })
-
-// TODO: convert to NextJs project?
-// import type { NextApiRequest, NextApiResponse } from 'next'
-
 /// Environment Variables and their Defaults
 const originUrl = process.env.ORIGIN_URL ?? 'http://localhost'
 const originPort = process.env.ORIGIN_PORT ?? 8080
