@@ -24,7 +24,7 @@ const yoga = createYoga({
     prisma,
   },
   cors: {
-    origin: `${originUrl}:${originPort}`,
+    origin: `${originUrl}${originPort !== 80 ? `:${originPort}` : ''}`,
     credentials: true,
   },
 })
