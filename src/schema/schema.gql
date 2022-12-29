@@ -69,27 +69,25 @@ type Query {
   post(where: PostByInput, id: Int): Post
   posts(where: PostByInput): [Post]
 
-  getNumberOfInteractionsForPost(from: GetNumberInteractionsForPostInput): GetNumberOfInteractionsForPostPayload
+  getPostInteractions(id: Int!): GetPostInteractionsPayload
 }
 
 type Mutation {
   createAuthor(author: CreateAuthorInput!): Author!
-  createInteraction(interaction: CreateInteractionInput!): Interaction!
-  createPost(post: CreatePostInput!): Post!
-
-  deleteAuthor(authorId: Int, where: AuthorByInput): Author!
-  deleteInteraction(interactionId: Int, where: InteractionByInput): Interaction!
-  deletePost(postId: Int, where: PostByInput): Post!
-
   updateAuthor(data: UpdateAuthorInput!, id: Int): Author!
-  updateInteraction(data: UpdateInteractionInput!, id: Int): Interaction!
-  updatePost(data: UpdatePostInput!, id: Int): Post!
-
-  publishPost(id: Int!): Post!
-  unPublishPost(id: Int!): Post!
-
+  deleteAuthor(authorId: Int, where: AuthorByInput): Author!
   verifyAuthor(id: Int!): Author!
   unVerifyAuthor(id: Int!): Author!
+
+  createInteraction(interaction: CreateInteractionInput!): Interaction!
+  updateInteraction(data: UpdateInteractionInput!, id: Int): Interaction!
+  deleteInteraction(interactionId: Int, where: InteractionByInput): Interaction!
+
+  createPost(post: CreatePostInput!): Post!
+  updatePost(data: UpdatePostInput!, id: Int): Post!
+  deletePost(postId: Int, where: PostByInput): Post!
+  publishPost(id: Int!): Post!
+  unPublishPost(id: Int!): Post!
 }
 
 type Subscription {
@@ -114,11 +112,11 @@ type PostSubscriptionPayload {
   data: Post
 }
 
-type GetNumberOfInteractionsForPostPayload {
-  like: Int
-  love: Int
-  repost: Int
-  share: Int
+type GetPostInteractionsPayload {
+  likes: Int
+  loves: Int
+  reposts: Int
+  shares: Int
 }
 
 input AuthorByInput {
@@ -164,6 +162,7 @@ input CreateAuthorInput {
   banner: String
   verified: Boolean
 }
+
 input CreateInteractionInput {
   authorId: Int!
   postId: Int!
@@ -173,6 +172,7 @@ input CreateInteractionInput {
   repost: Boolean
   share: Boolean
 }
+
 input CreatePostInput {
   authorId: Int!
   title: String!
@@ -193,6 +193,7 @@ input UpdateAuthorInput {
   location: String
   birthday: String
 }
+
 input UpdateInteractionInput {
   authorId: Int!
   postId: Int!
@@ -202,6 +203,7 @@ input UpdateInteractionInput {
   repost: Boolean
   share: Boolean
 }
+
 input UpdatePostInput {
   authorId: Int!
   postId: Int!
@@ -209,13 +211,6 @@ input UpdatePostInput {
   text: String
   status: String
   media: [String!]
-}
-input GetNumberInteractionsForPostInput {
-  id: Int!
-  like: Boolean
-  love: Boolean
-  share: Boolean
-  repost: Boolean
 }
 
 schema {

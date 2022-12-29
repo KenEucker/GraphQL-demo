@@ -80,20 +80,12 @@ export type CreatePostInput = {
   readonly title: Scalars['String'];
 };
 
-export type GetNumberInteractionsForPostInput = {
-  readonly id: Scalars['Int'];
-  readonly like?: InputMaybe<Scalars['Boolean']>;
-  readonly love?: InputMaybe<Scalars['Boolean']>;
-  readonly repost?: InputMaybe<Scalars['Boolean']>;
-  readonly share?: InputMaybe<Scalars['Boolean']>;
-};
-
-export type GetNumberOfInteractionsForPostPayload = {
-  readonly __typename?: 'GetNumberOfInteractionsForPostPayload';
-  readonly like?: Maybe<Scalars['Int']>;
-  readonly love?: Maybe<Scalars['Int']>;
-  readonly repost?: Maybe<Scalars['Int']>;
-  readonly share?: Maybe<Scalars['Int']>;
+export type GetPostInteractionsPayload = {
+  readonly __typename?: 'GetPostInteractionsPayload';
+  readonly likes?: Maybe<Scalars['Int']>;
+  readonly loves?: Maybe<Scalars['Int']>;
+  readonly reposts?: Maybe<Scalars['Int']>;
+  readonly shares?: Maybe<Scalars['Int']>;
 };
 
 export type Interaction = {
@@ -267,7 +259,7 @@ export type Query = {
   readonly __typename?: 'Query';
   readonly author?: Maybe<Author>;
   readonly authors?: Maybe<ReadonlyArray<Maybe<Author>>>;
-  readonly getNumberOfInteractionsForPost?: Maybe<GetNumberOfInteractionsForPostPayload>;
+  readonly getPostInteractions?: Maybe<GetPostInteractionsPayload>;
   readonly interaction?: Maybe<Interaction>;
   readonly interactions?: Maybe<ReadonlyArray<Maybe<Interaction>>>;
   readonly post?: Maybe<Post>;
@@ -286,8 +278,8 @@ export type QueryAuthorsArgs = {
 };
 
 
-export type QueryGetNumberOfInteractionsForPostArgs = {
-  from?: InputMaybe<GetNumberInteractionsForPostInput>;
+export type QueryGetPostInteractionsArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -448,8 +440,7 @@ export type ResolversTypes = {
   CreateAuthorInput: CreateAuthorInput;
   CreateInteractionInput: CreateInteractionInput;
   CreatePostInput: CreatePostInput;
-  GetNumberInteractionsForPostInput: GetNumberInteractionsForPostInput;
-  GetNumberOfInteractionsForPostPayload: ResolverTypeWrapper<GetNumberOfInteractionsForPostPayload>;
+  GetPostInteractionsPayload: ResolverTypeWrapper<GetPostInteractionsPayload>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Interaction: ResolverTypeWrapper<Interaction>;
   InteractionByInput: InteractionByInput;
@@ -481,8 +472,7 @@ export type ResolversParentTypes = {
   CreateAuthorInput: CreateAuthorInput;
   CreateInteractionInput: CreateInteractionInput;
   CreatePostInput: CreatePostInput;
-  GetNumberInteractionsForPostInput: GetNumberInteractionsForPostInput;
-  GetNumberOfInteractionsForPostPayload: GetNumberOfInteractionsForPostPayload;
+  GetPostInteractionsPayload: GetPostInteractionsPayload;
   Int: Scalars['Int'];
   Interaction: Interaction;
   InteractionByInput: InteractionByInput;
@@ -526,11 +516,11 @@ export type AuthorSubscriptionPayloadResolvers<ContextType = any, ParentType ext
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GetNumberOfInteractionsForPostPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['GetNumberOfInteractionsForPostPayload'] = ResolversParentTypes['GetNumberOfInteractionsForPostPayload']> = {
-  like?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  love?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  repost?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  share?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+export type GetPostInteractionsPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['GetPostInteractionsPayload'] = ResolversParentTypes['GetPostInteractionsPayload']> = {
+  likes?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  loves?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  reposts?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  shares?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -590,7 +580,7 @@ export type PostSubscriptionPayloadResolvers<ContextType = any, ParentType exten
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   author?: Resolver<Maybe<ResolversTypes['Author']>, ParentType, ContextType, Partial<QueryAuthorArgs>>;
   authors?: Resolver<Maybe<ReadonlyArray<Maybe<ResolversTypes['Author']>>>, ParentType, ContextType, Partial<QueryAuthorsArgs>>;
-  getNumberOfInteractionsForPost?: Resolver<Maybe<ResolversTypes['GetNumberOfInteractionsForPostPayload']>, ParentType, ContextType, Partial<QueryGetNumberOfInteractionsForPostArgs>>;
+  getPostInteractions?: Resolver<Maybe<ResolversTypes['GetPostInteractionsPayload']>, ParentType, ContextType, RequireFields<QueryGetPostInteractionsArgs, 'id'>>;
   interaction?: Resolver<Maybe<ResolversTypes['Interaction']>, ParentType, ContextType, Partial<QueryInteractionArgs>>;
   interactions?: Resolver<Maybe<ReadonlyArray<Maybe<ResolversTypes['Interaction']>>>, ParentType, ContextType, Partial<QueryInteractionsArgs>>;
   post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, Partial<QueryPostArgs>>;
@@ -607,7 +597,7 @@ export type SubscriptionResolvers<ContextType = any, ParentType extends Resolver
 export type Resolvers<ContextType = any> = {
   Author?: AuthorResolvers<ContextType>;
   AuthorSubscriptionPayload?: AuthorSubscriptionPayloadResolvers<ContextType>;
-  GetNumberOfInteractionsForPostPayload?: GetNumberOfInteractionsForPostPayloadResolvers<ContextType>;
+  GetPostInteractionsPayload?: GetPostInteractionsPayloadResolvers<ContextType>;
   Interaction?: InteractionResolvers<ContextType>;
   InteractionSubscriptionPayload?: InteractionSubscriptionPayloadResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;

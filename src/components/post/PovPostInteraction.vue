@@ -7,6 +7,7 @@ import Repost from 'vue-ionicons/dist/md-sync.vue'
 import PopButton from '../atomic/PopButton.vue'
 import { gql } from '@apollo/client/core'
 import { useMutation } from '@vue/apollo-composable'
+import { variableDeclaration } from '@babel/types'
 
 const props = defineProps({
   count: {
@@ -46,19 +47,42 @@ const mutation = gql`
 const { mutate: useUpdateInteractionMutation } = useMutation(mutation)
 
 async function onPostInteraction() {
+  console.log({ props })
   if (props.authorId === 0 || props.disableInteraction) {
     return
   }
 
-  const updatingInteraction = {
+  const updatingInteraction: {
+    postId: number
+    authorId: number
+    like?: boolean
+    love?: boolean
+    repost?: boolean
+    share?: boolean
+  } = {
     postId: props.postId,
     authorId: props.authorId,
-    like: true,
+  }
+  switch (props.variant) {
+    case 'like':
+      updatingInteraction.like = true
+      break
+    case 'love':
+      updatingInteraction.love = true
+      break
+    case 'repost':
+      updatingInteraction.repost = true
+      break
+    case 'share':
+      updatingInteraction.share = true
+      break
   }
 
   const updatedPostInteraction = await useUpdateInteractionMutation({
     data: updatingInteraction,
   })
+
+  console.log({ updatedPostInteraction })
 
   emit('onInteraction', props.variant)
 }

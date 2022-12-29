@@ -5,7 +5,7 @@ import EnvironmentPlugin from 'vite-plugin-environment'
 import env from 'dotenv'
 env.config()
 
-const port = process.env.PORT ? parseInt(process.env.PORT) : 8080
+const port = process.env.PORT ? Number(process.env.PORT) : 8080
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -26,10 +26,10 @@ export default defineConfig({
     }),
   ],
   server: {
-    port: process.env.ORIGIN_PORT ? parseInt(process.env.ORIGIN_PORT) : port,
+    port: process.env.ORIGIN_PORT ? Number(process.env.ORIGIN_PORT) : port,
     // host: process.env.ORIGIN_HOST ?? 'localhost',
   },
   preview: {
-    port: process.env.ORIGIN_PORT ? parseInt(process.env.ORIGIN_PORT) : port,
+    port: process.env.ORIGIN_PORT ? Number(process.env.ORIGIN_PORT) : port,
   },
 })

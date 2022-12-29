@@ -49,7 +49,6 @@ const props = defineProps({
       v-if="!povStore.isSimpleMode"
       :author-id="authorState.getAuthorId"
       :post-id="props.post.id"
-      :disable-interaction="true"
     />
   </div>
 </template>

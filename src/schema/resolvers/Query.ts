@@ -1,5 +1,6 @@
 import { Author, Interaction, Post } from '../generated/types'
 import { GraphQLError } from 'graphql'
+import { Prisma } from '@prisma/client'
 
 const Query = {
   // @ts-ignore
@@ -112,21 +113,31 @@ const Query = {
   },
 
   // @ts-ignore
-  getNumberOfInteractionsForPost: async (parent, { from }, { prisma }, info) => {
-    const counters: any = {}
-    if (from.like) counters.like = true
-    if (from.love) counters.love = true
-    if (from.repost) counters.repost = true
-    if (from.share) counters.share = true
+  getPostInteractions: async (parent, { id }, { prisma }, info) => {
+    const query = Prisma.sql`SELECT
+      COALESCE(SUM(CASE WHEN "like"=true THEN 1 ELSE 0 END), 0)::int as likes,
+      COALESCE(SUM(CASE WHEN love=true THEN 1 ELSE 0 END), 0)::int as loves,
+      COALESCE(SUM(CASE WHEN repost=true THEN 1 ELSE 0 END), 0)::int as reposts,
+      COALESCE(SUM(CASE WHEN "share"=true THEN 1 ELSE 0 END), 0)::int as shares
+    FROM "Interaction" WHERE "postId"=${Number(id)}`
 
-    const { _count } = await prisma.interaction.findMany({
-      _count: counters,
-      where: {
-        postId: from.id,
-      },
-    })
+    const result = await prisma.$queryRaw(query)
 
-    return _count
+    const interactions = {
+      likes: 0,
+      loves: 0,
+      reposts: 0,
+      shares: 0,
+    }
+
+    if (result[0]) {
+      interactions.likes = Number(result[0].likes)
+      interactions.loves = Number(result[0].loves)
+      interactions.reposts = Number(result[0].reposts)
+      interactions.shares = Number(result[0].shares)
+    }
+
+    return interactions
   },
 }
 

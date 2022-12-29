@@ -686,87 +686,12 @@
         "possibleTypes": null
       },
       {
-        "kind": "INPUT_OBJECT",
-        "name": "GetNumberInteractionsForPostInput",
-        "description": null,
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "like",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "love",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "repost",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "share",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
         "kind": "OBJECT",
-        "name": "GetNumberOfInteractionsForPostPayload",
+        "name": "GetPostInteractionsPayload",
         "description": null,
         "fields": [
           {
-            "name": "like",
+            "name": "likes",
             "description": null,
             "args": [],
             "type": {
@@ -778,7 +703,7 @@
             "deprecationReason": null
           },
           {
-            "name": "love",
+            "name": "loves",
             "description": null,
             "args": [],
             "type": {
@@ -790,7 +715,7 @@
             "deprecationReason": null
           },
           {
-            "name": "repost",
+            "name": "reposts",
             "description": null,
             "args": [],
             "type": {
@@ -802,7 +727,7 @@
             "deprecationReason": null
           },
           {
-            "name": "share",
+            "name": "shares",
             "description": null,
             "args": [],
             "type": {
@@ -2032,16 +1957,20 @@
             "deprecationReason": null
           },
           {
-            "name": "getNumberOfInteractionsForPost",
+            "name": "getPostInteractions",
             "description": null,
             "args": [
               {
-                "name": "from",
+                "name": "id",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "GetNumberInteractionsForPostInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
                 "defaultValue": null,
                 "isDeprecated": false,
@@ -2050,7 +1979,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "GetNumberOfInteractionsForPostPayload",
+              "name": "GetPostInteractionsPayload",
               "ofType": null
             },
             "isDeprecated": false,

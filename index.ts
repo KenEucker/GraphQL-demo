@@ -8,11 +8,11 @@ import db from './src/store/seed'
 
 /// Environment Variables and their Defaults
 const originUrl = process.env.ORIGIN ?? 'http://localhost'
-const originPort = process.env.ORIGIN_PORT ? parseInt(process.env.ORIGIN_PORT) : 8080
+const originPort = process.env.ORIGIN_PORT ? Number(process.env.ORIGIN_PORT) : 8080
 const graphUrl = process.env.GRAPH_URL ?? 'http://localhost'
-const graphPort = process.env.GRAPH_PORT ? parseInt(process.env.GRAPH_PORT) : 8100
+const graphPort = process.env.GRAPH_PORT ? Number(process.env.GRAPH_PORT) : 8100
 const graphPath = process.env.GRAPH_PATH ?? 'graphql'
-const port = process.env.PORT ? parseInt(process.env.PORT) : graphPort
+const port = process.env.PORT ? Number(process.env.PORT) : graphPort
 
 const serverUrl = `${graphUrl}:${port}/${graphPath}`
 

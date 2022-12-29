@@ -1,20 +1,8 @@
 <script setup lang="ts">
 import PovPostInteraction from './PovPostInteraction.vue'
 import { gql } from '@apollo/client/core'
-import { reactive } from 'vue'
-
-const getPostInteractionsQuery = gql`
-  query PovPostGetInteractionNumbers($postId: Int!) {
-    getNumberOfInteractionsForPost(
-      from: { id: $postId, like: true, love: true, share: true, repost: true }
-    ) {
-      like
-      love
-      repost
-      share
-    }
-  }
-`
+import { reactive, watch } from 'vue'
+import { useLazyQuery } from '@vue/apollo-composable'
 
 const interactions = reactive({
   likes: 0,
@@ -37,6 +25,25 @@ const props = defineProps({
     default: false,
   },
 })
+
+const getPostInteractionsQuery = gql`
+  query PovPostGetInteractionNumbers($id: Int!) {
+    getPostInteractions(id: $id) {
+      likes
+      loves
+      reposts
+      shares
+    }
+  }
+`
+const { result, load } = useLazyQuery(getPostInteractionsQuery, { id: props.postId })
+watch(result, ({ getPostInteractions }: any) => {
+  interactions.likes = getPostInteractions.likes
+  interactions.loves = getPostInteractions.loves
+  interactions.reposts = getPostInteractions.reposts
+  interactions.shares = getPostInteractions.shares
+})
+load()
 
 const onInteractionSuccess = (interaction: string) => {
   switch (interaction) {
