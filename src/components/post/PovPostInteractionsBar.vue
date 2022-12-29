@@ -24,6 +24,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  isSelfPost: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const getPostInteractionsQuery = gql`
@@ -49,19 +53,15 @@ const onInteractionSuccess = (interaction: string) => {
   switch (interaction) {
     case 'like':
       interactions.likes = interactions.likes + 1
-      console.log({ likes: interactions.likes })
       break
     case 'love':
       interactions.loves = interactions.loves + 1
-      console.log({ loves: interactions.loves })
       break
     case 'repost':
       interactions.reposts = interactions.reposts + 1
-      console.log({ reposts: interactions.reposts })
       break
     case 'share':
       interactions.shares = interactions.shares + 1
-      console.log({ shares: interactions.shares })
       break
   }
 }
@@ -74,6 +74,8 @@ const onInteractionSuccess = (interaction: string) => {
       :author-id="props.authorId"
       :post-id="props.postId"
       :count="interactions.likes"
+      :hide-count="!props.isSelfPost"
+      :disable-interaction="props.isSelfPost"
       @on-interaction="onInteractionSuccess"
     />
     <pov-post-interaction
@@ -81,6 +83,8 @@ const onInteractionSuccess = (interaction: string) => {
       :author-id="props.authorId"
       :post-id="props.postId"
       :count="interactions.loves"
+      :hide-count="true"
+      :disable-interaction="props.isSelfPost"
       @on-interaction="onInteractionSuccess"
     />
     <pov-post-interaction
@@ -88,6 +92,8 @@ const onInteractionSuccess = (interaction: string) => {
       :post-id="props.postId"
       :author-id="props.authorId"
       :count="interactions.reposts"
+      :hide-count="!props.isSelfPost"
+      :disable-interaction="props.isSelfPost"
       @on-interaction="onInteractionSuccess"
     />
     <pov-post-interaction
@@ -95,7 +101,8 @@ const onInteractionSuccess = (interaction: string) => {
       :post-id="props.postId"
       :author-id="props.authorId"
       :count="interactions.shares"
-      :disable-interaction="props.disableInteraction"
+      :hide-count="props.isSelfPost"
+      :disable-interaction="props.isSelfPost"
       @on-interaction="onInteractionSuccess"
     />
   </div>

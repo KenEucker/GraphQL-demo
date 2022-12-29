@@ -30,6 +30,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  hideCount: {
+    type: Boolean,
+    default: false,
+  },
   variant: {
     type: String,
     default: 'like',
@@ -94,21 +98,25 @@ const emit = defineEmits(['onInteraction'])
   <pop-button :variant="variant" @click="onPostInteraction">
     <div v-if="props.variant === 'like'">
       <points w="25" h="25" :class="props.active ? 'text-yellow-600' : ''" class="align-middle" />
-      <span class="ml-1 align-middle">{{ props.count }}</span>
+      <span v-show="!props.hideCount" class="ml-1 align-middle">{{ props.count }}</span>
     </div>
     <div v-if="props.variant === 'love'" class="ml-1">
       <span v-if="props.active" class="ml-1 align-middle">
         <heart w="25" h="25" class="align-middle text-amber-300" />
-        {{ props.count }}
+        <span v-show="!props.hideCount" class="ml-1 align-middle">{{ props.count }}</span>
       </span>
       <span v-else class="align-middle">
-        <heart-empty class="mr-1 align-bottom" w="25" h="25" />{{ props.count }}
+        <heart-empty class="mr-1 align-bottom" w="25" h="25" />
+        <span v-show="!props.hideCount" class="ml-1 align-middle">{{ props.count }}</span>
       </span>
     </div>
     <div v-if="props.variant === 'repost'">
       <repost w="25" h="25" class="align-middle" :class="active ? 'text-yellow-600' : ''" />
-      <span class="ml-1 align-middle">{{ props.count }}</span>
+      <span v-show="!props.hideCount" class="ml-1 align-middle">{{ props.count }}</span>
     </div>
-    <share v-if="props.variant === 'share'" w="25" h="25" />
+    <div v-if="props.variant === 'share'">
+      <share w="25" h="25" class="align-middle" />
+      <span v-show="!props.hideCount" class="ml-1 align-middle">{{ props.count }}</span>
+    </div>
   </pop-button>
 </template>
