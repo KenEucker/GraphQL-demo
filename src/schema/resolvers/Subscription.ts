@@ -5,8 +5,7 @@ import { Author, AuthorByInput, InteractionByInput, PostByInput } from '../gener
 const Subscription = {
   countdown: {
     // This will return the value on every 1 sec until it reaches 0
-    // @ts-ignore
-    subscribe: async function* (parent, args) {
+    subscribe: async function* (parent: never, args: { from: number }) {
       const from = args.from ?? 100
 
       for (let i = from; i >= 0; i--) {

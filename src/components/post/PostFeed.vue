@@ -78,38 +78,6 @@ eventsource.onmessage = function (event) {
   }
 }
 
-const likePost = (post: Post) => {
-  // const likePostMutation = gql`
-  //   mutation likePost($postId: String!) {
-  //     likePost(postId: $postId)
-  //   }
-  // `
-  // refetch()
-}
-const lovePost = (post: Post) => {
-  // const likePostMutation = gql`
-  //   mutation likePost($postId: String!) {
-  //     likePost(postId: $postId)
-  //   }
-  // `
-  // refetch()
-}
-const rePost = (post: Post) => {
-  // const likePostMutation = gql`
-  //   mutation likePost($postId: String!) {
-  //     likePost(postId: $postId)
-  //   }
-  // `
-  // refetch()
-}
-const sharePost = (post: Post) => {
-  // const likePostMutation = gql`
-  //   mutation likePost($postId: String!) {
-  //     likePost(postId: $postId)
-  //   }
-  // `
-  // refetch()
-}
 /// Provided by ChatGPT
 function getRandomIntInclusive(min: number, max: number): number {
   min = Math.ceil(min)
@@ -151,10 +119,6 @@ function getRandomIntInclusive(min: number, max: number): number {
             },
           }"
           :post="post"
-          @i-like-it="likePost(post)"
-          @i-love-it="lovePost(post)"
-          @i-want-some-more-of-it="rePost(post)"
-          @i-want-to-share-it="sharePost"
         ></pov-post>
       </div>
       <div class="flex flex-col p-2">
@@ -177,10 +141,6 @@ function getRandomIntInclusive(min: number, max: number): number {
             },
           }"
           :post="post"
-          @i-like-it="likePost(post)"
-          @i-love-it="lovePost(post)"
-          @i-want-some-more-of-it="rePost(post)"
-          @i-want-to-share-it="sharePost"
         ></pov-post>
       </div>
     </div>

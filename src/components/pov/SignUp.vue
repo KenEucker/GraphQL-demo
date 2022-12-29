@@ -18,7 +18,7 @@ const errors = ref()
 const showSignupModal = ref(false)
 const authorState = useAuthorState()
 const router = useRouter()
-const author = reactive(authorState.getAuthor)
+const author = reactive({ ...authorState.getAuthor })
 
 if (authorState.isLoggedIn && !authorState.isAuthorSignedUp) {
   showSignupModal.value = true
@@ -46,7 +46,6 @@ const completeSignup = async (e: Event) => {
     handle: author.handle,
     avatar: author.avatar,
   } as Author)
-  console.log({ result })
   if (result) {
     errors.value = result
   } else {
@@ -199,9 +198,9 @@ const completeSignup = async (e: Event) => {
                   <div class="flex items-center h-5">
                     <input
                       id="verified"
-                      v-model="author.verified"
                       type="checkbox"
                       class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-green-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-green-600 dark:ring-offset-gray-800"
+                      @click="(e: Event) => (author.verified = (e.target as HTMLInputElement).checked)"
                     />
                   </div>
                   <label

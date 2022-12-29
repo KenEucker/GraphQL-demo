@@ -97,6 +97,7 @@ export const useAuthorState = defineStore({
               email: user.email,
               avatar: user.picture,
               handle: user.nickname,
+              verified: false,
             }
             this.fetchAuthor(this.author)
           } else {

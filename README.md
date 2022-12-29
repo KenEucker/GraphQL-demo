@@ -41,6 +41,8 @@ npm install
 - `GRAPH_PORT=8100`
 - `GRAPH_PATH="graphql"`
 - `STUDIO_URL="http://localhost:8200"`
+- `AUTH0_DOMAIN="some-domain.us.auth0.com"`
+- `AUTH0_CID="YOUR_CLIENT_ID"`
 
 2b. The ORIGIN is the vite server or static webserver for the client app. If port 80 is used for any 
 of the PORT variables, it will be omitted from the constructred url. The STUDIO_URL is for Prisma Studio 
