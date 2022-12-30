@@ -3,20 +3,22 @@ import { defineStore } from 'pinia'
 import { gql } from '@apollo/client/core'
 import { useStorage } from '@vueuse/core'
 import { Author } from '../schema/generated/types.d'
-import auth0 from '../auth'
+import auth from '../auth'
 import { watch } from 'vue'
 
 // Local storage state
 const storedEmail = useStorage('author-email', '')
 const storedId = useStorage('author-id', 0)
+const storedToken = useStorage('author-token', '')
 
 export const getInitialAuthorState = (): {
   loggedIn: boolean
   author: Author
   auth0Configured: boolean
+  auth0Token: string
 } => ({
   loggedIn: false,
-  auth0Configured: auth0.initialized,
+  auth0Configured: auth.initialized,
   author: {
     id: 0,
     avatar: '',
@@ -25,6 +27,7 @@ export const getInitialAuthorState = (): {
     handle: '',
     verified: false,
   },
+  auth0Token: '',
 })
 
 export const useAuthorState = defineStore({
@@ -81,15 +84,15 @@ export const useAuthorState = defineStore({
       }
     },
     loginWithAuth0() {
-      auth0.loginWithRedirect()
+      auth.loginWithRedirect()
     },
     loginWithEmail(email: string) {
       return this.fetchAuthor({ email } as Author)
     },
-    checkLogin() {
+    async checkLogin() {
       if (this.auth0Configured) {
-        watch(auth0.user, (user) => {
-          if (auth0?.isAuthenticated?.value) {
+        watch(auth.user, async (user) => {
+          if (auth?.isAuthenticated?.value) {
             this.loggedIn = true
             this.author = {
               id: 0,
@@ -99,17 +102,27 @@ export const useAuthorState = defineStore({
               handle: user.nickname,
               verified: false,
             }
+            if (!storedToken.value.length) {
+              this.auth0Token = await auth.getAccessTokenSilently()
+
+              if (this.auth0Token.length) {
+                storedToken.value = this.auth0Token
+              }
+            }
+
             this.fetchAuthor(this.author)
-          } else {
-            console.log({ auth0 })
+          } else if (storedId.value !== 0 || storedEmail.value.length) {
+            this.logout()
           }
         })
       } else {
-        this.login()
+        if (await this.login()) {
+          this.logout()
+        }
       }
     },
     async login() {
-      if (this.auth0Configured && auth0?.isAuthenticated?.value) {
+      if (this.auth0Configured && auth?.isAuthenticated?.value) {
         return this.loginWithAuth0()
       } else {
         return this.fetchAuthor()
@@ -118,7 +131,7 @@ export const useAuthorState = defineStore({
     async fetchAuthor(author?: Author) {
       author = author ?? ({ id: storedId.value, email: storedEmail.value } as Author)
       const loginViaEmailQuery = gql`
-        query StoreAuthor($email: String!) {
+        query StoreFetchAuthor($email: String!) {
           author(where: { email: $email }) {
             id
             name
@@ -164,6 +177,7 @@ export const useAuthorState = defineStore({
           }
         }
       `
+
       const data = await apolloClient.mutate({
         mutation: updateAuthorMutation,
         variables: { data: author, id: this.author.id },
@@ -172,14 +186,15 @@ export const useAuthorState = defineStore({
       return data
     },
     logout() {
-      if (auth0?.isAuthenticated) {
-        auth0.logout()
-      }
-
       this.author = getInitialAuthorState().author
       this.loggedIn = false
       storedId.value = null
       storedEmail.value = null
+      storedToken.value = null
+
+      if (auth?.isAuthenticated) {
+        auth.logout({ returnTo: window.location.origin })
+      }
     },
     async isEmailInUse(email: string) {
       const checkForEmailInUseQuery = gql`

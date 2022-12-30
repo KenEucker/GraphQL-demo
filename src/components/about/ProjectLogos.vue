@@ -80,6 +80,14 @@ const logos = [
     src: '/img/render-com-logo.png',
     variant: 'green',
   },
+  {
+    name: 'auth0',
+    description:
+      'auth0.com manages user login and authentication, providing an easy integration for social and passwordless login. Auth0 makes it possible for this project to provide user authentication with no password, ever.',
+    url: 'https://auth0.com',
+    src: '/img/auth0-logo.svg',
+    variant: 'white',
+  },
 ]
 
 const hoverered = (name: string) => {

@@ -53,6 +53,7 @@ const authorQuery = reactive(result)
 watch(authorQuery, (r) => {
   if (r?.author) {
     author.value = r.author
+    isSelfPost.value = author.value.handle === handle
   } else {
     router.push('/')
   }
@@ -63,12 +64,7 @@ const state = reactive({
   selected: 0,
 })
 
-const props = defineProps({
-  showBackButton: {
-    type: Boolean,
-    default: false,
-  },
-})
+const isSelfPost = ref(false)
 
 function goBack() {
   router.back()
@@ -91,7 +87,7 @@ function selected(idx: number) {
       <div class="ml-10 md:ml-0">
         <div class="flex p-1 text-twitter-gray">
           <arrow-back
-            v-if="props.showBackButton"
+            v-if="!isSelfPost"
             w="25"
             h="25"
             class="text-twitter-primary p-3 px-4 cursor-pointer"
@@ -129,7 +125,7 @@ function selected(idx: number) {
           v-for="post in author?.posts"
           :key="post.id"
           :post="post"
-          :disable-interaction="true"
+          :is-self-post="isSelfPost"
         />
       </div>
     </div>

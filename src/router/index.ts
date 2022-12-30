@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 import NProgress from 'nprogress'
-
+import useAuthGuard from '../auth/authGuard'
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
@@ -29,6 +29,7 @@ const routes: RouteRecordRaw[] = [
       protected: true,
       mainMenu: true,
     },
+    beforeEnter: useAuthGuard,
   },
   {
     path: '/settings',
@@ -38,6 +39,7 @@ const routes: RouteRecordRaw[] = [
       protected: true,
       mainMenu: true,
     },
+    beforeEnter: useAuthGuard,
   },
   {
     path: '/graph',
@@ -47,6 +49,7 @@ const routes: RouteRecordRaw[] = [
       protected: true,
       mainMenu: true,
     },
+    beforeEnter: useAuthGuard,
   },
   {
     path: '/data',
@@ -56,6 +59,7 @@ const routes: RouteRecordRaw[] = [
       protected: true,
       mainMenu: true,
     },
+    beforeEnter: useAuthGuard,
   },
   {
     path: '/about',

@@ -264,6 +264,7 @@ export type Query = {
   readonly interactions?: Maybe<ReadonlyArray<Maybe<Interaction>>>;
   readonly post?: Maybe<Post>;
   readonly posts?: Maybe<ReadonlyArray<Maybe<Post>>>;
+  readonly searchPosts?: Maybe<SearchPostsPayload>;
 };
 
 
@@ -302,6 +303,20 @@ export type QueryPostArgs = {
 
 export type QueryPostsArgs = {
   where?: InputMaybe<PostByInput>;
+};
+
+
+export type QuerySearchPostsArgs = {
+  search: SearchPostsInput;
+};
+
+export type SearchPostsInput = {
+  readonly text: Scalars['String'];
+};
+
+export type SearchPostsPayload = {
+  readonly __typename?: 'SearchPostsPayload';
+  readonly posts?: Maybe<ReadonlyArray<Post>>;
 };
 
 export type Subscription = {
@@ -455,6 +470,8 @@ export type ResolversTypes = {
   PostInput: PostInput;
   PostSubscriptionPayload: ResolverTypeWrapper<PostSubscriptionPayload>;
   Query: ResolverTypeWrapper<{}>;
+  SearchPostsInput: SearchPostsInput;
+  SearchPostsPayload: ResolverTypeWrapper<SearchPostsPayload>;
   String: ResolverTypeWrapper<Scalars['String']>;
   Subscription: ResolverTypeWrapper<{}>;
   UpdateAuthorInput: UpdateAuthorInput;
@@ -484,6 +501,8 @@ export type ResolversParentTypes = {
   PostInput: PostInput;
   PostSubscriptionPayload: PostSubscriptionPayload;
   Query: {};
+  SearchPostsInput: SearchPostsInput;
+  SearchPostsPayload: SearchPostsPayload;
   String: Scalars['String'];
   Subscription: {};
   UpdateAuthorInput: UpdateAuthorInput;
@@ -585,6 +604,12 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   interactions?: Resolver<Maybe<ReadonlyArray<Maybe<ResolversTypes['Interaction']>>>, ParentType, ContextType, Partial<QueryInteractionsArgs>>;
   post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, Partial<QueryPostArgs>>;
   posts?: Resolver<Maybe<ReadonlyArray<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType, Partial<QueryPostsArgs>>;
+  searchPosts?: Resolver<Maybe<ResolversTypes['SearchPostsPayload']>, ParentType, ContextType, RequireFields<QuerySearchPostsArgs, 'search'>>;
+};
+
+export type SearchPostsPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['SearchPostsPayload'] = ResolversParentTypes['SearchPostsPayload']> = {
+  posts?: Resolver<Maybe<ReadonlyArray<ResolversTypes['Post']>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
@@ -604,6 +629,7 @@ export type Resolvers<ContextType = any> = {
   Post?: PostResolvers<ContextType>;
   PostSubscriptionPayload?: PostSubscriptionPayloadResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  SearchPostsPayload?: SearchPostsPayloadResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
 };
 

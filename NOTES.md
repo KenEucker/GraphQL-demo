@@ -12,7 +12,9 @@ Learn how to build GraphQL applications using Node.js. Includes Prisma v1, authe
 - Apollo Server
 - GraphQL Yoga
 - Vue Apollo
+- Pinia
 - Prisma ORM
+- Auht0
 
 # development decisions
 
@@ -35,17 +37,20 @@ https://v4.apollo.vuejs.org/guide-composable/
 
 Subscriptions deviates from the udemy course instruction. I believe that this is due to the fact that I am using Apollo V4 with Graphql-Yoga@latest. https://the-guild.dev/graphql/yoga-server/docs/features/subscriptions
 
-Hasura instead of Heroku (Just kidding went back to Heroku)
-https://cloud.hasura.io/
+~Hasura instead of Heroku (Just kidding went back to Heroku)~
+~https://cloud.hasura.io/~
 
-Deploying Prisma to Heroku
-https://github.com/prisma/prisma-examples/tree/latest/deployment-platforms/heroku
+~Deploying Prisma to Heroku (Just kidding went back to Render)~
+~https://github.com/prisma/prisma-examples/tree/latest/deployment-platforms/heroku~
 
 Render.com ended up being the only place that I was able to get the graphql server running
 https://point-of-view-graphql.onrender.com
 
 With the frontend
 https://point-of-vue-web.onrender.com
+
+Adding auth0
+https://dev.to/the-guild/graphql-authentication-with-envelop-and-auth0-2cie
 
 # potential hosting solutions
 
@@ -66,6 +71,8 @@ Serverless GraphQL Starter Kit - https://github.com/serverless/serverless-graphq
 Put it all into NextJs - https://github.com/dotansimha/graphql-yoga/tree/main/examples/nextjs
 
 Whatever Remix is - https://remix.run/docs/en/v1/tutorials/blog
+
+Fastify It - https://www.fastify.io/
 
 # big platform ideas
 

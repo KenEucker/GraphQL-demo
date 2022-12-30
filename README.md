@@ -52,10 +52,10 @@ and I don't know of a way to change this value or port.
 is the server (apollo/graphql-yoga + playground), client (vite powered frontend), studio (prisma studio for editing data tables). `npm run dev` will run all three applications simultaneously with live reload. Any changes made to the files in schema will trigger a reload of the server and client applications. 
 
 4. If you run the defaults, the following urls are reachable:
-- http://localhost:8080  -- [client]
-- http://localhost:8100  -- [server]
+- http://localhost:8080          -- [client]
+- http://localhost:8100          -- [server]
 - http://localhost:8100/graphql  -- [playground]
-- http://localhost:8200  -- [studio]
+- http://localhost:8200          -- [studio]
 
 # Thanks for reading!
 

@@ -55,7 +55,12 @@ const useLogin = async () => {
       <button v-if="props.isExpanded" class="absolute -top-1/5 left-1/2" @click="logout()">
         <logout-icon h="32" w="32" />
       </button>
-      <pov-author :author="author" size="small" :image-only="!props.isExpanded" />
+      <pov-author
+        :author="author"
+        size="small"
+        :image-only="!props.isExpanded"
+        :go-to-author-page="false"
+      />
       <div
         v-if="props.isExpanded"
         class="flex justify-between w-full gap-2 pb-5 mt-5 border-b border-ll-border dark:border-ld-border"

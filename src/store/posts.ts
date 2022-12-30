@@ -22,7 +22,7 @@ export const usePostsState = defineStore({
     getPosts: (s) => s.posts,
   },
   actions: {
-    async getInteractionsForPost() {},
+    // async getInteractionsForPost() {},
     async getAllPosts() {
       this.postsLoading = true
 

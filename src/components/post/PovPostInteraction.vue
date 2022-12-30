@@ -51,7 +51,6 @@ const mutation = gql`
 const { mutate: useUpdateInteractionMutation } = useMutation(mutation)
 
 async function onPostInteraction() {
-  console.log({ props })
   if (props.authorId === 0 || props.disableInteraction) {
     return
   }
@@ -85,8 +84,6 @@ async function onPostInteraction() {
   const updatedPostInteraction = await useUpdateInteractionMutation({
     data: updatingInteraction,
   })
-
-  console.log({ updatedPostInteraction })
 
   emit('onInteraction', props.variant)
 }

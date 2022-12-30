@@ -74,7 +74,6 @@ const onInteractionSuccess = (interaction: string) => {
       :author-id="props.authorId"
       :post-id="props.postId"
       :count="interactions.likes"
-      :hide-count="!props.isSelfPost"
       :disable-interaction="props.isSelfPost"
       @on-interaction="onInteractionSuccess"
     />
@@ -83,7 +82,6 @@ const onInteractionSuccess = (interaction: string) => {
       :author-id="props.authorId"
       :post-id="props.postId"
       :count="interactions.loves"
-      :hide-count="true"
       :disable-interaction="props.isSelfPost"
       @on-interaction="onInteractionSuccess"
     />
@@ -92,7 +90,6 @@ const onInteractionSuccess = (interaction: string) => {
       :post-id="props.postId"
       :author-id="props.authorId"
       :count="interactions.reposts"
-      :hide-count="!props.isSelfPost"
       :disable-interaction="props.isSelfPost"
       @on-interaction="onInteractionSuccess"
     />
@@ -101,7 +98,7 @@ const onInteractionSuccess = (interaction: string) => {
       :post-id="props.postId"
       :author-id="props.authorId"
       :count="interactions.shares"
-      :hide-count="props.isSelfPost"
+      :hide-count="!props.isSelfPost"
       :disable-interaction="props.isSelfPost"
       @on-interaction="onInteractionSuccess"
     />

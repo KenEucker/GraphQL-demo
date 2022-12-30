@@ -70,6 +70,7 @@ type Query {
   posts(where: PostByInput): [Post]
 
   getPostInteractions(id: Int!): GetPostInteractionsPayload
+  searchPosts(search: SearchPostsInput!): SearchPostsPayload
 }
 
 type Mutation {
@@ -97,6 +98,10 @@ type Subscription {
   post(where: PostByInput): PostSubscriptionPayload
 }
 
+type SearchPostsPayload {
+  posts: [Post!]
+}
+
 type AuthorSubscriptionPayload {
   mutation: MutationType!
   data: Author
@@ -117,6 +122,10 @@ type GetPostInteractionsPayload {
   loves: Int
   reposts: Int
   shares: Int
+}
+
+input SearchPostsInput {
+  text: String!
 }
 
 input AuthorByInput {
