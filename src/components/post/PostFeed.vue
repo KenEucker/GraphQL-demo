@@ -5,7 +5,9 @@ import LoadingSpinner from '../atomic/LoadingSpinner.vue'
 import ErrorMessage from '../atomic/ErrorMessage.vue'
 import { Post } from '../../schema/generated/types.d'
 import { graphUrl } from '../../utilities'
-import { usePostsState } from '../../store/state'
+import { usePostsState, useAuthorState } from '../../store/state'
+
+const authorState = useAuthorState()
 
 const props = defineProps({
   oneColumn: {
@@ -36,6 +38,7 @@ const newPostSubscription = `
         id
         title
         author {
+          id
           name
           handle
           verified
@@ -75,6 +78,16 @@ eventsource.onmessage = function (event) {
     } else {
       rightPosts.unshift(post)
     }
+  } else if (mutation === 'DELETED') {
+    const isOnLeftIndex = leftPosts.findIndex((p) => p.id === post.id)
+    if (isOnLeftIndex !== -1) {
+      leftPosts.splice(isOnLeftIndex, 1)
+    } else {
+      const isOnRightIndex = rightPosts.findIndex((p) => p.id === post.id)
+      if (isOnRightIndex !== -1) {
+        rightPosts.splice(isOnRightIndex, 1)
+      }
+    }
   }
 }
 
@@ -84,6 +97,8 @@ function getRandomIntInclusive(min: number, max: number): number {
   max = Math.floor(max)
   return Math.floor(Math.random() * (max - min + 1)) + min // The maximum is inclusive and the minimum is inclusive
 }
+
+const isPostSelfPost = (post: Post) => post.author?.handle === authorState.author?.handle
 </script>
 
 <template>
@@ -96,7 +111,7 @@ function getRandomIntInclusive(min: number, max: number): number {
     </div>
     <div
       v-else
-      class="w-full grid transition-all"
+      class="grid w-full transition-all"
       :class="props.oneColumn ? 'md:grid-cols-1 px-20 pt-5' : 'md:grid-cols-2'"
     >
       <div class="flex flex-col p-2">
@@ -118,6 +133,7 @@ function getRandomIntInclusive(min: number, max: number): number {
               delay: getRandomIntInclusive(25, 200),
             },
           }"
+          :is-self-post="isPostSelfPost(post)"
           :post="post"
         ></pov-post>
       </div>
@@ -140,6 +156,7 @@ function getRandomIntInclusive(min: number, max: number): number {
               delay: getRandomIntInclusive(25, 200),
             },
           }"
+          :is-self-post="isPostSelfPost(post)"
           :post="post"
         ></pov-post>
       </div>

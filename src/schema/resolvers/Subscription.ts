@@ -83,7 +83,7 @@ const Subscription = {
         filter((p: any) => (where?.author?.id ? p.data.authorId === where.author.id : true)),
         filter((p: any) => (where?.author?.email ? p.data.email === where.author.email : true)),
         filter((p: any) => (where?.author?.handle ? p.data.handle === where.author.handle : true)),
-        filter((p) => (p.mutation !== 'UNPUBLISHED' ? p.data.published : true))
+        filter((p: any) => (p.mutation !== 'UNPUBLISHED' ? p.data.published : true))
       )
     },
     resolve: (data: any) => data,

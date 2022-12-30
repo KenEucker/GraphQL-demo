@@ -169,7 +169,7 @@ export type MutationDeleteInteractionArgs = {
 
 
 export type MutationDeletePostArgs = {
-  postId?: InputMaybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<PostByInput>;
 };
 

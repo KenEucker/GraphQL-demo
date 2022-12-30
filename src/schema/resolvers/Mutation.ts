@@ -198,15 +198,13 @@ const Mutation = {
       throw new GraphQLError('You must specify which post to delete.')
     }
 
-    const postToDelete = await prisma.post.findUnique({ where: { id: args.postId } })
+    const postToDelete = await prisma.post.findUnique({ where })
 
     if (!postToDelete) {
       throw new GraphQLError(`Post does not exist.`)
     }
 
-    const deletedPost = await prisma.post.delete({
-      where: { id: args.postId },
-    })
+    const deletedPost = await prisma.post.delete({ where })
 
     if (postToDelete.published) {
       pubsub.publish(`post`, { mutation: 'DELETED', data: deletedPost })

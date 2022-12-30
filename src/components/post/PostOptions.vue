@@ -9,16 +9,11 @@ const props = defineProps({
   },
 })
 
-const editPost = () => {
-  console.log('edit post')
-}
-const deletePost = () => {
-  console.log('delete post')
-}
+const emit = defineEmits(['onEdit', 'onDelete'])
 </script>
 
 <template>
-  <popper>
+  <popper v-if="props.canEdit">
     <button class="relative transition-transform transform active:scale-95">
       <more-icon h="30" w="30" />
     </button>
@@ -29,15 +24,15 @@ const deletePost = () => {
         <ul class="py-1" aria-labelledby="dropdownButton">
           <li>
             <a
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-              @click="editPost"
+              class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+              @click="emit('onEdit')"
               >Edit</a
             >
           </li>
           <li>
             <a
-              class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-              @click="deletePost"
+              class="block px-4 py-2 text-sm text-red-600 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+              @click="emit('onDelete')"
               >Delete</a
             >
           </li>

@@ -5,11 +5,14 @@ const Post = {
   author: (parent, args, { prisma }, info) => {
     return prisma.author.findFirst({
       where: {
-        posts: {
-          some: {
-            id: parent.id,
-          },
-        },
+        id: parent.authorId,
+        posts: parent.author
+          ? {
+              some: {
+                id: parent.id,
+              },
+            }
+          : undefined,
         email: parent.email,
         handle: parent.handle,
       },

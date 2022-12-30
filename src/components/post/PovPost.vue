@@ -1,15 +1,29 @@
 <script setup lang="ts">
-import MorePostOptions from './MorePostOptions.vue'
+import PostOptions from './PostOptions.vue'
 import PovPostInteractionsBar from './PovPostInteractionsBar.vue'
+import LoadingSpinner from '../atomic/LoadingSpinner.vue'
 import PostText from './PostText.vue'
 import PovAuthor from '../author/PovAuthor.vue'
 import PovPostMedia from './PovPostMedia.vue'
 import { useRouter } from 'vue-router'
 import { usePovState, useAuthorState } from '../../store/state'
+import { useMutation } from '@vue/apollo-composable'
+import { gql } from '@apollo/client/core'
+import { ref } from 'vue'
 
 const povStore = usePovState()
 const authorState = useAuthorState()
 const router = useRouter()
+const isLoading = ref(false)
+
+const mutation = gql`
+  mutation AuthorDeletePost($id: Int!) {
+    deletePost(id: $id) {
+      id
+    }
+  }
+`
+const { mutate: useDeletePostMutation } = useMutation(mutation)
 
 function goToAuthorPage() {
   router.push(`/${props.post.author.handle}`)
@@ -23,32 +37,47 @@ const props = defineProps({
     },
     required: true,
   },
+  isSelfPost: {
+    type: Boolean,
+    default: false,
+  },
 })
+
+async function deletePost() {
+  isLoading.value = true
+  const where = { id: props.post.id }
+  await useDeletePostMutation(where)
+  isLoading.value = false
+}
 </script>
 
 <template>
   <div class="flex flex-col w-full p-5 mb-4 rounded-md bg-ll-neutral dark:bg-ld-neutral">
-    <div class="flex justify-between">
-      <button @click="goToAuthorPage">
-        <pov-author :author="props.post?.author" />
-      </button>
-      <more-post-options
-        class="absolute top-4 right-2"
+    <loading-spinner v-if="isLoading" :full-screen="false" />
+    <div v-else>
+      <div class="flex justify-between">
+        <button @click="goToAuthorPage">
+          <pov-author :author="props.post?.author" />
+        </button>
+        <post-options
+          class="absolute top-4 right-2"
+          :author-id="authorState.getAuthorId"
+          :post-id="props.post.id"
+          :can-edit="authorState.isLoggedIn && props.isSelfPost"
+          @on-delete="deletePost"
+        />
+      </div>
+      <p class="flex justify-between py-1 mt-2 -mb-3 text-xs text-white">
+        {{ props.post.title }}
+      </p>
+
+      <post-text :post="props.post" />
+      <pov-post-media :media="props.post?.media" />
+      <pov-post-interactions-bar
+        v-if="!povStore.isSimpleMode"
         :author-id="authorState.getAuthorId"
         :post-id="props.post.id"
-        :can-edit="authorState.isLoggedIn"
       />
     </div>
-    <p class="flex justify-between py-1 mt-2 -mb-3 text-xs text-white">
-      {{ props.post.title }}
-    </p>
-
-    <post-text :post="props.post" />
-    <pov-post-media :media="props.post?.media" />
-    <pov-post-interactions-bar
-      v-if="!povStore.isSimpleMode"
-      :author-id="authorState.getAuthorId"
-      :post-id="props.post.id"
-    />
   </div>
 </template>
