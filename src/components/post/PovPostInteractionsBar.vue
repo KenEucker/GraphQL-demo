@@ -51,7 +51,11 @@ useSubscription(
     }
   }`,
   (i: any) => {
-    console.log({ i })
+    const delta = i.data.interactionDelta.data
+    interactions.likes += delta.like
+    interactions.loves += delta.love
+    interactions.reposts += delta.repost
+    interactions.shares += delta.share
   }
 )
 
@@ -100,7 +104,6 @@ const onInteractionSuccess = (interaction: string) => {
       :post-id="props.postId"
       :count="interactions.likes"
       :disable-interaction="props.isSelfPost"
-      @on-interaction="onInteractionSuccess"
     />
     <pov-post-interaction
       variant="love"
@@ -108,7 +111,6 @@ const onInteractionSuccess = (interaction: string) => {
       :post-id="props.postId"
       :count="interactions.loves"
       :disable-interaction="props.isSelfPost"
-      @on-interaction="onInteractionSuccess"
     />
     <pov-post-interaction
       variant="repost"
@@ -116,7 +118,6 @@ const onInteractionSuccess = (interaction: string) => {
       :author-id="props.authorId"
       :count="interactions.reposts"
       :disable-interaction="props.isSelfPost"
-      @on-interaction="onInteractionSuccess"
     />
     <pov-post-interaction
       variant="share"
@@ -125,7 +126,6 @@ const onInteractionSuccess = (interaction: string) => {
       :count="interactions.shares"
       :hide-count="!props.isSelfPost"
       :disable-interaction="props.isSelfPost"
-      @on-interaction="onInteractionSuccess"
     />
   </div>
 </template>

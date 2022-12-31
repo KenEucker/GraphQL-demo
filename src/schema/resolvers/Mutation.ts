@@ -300,8 +300,6 @@ const Mutation = {
     interactionDelta.postId = updatedInteraction.postId
     interactionDelta.authorId = updatedInteraction.authorId
 
-    console.log({ interactionDelta, updatedInteraction })
-
     pubsub.publish('interactionDelta', { mutation: 'DELTA', data: interactionDelta })
     pubsub.publish('interaction', { mutation: 'UPDATED', data: updatedInteraction })
 
