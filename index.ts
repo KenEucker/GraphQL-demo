@@ -58,6 +58,7 @@ const yoga = createYoga({
 const server = createServer(yoga)
 
 server.listen(port, () => {
+  if (authIsConfigured) console.warn('server is using Auth0 authentication')
   console.info(`🚀 GraphQL Server (yoga) is running on ${serverUrl}`)
 })
 

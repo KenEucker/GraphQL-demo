@@ -42,7 +42,7 @@ const props = defineProps({
 
 const mutation = gql`
   mutation UpdateInteractionPovPost($data: UpdateInteractionInput!) {
-    updateInteraction(data: $data) {
+    toggleInteraction(data: $data) {
       id
     }
   }

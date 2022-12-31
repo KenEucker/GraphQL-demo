@@ -105,6 +105,22 @@ export type InteractionByInput = {
   readonly post?: InputMaybe<PostInput>;
 };
 
+export type InteractionDelta = {
+  readonly __typename?: 'InteractionDelta';
+  readonly id: Scalars['Int'];
+  readonly like: Scalars['Int'];
+  readonly love: Scalars['Int'];
+  readonly repost: Scalars['Int'];
+  readonly share: Scalars['Int'];
+  readonly text?: Maybe<Scalars['String']>;
+};
+
+export type InteractionDeltaSubscriptionPayload = {
+  readonly __typename?: 'InteractionDeltaSubscriptionPayload';
+  readonly data: InteractionDelta;
+  readonly mutation: MutationType;
+};
+
 export type InteractionInput = {
   readonly author?: InputMaybe<AuthorInput>;
   readonly id?: InputMaybe<Scalars['Int']>;
@@ -132,10 +148,10 @@ export type Mutation = {
   readonly deleteInteraction: Interaction;
   readonly deletePost: Post;
   readonly publishPost: Post;
+  readonly toggleInteraction: Interaction;
   readonly unPublishPost: Post;
   readonly unVerifyAuthor: Author;
   readonly updateAuthor: Author;
-  readonly updateInteraction: Interaction;
   readonly updatePost: Post;
   readonly verifyAuthor: Author;
 };
@@ -179,6 +195,12 @@ export type MutationPublishPostArgs = {
 };
 
 
+export type MutationToggleInteractionArgs = {
+  data: UpdateInteractionInput;
+  id?: InputMaybe<Scalars['Int']>;
+};
+
+
 export type MutationUnPublishPostArgs = {
   id: Scalars['Int'];
 };
@@ -191,12 +213,6 @@ export type MutationUnVerifyAuthorArgs = {
 
 export type MutationUpdateAuthorArgs = {
   data: UpdateAuthorInput;
-  id?: InputMaybe<Scalars['Int']>;
-};
-
-
-export type MutationUpdateInteractionArgs = {
-  data: UpdateInteractionInput;
   id?: InputMaybe<Scalars['Int']>;
 };
 
@@ -214,6 +230,7 @@ export type MutationVerifyAuthorArgs = {
 export type MutationType =
   | 'CREATED'
   | 'DELETED'
+  | 'DELTA'
   | 'PUBLISHED'
   | 'UNPUBLISHED'
   | 'UPDATED';
@@ -324,6 +341,7 @@ export type Subscription = {
   readonly author?: Maybe<AuthorSubscriptionPayload>;
   readonly countdown: Scalars['Int'];
   readonly interaction?: Maybe<InteractionSubscriptionPayload>;
+  readonly interactionDelta?: Maybe<InteractionDeltaSubscriptionPayload>;
   readonly post?: Maybe<PostSubscriptionPayload>;
 };
 
@@ -339,6 +357,11 @@ export type SubscriptionCountdownArgs = {
 
 
 export type SubscriptionInteractionArgs = {
+  where?: InputMaybe<InteractionByInput>;
+};
+
+
+export type SubscriptionInteractionDeltaArgs = {
   where?: InputMaybe<InteractionByInput>;
 };
 
@@ -459,6 +482,8 @@ export type ResolversTypes = {
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Interaction: ResolverTypeWrapper<Interaction>;
   InteractionByInput: InteractionByInput;
+  InteractionDelta: ResolverTypeWrapper<InteractionDelta>;
+  InteractionDeltaSubscriptionPayload: ResolverTypeWrapper<InteractionDeltaSubscriptionPayload>;
   InteractionInput: InteractionInput;
   InteractionSubscriptionPayload: ResolverTypeWrapper<InteractionSubscriptionPayload>;
   InteractionType: InteractionType;
@@ -493,6 +518,8 @@ export type ResolversParentTypes = {
   Int: Scalars['Int'];
   Interaction: Interaction;
   InteractionByInput: InteractionByInput;
+  InteractionDelta: InteractionDelta;
+  InteractionDeltaSubscriptionPayload: InteractionDeltaSubscriptionPayload;
   InteractionInput: InteractionInput;
   InteractionSubscriptionPayload: InteractionSubscriptionPayload;
   Mutation: {};
@@ -555,6 +582,22 @@ export type InteractionResolvers<ContextType = any, ParentType extends Resolvers
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type InteractionDeltaResolvers<ContextType = any, ParentType extends ResolversParentTypes['InteractionDelta'] = ResolversParentTypes['InteractionDelta']> = {
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  like?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  love?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  repost?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  share?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  text?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type InteractionDeltaSubscriptionPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['InteractionDeltaSubscriptionPayload'] = ResolversParentTypes['InteractionDeltaSubscriptionPayload']> = {
+  data?: Resolver<ResolversTypes['InteractionDelta'], ParentType, ContextType>;
+  mutation?: Resolver<ResolversTypes['MutationType'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type InteractionSubscriptionPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['InteractionSubscriptionPayload'] = ResolversParentTypes['InteractionSubscriptionPayload']> = {
   data?: Resolver<Maybe<ResolversTypes['Interaction']>, ParentType, ContextType>;
   mutation?: Resolver<ResolversTypes['MutationType'], ParentType, ContextType>;
@@ -569,10 +612,10 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteInteraction?: Resolver<ResolversTypes['Interaction'], ParentType, ContextType, Partial<MutationDeleteInteractionArgs>>;
   deletePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, Partial<MutationDeletePostArgs>>;
   publishPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationPublishPostArgs, 'id'>>;
+  toggleInteraction?: Resolver<ResolversTypes['Interaction'], ParentType, ContextType, RequireFields<MutationToggleInteractionArgs, 'data'>>;
   unPublishPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationUnPublishPostArgs, 'id'>>;
   unVerifyAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationUnVerifyAuthorArgs, 'id'>>;
   updateAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationUpdateAuthorArgs, 'data'>>;
-  updateInteraction?: Resolver<ResolversTypes['Interaction'], ParentType, ContextType, RequireFields<MutationUpdateInteractionArgs, 'data'>>;
   updatePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationUpdatePostArgs, 'data'>>;
   verifyAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationVerifyAuthorArgs, 'id'>>;
 };
@@ -616,6 +659,7 @@ export type SubscriptionResolvers<ContextType = any, ParentType extends Resolver
   author?: SubscriptionResolver<Maybe<ResolversTypes['AuthorSubscriptionPayload']>, "author", ParentType, ContextType, Partial<SubscriptionAuthorArgs>>;
   countdown?: SubscriptionResolver<ResolversTypes['Int'], "countdown", ParentType, ContextType, Partial<SubscriptionCountdownArgs>>;
   interaction?: SubscriptionResolver<Maybe<ResolversTypes['InteractionSubscriptionPayload']>, "interaction", ParentType, ContextType, Partial<SubscriptionInteractionArgs>>;
+  interactionDelta?: SubscriptionResolver<Maybe<ResolversTypes['InteractionDeltaSubscriptionPayload']>, "interactionDelta", ParentType, ContextType, Partial<SubscriptionInteractionDeltaArgs>>;
   post?: SubscriptionResolver<Maybe<ResolversTypes['PostSubscriptionPayload']>, "post", ParentType, ContextType, Partial<SubscriptionPostArgs>>;
 };
 
@@ -624,6 +668,8 @@ export type Resolvers<ContextType = any> = {
   AuthorSubscriptionPayload?: AuthorSubscriptionPayloadResolvers<ContextType>;
   GetPostInteractionsPayload?: GetPostInteractionsPayloadResolvers<ContextType>;
   Interaction?: InteractionResolvers<ContextType>;
+  InteractionDelta?: InteractionDeltaResolvers<ContextType>;
+  InteractionDeltaSubscriptionPayload?: InteractionDeltaSubscriptionPayloadResolvers<ContextType>;
   InteractionSubscriptionPayload?: InteractionSubscriptionPayloadResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Post?: PostResolvers<ContextType>;

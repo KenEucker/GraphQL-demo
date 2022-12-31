@@ -49,8 +49,14 @@ https://point-of-view-graphql.onrender.com
 With the frontend
 https://point-of-vue-web.onrender.com
 
+Auth0 deviates from how the Udemy course teaches to authenticate users. At this point I have diverged pretty far from where the Udemy course is going. I will continue to try and track along in the ways that I can, but I can already see a lot of improvements have been made in the 2 years since this course was released.
+
 Adding auth0
 https://dev.to/the-guild/graphql-authentication-with-envelop-and-auth0-2cie
+
+I am using an Auth0 application to handle login for authors of the application and incorporating both google login and passwordless email login. Both lead the end user to create an author account and finish their signup upon logging in before allowing them to post. Only one mutation is unauthenticated: signupAuthor. The rest of the mutations: createPost, updateInteraction, etc... all require an authorization header. I am using an Auth0 api to handle this authentication which is rolled into the graphql-yoga server and uses the token provided upon login.
+
+
 
 # potential hosting solutions
 

@@ -10,11 +10,11 @@ Vite + TypeScript + Vue3 + GraphQl + Prisma + Pinia + WindiCss
 
 # Contributing
 
-This project is still in it's first week of development and I don't have anything set up for 
+This project is still in it's second week of development and I don't have anything set up for 
 contributors. If someone is feeling adventurous you're welcomed to try and follow the steps 
 below to get up and running yourself.
 
-Right now it's in demo mode. You can login with an email for an existing author (which requires creating an author with Prisma Studio) and create posts. The post interactions aren't fully wired up. You can edit the author settings but you cannot edit or upload images.
+Right now it has two modes: demo (unauthenticated) and authenticated (using Auth0). With the authenticated mode you will need both an Auth0 application as well as an Auth0 API, the settings of which are included below. In demo mode you can login with an email for an existing author (which requires creating an author with Prisma Studio) and create posts. The post interactions are fully wired up. You can register a new author and update author settings but you cannot edit or upload images. You can create and delete posts but you cannot edit or share posts. 
 
 I expect that next week, before 2023, that all features will be implemented and the demo will be fully functional.
 

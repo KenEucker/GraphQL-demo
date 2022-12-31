@@ -11,6 +11,7 @@ enum MutationType {
   DELETED
   PUBLISHED
   UNPUBLISHED
+  DELTA
 }
 
 enum InteractionType {
@@ -81,7 +82,7 @@ type Mutation {
   unVerifyAuthor(id: Int!): Author!
 
   createInteraction(interaction: CreateInteractionInput!): Interaction!
-  updateInteraction(data: UpdateInteractionInput!, id: Int): Interaction!
+  toggleInteraction(data: UpdateInteractionInput!, id: Int): Interaction!
   deleteInteraction(interactionId: Int, where: InteractionByInput): Interaction!
 
   createPost(post: CreatePostInput!): Post!
@@ -95,6 +96,7 @@ type Subscription {
   countdown(from: Int): Int!
   author(where: AuthorByInput): AuthorSubscriptionPayload
   interaction(where: InteractionByInput): InteractionSubscriptionPayload
+  interactionDelta(where: InteractionByInput): InteractionDeltaSubscriptionPayload
   post(where: PostByInput): PostSubscriptionPayload
 }
 
@@ -110,6 +112,20 @@ type AuthorSubscriptionPayload {
 type InteractionSubscriptionPayload {
   mutation: MutationType!
   data: Interaction
+}
+
+type InteractionDelta {
+  id: Int!
+  text: String
+  like: Int!
+  love: Int!
+  share: Int!
+  repost: Int!
+}
+
+type InteractionDeltaSubscriptionPayload {
+  mutation: MutationType!
+  data: InteractionDelta!
 }
 
 type PostSubscriptionPayload {

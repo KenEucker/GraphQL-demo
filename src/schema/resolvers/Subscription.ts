@@ -37,29 +37,46 @@ const Subscription = {
     },
     resolve: (data: any) => data,
   },
+  interactionDelta: {
+    subscribe: async (
+      parent: never,
+      { where }: { where: InteractionByInput },
+      { pubsub, prisma }: any
+    ) => {
+      if (where && (where.author?.id || where.post?.id)) {
+        const interaction = await prisma.interaction.findFirst({ where })
+
+        if (!interaction) {
+          throw new GraphQLError('post interaction not exist for author')
+        }
+      }
+
+      return pipe(
+        pubsub.subscribe('interactionDelta'),
+        filter((i: any) => (where?.author?.id ? i.data.authorId === where.author.id : true)),
+        filter((i) => (where?.post?.id ? i.data.postId === where.post.id : true))
+      )
+    },
+    resolve: (data: any) => data,
+  },
   interaction: {
     subscribe: async (
       parent: never,
       { where }: { where: InteractionByInput },
       { pubsub, prisma }: any
     ) => {
-      if (where && (where.author || where.post)) {
-        const interaction = await prisma.interaction.findUnique({
-          where: {
-            posts: where.post,
-            authors: where.author,
-          },
-        })
+      if (where && (where.author?.id || where.post?.id)) {
+        const interaction = await prisma.interaction.findFirst({ where })
 
         if (!interaction) {
-          throw new GraphQLError('author or post does not exist')
+          throw new GraphQLError('post interaction not exist for author')
         }
       }
 
       return pipe(
         pubsub.subscribe('interaction'),
-        filter((c: any) => (where?.author?.id ? c.data.authorId === where.author.id : true)),
-        filter((c) => (where?.post?.id ? c.data.postId === where.post.id : true))
+        filter((i: any) => (where?.author?.id ? i.data.authorId === where.author.id : true)),
+        filter((i) => (where?.post?.id ? i.data.postId === where.post.id : true))
       )
     },
     resolve: (data: any) => data,

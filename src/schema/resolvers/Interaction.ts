@@ -2,20 +2,28 @@ import { Author, Post } from '../generated/types'
 
 const Interaction = {
   // @ts-ignore
-  author: (parent, args, { prisma }, info) => {
-    return prisma.author.findMany({
+  author: async (parent, args, { prisma }, info) => {
+    console.log({ parent })
+    const results = await prisma.author.findMany({
       where: {
-        posts: parent.post.id,
+        id: parent.authorId,
       },
     })
+    console.log({ results })
+
+    return results
   },
   // @ts-ignore
-  post: (parent, args, { prisma }, info) =>
-    prisma.post.findMany({
+  post: async (parent, args, { prisma }, info) => {
+    console.log({ parent })
+    const results = await prisma.post.findMany({
       where: {
-        id: parent.post.id,
+        id: parent.postId,
       },
-    }),
+    })
+    console.log({ results })
+    return results
+  },
 }
 
 export default Interaction

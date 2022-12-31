@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, watch } from 'vue'
+import { reactive, watch, ref } from 'vue'
 import PovPost from './PovPost.vue'
 import LoadingSpinner from '../atomic/LoadingSpinner.vue'
 import ErrorMessage from '../atomic/ErrorMessage.vue'
@@ -18,6 +18,7 @@ const props = defineProps({
 
 let leftPosts: Post[] = reactive([])
 let rightPosts: Post[] = reactive([])
+const initialized = ref(false)
 
 const postsState = usePostsState()
 const postsLoaded = reactive(postsState)
@@ -25,10 +26,12 @@ watch(postsLoaded, () => {
   if (postsState.getPostsLoading) {
     console.log('loading posts ... ')
   } else {
+    initialized.value = true
     injectPosts()
   }
 })
 postsState.getAllPosts()
+// postsState.watchPosts()
 
 const newPostSubscription = `
   subscription NewPostPostFeed {

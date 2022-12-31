@@ -3,6 +3,7 @@ import PovPostInteraction from './PovPostInteraction.vue'
 import { gql } from '@apollo/client/core'
 import { reactive, watch } from 'vue'
 import { useLazyQuery } from '@vue/apollo-composable'
+import { useSubscription } from '../../utilities'
 
 const interactions = reactive({
   likes: 0,
@@ -29,6 +30,30 @@ const props = defineProps({
     default: false,
   },
 })
+
+useSubscription(
+  ` 
+  subscription NewPostInteractionInteractionBar {
+    interactionDelta(where: {
+      post: {
+        id: ${props.postId}
+      }
+    }) {
+      mutation
+      data {
+        id
+        text
+        like
+        love
+        repost
+        share
+      }
+    }
+  }`,
+  (i: any) => {
+    console.log({ i })
+  }
+)
 
 const getPostInteractionsQuery = gql`
   query PovPostGetInteractionNumbers($id: Int!) {

@@ -2,12 +2,14 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useNow, useDateFormat } from '@vueuse/core'
 import LoadingSpinner from '../atomic/LoadingSpinner.vue'
+import ErrorMessage from '../atomic/ErrorMessage.vue'
 import EmojiPicker from 'vue3-emoji-picker'
 import { useMutation } from '@vue/apollo-composable'
 import { gql } from '@apollo/client/core'
 import { useAuthorState } from '../../store/state'
 import CloseIcon from 'vue-ionicons/dist/md-close-circle-outline.vue'
 import ImagesIcon from 'vue-ionicons/dist/md-images.vue'
+import Popper from 'vue3-popper'
 
 const authorState = useAuthorState()
 let newPostLoading = ref(false)
@@ -36,6 +38,8 @@ const firstTitle = useDateFormat(useNow(), 'MMMM DD, YYYY').value
 const titleRef = ref()
 const statusRef = ref()
 const textRef = ref()
+const errorMessage = ref('')
+const errors = ref()
 const showEmojiPicker = reactive({
   show: false,
   emoji: null,
@@ -73,10 +77,23 @@ async function createNewPost() {
     published: true,
   }
 
-  const newlyCreatedPost = await useCreatePostMutation({ post: newPostData })
-  newPostLoading.value = false
-  emit('onNewPostCreated', newlyCreatedPost)
-  closeCreatePost()
+  try {
+    const newlyCreatedPost = await useCreatePostMutation({ post: newPostData })
+    newPostLoading.value = false
+    textRef.value.value = ''
+    statusRef.value.value = ''
+    titleRef.value.value = ''
+    emit('onNewPostCreated', newlyCreatedPost)
+    closeCreatePost()
+  } catch (e: any) {
+    textRef.value.value = newPostData.text
+    statusRef.value.value = newPostData.status
+    titleRef.value.value = newPostData.title
+    console.error(e.message)
+    errors.value = true
+    errorMessage.value = e.message
+    newPostLoading.value = false
+  }
 }
 
 onMounted(() => {
@@ -87,12 +104,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="">
-    <div v-if="newPostLoading">
+  <div class="" @click="errors = false">
+    <div v-show="newPostLoading">
       <loading-spinner :full-screen="false" />
     </div>
     <div
-      v-else
+      v-show="!newPostLoading"
       class="relative flex flex-col mx-2 transition-all rounded-md bg-ll-neutral dark:bg-ld-neutral"
       :class="props.isOpen ? 'h-70 p-5' : 'overflow-hidden h-0 p-0'"
     >
@@ -136,6 +153,12 @@ onMounted(() => {
             <images-icon class="m-auto" h="30" w="30" />
           </button>
         </div>
+        <popper :show="errors" placement="bottom">
+          <template #default></template>
+          <template #content>
+            <error-message :message="errorMessage" title="Error creating post" />
+          </template>
+        </popper>
         <div class="flex">
           <button
             class="flex items-center px-5 py-2 text-sm text-white transition-transform transform rounded-md bg-ll-primary dark:bg-ld-primary active:scale-95"

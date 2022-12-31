@@ -29,7 +29,7 @@ const permissions = shield(
       deleteInteraction: isAuthenticated,
       deletePost: isAuthenticated,
       updateAuthor: isAuthenticated,
-      updateInteraction: isAuthenticated,
+      toggleInteraction: isAuthenticated,
       updatePost: isAuthenticated,
       verifyAuthor: isAuthenticated,
       unVerifyAuthor: isAuthenticated,

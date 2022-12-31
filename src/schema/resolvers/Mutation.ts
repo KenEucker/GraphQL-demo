@@ -245,15 +245,64 @@ const Mutation = {
     return updatedAuthor
   },
   // @ts-ignore
-  async updateInteraction(parent, args, { prisma, pubsub }, info) {
-    const updatedInteraction = await prisma.interaction.upsert({
-      where: {
-        authorId_postId: { postId: args.data.postId, authorId: args.data.authorId },
-      },
-      update: args.data,
-      create: args.data,
-    })
+  async toggleInteraction(parent, args, { prisma, pubsub }, info) {
+    const findInteractionWhere = {
+      authorId_postId: { postId: args.data.postId, authorId: args.data.authorId },
+    }
+    let updatedInteraction = await prisma.interaction.findUnique({ where: findInteractionWhere })
+    const { like, love, repost, share } = args.data
+    const interactionDelta = {
+      id: 0,
+      postId: 0,
+      authorId: 0,
+      text: null,
+      like: 0,
+      love: 0,
+      repost: 0,
+      share: 0,
+    }
 
+    // Toggle
+    if (like) {
+      interactionDelta.like = updatedInteraction?.like ? -1 : 1
+      if (updatedInteraction) {
+        updatedInteraction.like = interactionDelta.like > 0
+      }
+    } else if (love) {
+      interactionDelta.love = updatedInteraction?.love ? -1 : 1
+      if (updatedInteraction) {
+        updatedInteraction.love = interactionDelta.love > 0
+      }
+    } else if (repost) {
+      interactionDelta.repost = updatedInteraction?.repost ? -1 : 1
+      if (updatedInteraction) {
+        updatedInteraction.repost = interactionDelta.repost > 0
+      }
+    } else if (share) {
+      interactionDelta.share = updatedInteraction?.share ? -1 : 1
+      if (updatedInteraction) {
+        updatedInteraction.share = interactionDelta.share > 0
+      }
+    } else {
+      // what?
+    }
+
+    if (!updatedInteraction) {
+      updatedInteraction = await prisma.interaction.create({ data: args.data })
+    } else {
+      updatedInteraction = await prisma.interaction.update({
+        where: findInteractionWhere,
+        data: updatedInteraction,
+      })
+    }
+    interactionDelta.id = updatedInteraction.id
+    interactionDelta.text = updatedInteraction.text
+    interactionDelta.postId = updatedInteraction.postId
+    interactionDelta.authorId = updatedInteraction.authorId
+
+    console.log({ interactionDelta, updatedInteraction })
+
+    pubsub.publish('interactionDelta', { mutation: 'DELTA', data: interactionDelta })
     pubsub.publish('interaction', { mutation: 'UPDATED', data: updatedInteraction })
 
     return updatedInteraction
@@ -261,7 +310,7 @@ const Mutation = {
   // @ts-ignore
   async updatePost(parent, args, { prisma, pubsub }, info) {
     const { data, id } = args
-    const postToUpdate = await prisma.post.update({ where: { id } })
+    const postToUpdate = await prisma.post.findUnique({ where: { id } })
 
     if (!postToUpdate) {
       throw new GraphQLError(`Post does not exist.`)
