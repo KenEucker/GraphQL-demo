@@ -51,11 +51,15 @@ useSubscription(
     }
   }`,
   (i: any) => {
-    const delta = i.data.interactionDelta.data
-    interactions.likes += delta.like
-    interactions.loves += delta.love
-    interactions.reposts += delta.repost
-    interactions.shares += delta.share
+    const delta = i.data?.interactionDelta?.data
+    if (delta) {
+      interactions.likes += delta.like
+      interactions.loves += delta.love
+      interactions.reposts += delta.repost
+      interactions.shares += delta.share
+    } else {
+      console.log({ i })
+    }
   }
 )
 

@@ -9,6 +9,10 @@ import { gql } from '@apollo/client/core'
 import { useAuthorState } from '../../store/state'
 import CloseIcon from 'vue-ionicons/dist/md-close-circle-outline.vue'
 import ImagesIcon from 'vue-ionicons/dist/md-images.vue'
+import AddIcon from 'vue-ionicons/dist/md-add-circle-outline.vue'
+import MinusIcon from 'vue-ionicons/dist/md-remove-circle-outline.vue'
+import CheckMark from 'vue-ionicons/dist/md-checkmark-circle.vue'
+import PovPostMedia from './PovPostMedia.vue'
 import Popper from 'vue3-popper'
 
 const authorState = useAuthorState()
@@ -40,6 +44,8 @@ const statusRef = ref()
 const textRef = ref()
 const errorMessage = ref('')
 const errors = ref()
+const images = ref([''])
+const showImages = ref(false)
 const showEmojiPicker = reactive({
   show: false,
   emoji: null,
@@ -75,6 +81,7 @@ async function createNewPost() {
     status: statusRef.value.value,
     title: titleRef.value.value,
     published: true,
+    media: showImages.value && images.value.length > 0 ? images.value : undefined,
   }
 
   try {
@@ -101,6 +108,14 @@ onMounted(() => {
     textRef.value.focus()
   }
 })
+
+function saveImages() {
+  if (images.value.length === 0) {
+    showImages.value = false
+  } else {
+    showImages.value = true
+  }
+}
 </script>
 
 <template>
@@ -111,7 +126,7 @@ onMounted(() => {
     <div
       v-show="!newPostLoading"
       class="relative flex flex-col mx-2 transition-all rounded-md bg-ll-neutral dark:bg-ld-neutral"
-      :class="props.isOpen ? 'h-70 p-5' : 'overflow-hidden h-0 p-0'"
+      :class="props.isOpen ? 'h-full p-5' : 'overflow-hidden h-0 p-0'"
     >
       <div class="flex">
         <emoji-picker
@@ -138,21 +153,66 @@ onMounted(() => {
           resize="none"
         />
       </div>
-      <textarea
-        ref="textRef"
-        class="w-full h-full p-4 text-lg rounded-md outline-none bg-ll-base dark:bg-ld-base"
-        placeholder="What's happening?"
-        resize="none"
-        @input="getNewTitle"
-      ></textarea>
-      <div class="flex items-center justify-between w-full pt-3">
-        <div class="flex">
-          <button
-            class="flex items-center justify-center w-10 h-10 mr-2 transition-transform transform border rounded-md border-ll-border dark:border-ld-border bg-ll-base dark:bg-ld-base dark:text-gray-500 active:scale-95"
-          >
-            <images-icon class="m-auto" h="30" w="30" />
-          </button>
-        </div>
+      <div class="flex w-full h-full">
+        <textarea
+          ref="textRef"
+          class="w-full h-full p-4 text-lg rounded-md outline-none bg-ll-base dark:bg-ld-base"
+          :class="showImages ? 'w-1/3' : ''"
+          placeholder="What's happening?"
+          :rows="showImages ? '10' : '4'"
+          resize="none"
+          @input="getNewTitle"
+        ></textarea>
+        <pov-post-media v-if="showImages" class="w-2/3 ml-4" :media="images" />
+      </div>
+      <div class="flex items-center justify-between w-full pt-3 z-1">
+        <popper placement="right">
+          <div class="flex">
+            <button
+              class="flex items-center justify-center w-10 h-10 mr-2 transition-transform transform border rounded-md border-ll-border dark:border-ld-border bg-ll-base dark:bg-ld-base dark:text-gray-500 active:scale-95"
+            >
+              <images-icon class="m-auto" h="30" w="30" />
+            </button>
+          </div>
+          <template #content="{ close }">
+            <div class="flex justify-center">
+              <div class="block max-w-sm p-6 rounded-lg shadow-lg border-white-2 bg-ld-neutral">
+                <h5 class="mb-2 text-xl font-medium leading-tight">Add Image Urls</h5>
+                <p v-for="(image, i) in images" :key="i" class="mb-4 text-base">
+                  <input
+                    v-model="images[i]"
+                    type="url"
+                    placeholder="http://example.com"
+                    class="inline-block align-middle"
+                  />
+                  <button
+                    type="button"
+                    class="px-2 py-1 ml-2 text-xs font-medium leading-tight uppercase align-middle transition duration-150 ease-in-out rounded shadow-md space-between dark:text-white bg-ll-primary hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
+                    @click="images.splice(i)"
+                  >
+                    <minus-icon h="24" w="24" />
+                  </button>
+                </p>
+                <div class="flex justify-end">
+                  <button
+                    type="button"
+                    class="px-2 py-1 text-xs font-medium leading-tight uppercase transition duration-150 ease-in-out rounded shadow-md space-between dark:text-white bg-ll-primary hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
+                    @click="images.push('')"
+                  >
+                    <add-icon h="24" w="24" />
+                  </button>
+                  <button
+                    type="submit"
+                    class="px-2 py-1 ml-4 text-xs font-medium leading-tight uppercase transition duration-150 ease-in-out rounded shadow-md space-between dark:text-white bg-ll-primary hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg"
+                    @click="saveImages(), close()"
+                  >
+                    <check-mark h="24" w="24" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </template>
+        </popper>
         <popper :show="errors" placement="bottom">
           <template #default></template>
           <template #content>

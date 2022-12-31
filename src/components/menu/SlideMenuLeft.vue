@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import PostPov from 'vue-ionicons/dist/md-bonfire.vue'
+import CloseIcon from 'vue-ionicons/dist/md-close-circle-outline.vue'
 import RouteButton from '../atomic/RouteButton.vue'
 import AuthorCard from '../author/AuthorCard.vue'
 import { useMenuState, useAuthorState } from '../../store/state'
@@ -78,20 +79,7 @@ const authorPanelClick = () => {
       class="absolute flex items-center w-8 h-8 mr-2 text-sm transition-transform transform border rounded-full md:hidden top-2 -right-1 bg-ll-neutral dark:bg-ld-neutral border-ll-border dark:border-ld-border active:scale-95"
       @click="menuState.closeLeftMenu()"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="w-full h-full"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
+      <close-icon h="30" w="30" />
     </button>
   </div>
 </template>

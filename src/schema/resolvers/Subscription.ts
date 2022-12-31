@@ -43,13 +43,13 @@ const Subscription = {
       { where }: { where: InteractionByInput },
       { pubsub, prisma }: any
     ) => {
-      if (where && (where.author?.id || where.post?.id)) {
-        const interaction = await prisma.interaction.findFirst({ where })
+      // if (where && (where.author?.id || where.post?.id)) {
+      //   const interaction = await prisma.interaction.findFirst({ where })
 
-        if (!interaction) {
-          throw new GraphQLError('post interaction not exist for author')
-        }
-      }
+      //   if (!interaction) {
+      //     throw new GraphQLError('post interaction does not exist for author')
+      //   }
+      // }
 
       return pipe(
         pubsub.subscribe('interactionDelta'),
@@ -65,13 +65,13 @@ const Subscription = {
       { where }: { where: InteractionByInput },
       { pubsub, prisma }: any
     ) => {
-      if (where && (where.author?.id || where.post?.id)) {
-        const interaction = await prisma.interaction.findFirst({ where })
+      // if (where && (where.author?.id || where.post?.id)) {
+      //   const interaction = await prisma.interaction.findFirst({ where })
 
-        if (!interaction) {
-          throw new GraphQLError('post interaction not exist for author')
-        }
-      }
+      //   if (!interaction) {
+      //     throw new GraphQLError('post interaction does not exist for author')
+      //   }
+      // }
 
       return pipe(
         pubsub.subscribe('interaction'),

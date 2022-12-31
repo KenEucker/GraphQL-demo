@@ -13,11 +13,11 @@ const props = defineProps({
 <template>
   <div
     v-if="props.media.length > 0"
-    class="`images w-full h-70 bg-ll-neutral dark:bg-ld-neutral rounded-xl my-4 overflow-hidden grid gap-2"
+    class="grid w-full gap-2 my-4 overflow-hidden images h-70 bg-ll-neutral dark:bg-ld-neutral rounded-xl"
     :class="props.media.length > 1 ? 'grid-cols-2' : 'grid-cols-1'"
   >
     <div class="h-full">
-      <img :src="`${props.media[0]}`" class="w-full h-70 object-cover" alt="" />
+      <img :src="`${props.media[0]}`" class="object-cover w-full h-70" alt="" />
     </div>
     <div
       v-if="props.media.length > 1"
@@ -29,7 +29,7 @@ const props = defineProps({
       <img
         v-if="props.media.length > 1"
         :src="`${props.media[1]}`"
-        class="w-full h-full object-cover"
+        class="object-cover w-full h-full"
         :class="props.media.length == 3 && 'row-span-1 col-span-1 h-full'"
         :alt="props.media[1]"
       />

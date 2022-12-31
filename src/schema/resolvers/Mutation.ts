@@ -92,12 +92,16 @@ const Mutation = {
       throw new GraphQLError(`Post already exists with title for author.`)
     }
 
+    /// TODO: check for safety
+    const media = args.post.media
+
     const newPost = {
       authorId: author.id,
       title,
       text: text ?? '',
       status,
       published,
+      media,
     }
 
     const createdPost = await prisma.post.create({ data: newPost })
