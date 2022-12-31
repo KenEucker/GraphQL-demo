@@ -122,4 +122,37 @@ const attrs = useAttrs()
     color: #ba2c60;
   }
 }
+
+.dark .h-white {
+  &-active {
+    color: white;
+  }
+
+  &:hover {
+    filter: drop-shadow(0 0 4px white);
+    color: white;
+  }
+}
+
+.h-white {
+  &-active {
+    color: black;
+  }
+
+  &:hover {
+    filter: drop-shadow(0 0 4px black);
+    color: black;
+  }
+}
+
+.h-yellow {
+  &-active {
+    color: yellow;
+  }
+
+  &:hover {
+    filter: drop-shadow(0 0 4px yellow);
+    color: yellow;
+  }
+}
 </style>

@@ -82,12 +82,10 @@ const completeSignup = async (e: Event) => {
           </svg>
         </span>
       </div>
-      <h5 v-else class="text-xl font-medium text-gray-900 dark:text-white">Complete your signup</h5>
+      <h5 v-else class="text-xl font-medium text-white">Complete your signup</h5>
       <fieldset>
         <p>
-          <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="email"
-            >Email Address</label
-          >
+          <label class="block mb-2 text-sm font-medium text-white" for="email">Email Address</label>
           <input
             v-model="author.email"
             type="email"
@@ -98,9 +96,7 @@ const completeSignup = async (e: Event) => {
           />
         </p>
         <p class="relative">
-          <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="handle"
-            >Handle</label
-          >
+          <label class="block mb-2 text-sm font-medium text-white" for="handle">Handle</label>
           <input
             :ref="handleRef"
             v-model="author.handle"
@@ -112,9 +108,7 @@ const completeSignup = async (e: Event) => {
           <span class="absolute inset-y-9 left-0 flex pl-[1%]">@</span>
         </p>
         <p>
-          <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="name"
-            >Avatar URL</label
-          >
+          <label class="block mb-2 text-sm font-medium text-white" for="name">Avatar URL</label>
           <input
             v-model="author.avatar"
             type="avatar"
@@ -124,9 +118,7 @@ const completeSignup = async (e: Event) => {
           />
         </p>
         <p>
-          <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="name"
-            >Name</label
-          >
+          <label class="block mb-2 text-sm font-medium text-white" for="name">Name</label>
           <input
             v-model="author.name"
             type="name"
@@ -146,9 +138,7 @@ const completeSignup = async (e: Event) => {
                 @click="(e: Event) => (author.verified = (e.target as HTMLInputElement).checked)"
               />
             </div>
-            <label for="verify" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-              >Verify me</label
-            >
+            <label for="verify" class="ml-2 text-sm font-medium text-gray-300">Verify me</label>
           </div>
           <a href="#" class="ml-auto text-sm text-green-700 hover:underline dark:text-green-500"
             >no password?</a

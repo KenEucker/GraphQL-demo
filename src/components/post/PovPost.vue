@@ -67,7 +67,7 @@ async function deletePost() {
           @on-delete="deletePost"
         />
       </div>
-      <p class="flex justify-between py-1 mt-2 -mb-3 text-xs text-white">
+      <p class="flex justify-between py-1 mt-2 -mb-3 text-xs text-slate-800 dark:text-white">
         {{ props.post.title }}
       </p>
 

@@ -28,7 +28,7 @@ const props = defineProps({
         <more-icon h="30" w="30" class="absolute top-0 right-0" />
       </button>
     </div>
-    <p class="flex justify-between py-1 mt-2 -mb-3 text-xs text-white">
+    <p class="flex justify-between py-1 mt-2 -mb-3 text-xs text-slate-800 dark:text-white">
       {{ props.post.title }}
     </p>
 

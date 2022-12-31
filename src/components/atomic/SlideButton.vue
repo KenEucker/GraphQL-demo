@@ -21,7 +21,7 @@ const classes = computed(() => {
 <template>
   <button
     v-motion
-    class="flex active:scale-95 transform transition-transform rounded-full"
+    class="flex transition-transform transform rounded-full active:scale-95"
     :class="classes"
     :initial="{
       y: 4,
@@ -94,7 +94,7 @@ const classes = computed(() => {
   }
 }
 
-.h-white {
+.dark .h-white {
   &-active {
     color: white;
   }
@@ -102,6 +102,17 @@ const classes = computed(() => {
   &:hover {
     filter: drop-shadow(0 0 4px white);
     color: white;
+  }
+}
+
+.h-white {
+  &-active {
+    color: black;
+  }
+
+  &:hover {
+    filter: drop-shadow(0 0 4px black);
+    color: black;
   }
 }
 
