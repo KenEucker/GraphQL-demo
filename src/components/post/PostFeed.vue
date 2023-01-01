@@ -23,9 +23,7 @@ const initialized = ref(false)
 const postsState = usePostsState()
 const postsLoaded = reactive(postsState)
 watch(postsLoaded, () => {
-  if (postsState.getPostsLoading) {
-    console.log('loading posts ... ')
-  } else {
+  if (!postsState.getPostsLoading) {
     initialized.value = true
     injectPosts()
   }

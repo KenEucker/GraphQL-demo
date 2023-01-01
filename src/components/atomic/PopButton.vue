@@ -123,17 +123,6 @@ const attrs = useAttrs()
   }
 }
 
-.dark .h-white {
-  &-active {
-    color: white;
-  }
-
-  &:hover {
-    filter: drop-shadow(0 0 4px white);
-    color: white;
-  }
-}
-
 .h-white {
   &-active {
     color: black;
@@ -142,6 +131,17 @@ const attrs = useAttrs()
   &:hover {
     filter: drop-shadow(0 0 4px black);
     color: black;
+  }
+}
+
+.dark .h-white {
+  &-active {
+    color: white;
+  }
+
+  &:hover {
+    filter: drop-shadow(0 0 4px white);
+    color: white;
   }
 }
 

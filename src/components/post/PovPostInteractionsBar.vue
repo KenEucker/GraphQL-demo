@@ -57,8 +57,6 @@ useSubscription(
       interactions.loves += delta.love
       interactions.reposts += delta.repost
       interactions.shares += delta.share
-    } else {
-      console.log({ i })
     }
   }
 )

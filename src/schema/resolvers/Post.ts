@@ -1,5 +1,3 @@
-import { Author, Interaction } from '../generated/types'
-
 const Post = {
   // @ts-ignore
   author: (parent, args, { prisma }, info) => {
@@ -24,6 +22,9 @@ const Post = {
     prisma.interaction.findUnique({
       where: parent,
       include: { posts: true },
+      orderBy: {
+        id: 'desc',
+      },
     }),
 }
 

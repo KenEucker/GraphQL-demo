@@ -1,3 +1,4 @@
+import { UpdateAuthorInput } from './../schema/generated/types.d'
 import { apolloClient } from './'
 import { defineStore } from 'pinia'
 import { gql } from '@apollo/client/core'
@@ -22,6 +23,7 @@ export const getInitialAuthorState = (): {
   author: {
     id: 0,
     avatar: '',
+    banner: '',
     email: '',
     name: '',
     handle: '',
@@ -55,6 +57,7 @@ export const useAuthorState = defineStore({
             location
             bio
             birthday
+            banner
             link
             posts {
               id
@@ -141,6 +144,7 @@ export const useAuthorState = defineStore({
             status
             avatar
             location
+            banner
             bio
             birthday
             link
@@ -174,6 +178,17 @@ export const useAuthorState = defineStore({
         mutation StoreUpdateAuthor($data: UpdateAuthorInput!, $id: Int!) {
           updateAuthor(data: $data, id: $id) {
             id
+            name
+            email
+            handle
+            verified
+            status
+            avatar
+            location
+            banner
+            bio
+            birthday
+            link
           }
         }
       `
@@ -182,6 +197,24 @@ export const useAuthorState = defineStore({
         mutation: updateAuthorMutation,
         variables: { data: author, id: this.author.id },
       })
+
+      if (data.data.updateAuthor) {
+        const author = data.data.updateAuthor
+        this.author = {
+          id: author.id,
+          name: author.name,
+          handle: author.name,
+          avatar: author.avatar,
+          banner: author.banner,
+          location: author.location,
+          link: author.link,
+          email: author.email,
+          bio: author.bio,
+          birthday: author.birthday,
+        }
+
+        return data.data.updateAuthor
+      }
 
       return data
     },

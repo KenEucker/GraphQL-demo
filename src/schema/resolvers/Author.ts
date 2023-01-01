@@ -22,6 +22,9 @@ const Author = {
       include: {
         author: true,
       },
+      orderBy: {
+        id: 'desc',
+      },
     }),
   // @ts-ignore
   posts: (parent, args, { prisma }, info) =>
@@ -30,6 +33,9 @@ const Author = {
         author: {
           id: parent.id,
         },
+      },
+      orderBy: {
+        id: 'desc',
       },
     }),
 }

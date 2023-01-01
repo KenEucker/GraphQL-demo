@@ -237,6 +237,8 @@ const Mutation = {
     }
 
     authorToUpdate.name = data.name ?? authorToUpdate.name
+    authorToUpdate.banner = data.banner ?? authorToUpdate.banner
+    authorToUpdate.avatar = data.avatar ?? authorToUpdate.avatar
     authorToUpdate.link = data.link ?? authorToUpdate.link
     authorToUpdate.location = data.location ?? authorToUpdate.location
     authorToUpdate.birthday = data.birthday ?? authorToUpdate.birthday

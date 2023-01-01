@@ -52,7 +52,7 @@ async function deletePost() {
 </script>
 
 <template>
-  <div class="flex flex-col w-full p-5 mb-4 rounded-md bg-ll-neutral dark:bg-ld-neutral">
+  <div class="flex flex-col w-full p-5 mb-4 rounded-md bg-ll-neutral dark:bg-ld-neutral relative">
     <loading-spinner v-if="isLoading" :full-screen="false" />
     <div v-else>
       <div class="flex justify-between">

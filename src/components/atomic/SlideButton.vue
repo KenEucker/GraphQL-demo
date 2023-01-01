@@ -83,6 +83,17 @@ const classes = computed(() => {
   }
 }
 
+.h-white {
+  &-active {
+    color: black;
+  }
+
+  &:hover {
+    filter: drop-shadow(0 0 4px black);
+    color: black;
+  }
+}
+
 .h-red {
   &-active {
     color: #ba2c60;
@@ -102,17 +113,6 @@ const classes = computed(() => {
   &:hover {
     filter: drop-shadow(0 0 4px white);
     color: white;
-  }
-}
-
-.h-white {
-  &-active {
-    color: black;
-  }
-
-  &:hover {
-    filter: drop-shadow(0 0 4px black);
-    color: black;
   }
 }
 

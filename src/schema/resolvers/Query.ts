@@ -15,6 +15,7 @@ const Query = {
 
     return prisma.author.findUnique({ where })
   },
+
   post: (parent: never, args: { where: { id: any }; id: any }, { prisma }: any, info: any) => {
     const where = {
       ...args.where,
@@ -25,8 +26,14 @@ const Query = {
       throw new GraphQLError('You must specify which post to query.')
     }
 
-    return prisma.post.findUnique({ where })
+    return prisma.post.findUnique({
+      where,
+      orderBy: {
+        id: 'desc',
+      },
+    })
   },
+
   interaction: (
     parent: never,
     args: { where: { id: any }; id: any },
@@ -42,14 +49,23 @@ const Query = {
       throw new GraphQLError('You must specify which interaction to query.')
     }
 
-    return prisma.interaction.findUnique({ where })
+    return prisma.interaction.findUnique({
+      where,
+    })
   },
+
   authors: (parent: never, { where }: any, { prisma }: any, info: any) => {
     if (where?.id || where?.name || where?.email || where?.handle) {
-      return prisma.author.findMany({ where })
+      return prisma.author.findMany({
+        where,
+        orderBy: {
+          id: 'desc',
+        },
+      })
     }
     return prisma.author.findMany()
   },
+
   posts: (parent: never, { where }: any, { prisma }: any, info: any) => {
     if (where?.id || where?.title || where?.text) {
       return prisma.post.findMany({
@@ -74,6 +90,7 @@ const Query = {
       },
     })
   },
+
   interactions: (parent: never, { where }: any, { prisma }: any, info: any) => {
     const foundInteractions: any = []
 
@@ -84,6 +101,9 @@ const Query = {
             author: {
               id: where.author.id ?? 0,
             },
+          },
+          orderBy: {
+            id: 'desc',
           },
         })
       )
@@ -97,6 +117,9 @@ const Query = {
               search: where.text,
             },
           },
+          orderBy: {
+            id: 'desc',
+          },
         })
       )
     }
@@ -108,7 +131,11 @@ const Query = {
       // return foundInteractions.filter((o: any, i: number) => foundInteractions.indexOf(o) === i)
     }
 
-    return prisma.interactions.findMany()
+    return prisma.interactions.findMany({
+      orderBy: {
+        id: 'desc',
+      },
+    })
   },
 
   getPostInteractions: async (parent: never, { id }: any, { prisma }: any, info: any) => {
@@ -137,6 +164,7 @@ const Query = {
 
     return interactions
   },
+
   searchPosts: async (
     parent: never,
     { search }: { search: string },
