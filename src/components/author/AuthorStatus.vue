@@ -1,15 +1,12 @@
 <script setup lang="ts">
 const props = defineProps({
-  author: {
-    type: Object,
-    default: () => {
-      return {}
-    },
-    required: true,
+  status: {
+    type: String,
+    default: null,
   },
 })
 </script>
 
 <template>
-  {{ props.author.status }}
+  {{ props.status }}
 </template>

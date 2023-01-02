@@ -58,7 +58,7 @@ export const useAuthorState = defineStore({
             bio
             birthday
             banner
-            link
+            website
             posts {
               id
             }
@@ -147,7 +147,7 @@ export const useAuthorState = defineStore({
             banner
             bio
             birthday
-            link
+            website
             posts {
               id
             }
@@ -188,7 +188,7 @@ export const useAuthorState = defineStore({
             banner
             bio
             birthday
-            link
+            website
           }
         }
       `
@@ -207,7 +207,7 @@ export const useAuthorState = defineStore({
           avatar: author.avatar,
           banner: author.banner,
           location: author.location,
-          link: author.link,
+          website: author.website,
           email: author.email,
           bio: author.bio,
           birthday: author.birthday,

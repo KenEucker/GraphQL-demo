@@ -90,7 +90,9 @@ const useLogin = async () => {
       class="flex flex-col w-full p-2 rounded shadow-md dark:bg-ld-base sm:w-100 md:w-40 lg:w-60 lg:p-4 lg:pt-6 lg:mb-4"
     >
       <loading-spinner v-if="loggingIn" :full-screen="false" />
-      <div v-else-if="errorMessage" @click="errorMessage = null">{{ errorMessage }}</div>
+      <div v-else-if="errorMessage" @click="errorMessage = null">
+        {{ errorMessage }}
+      </div>
       <div v-else-if="props.useAuth0">
         <pop-button> Login <login-icon h="24" w="24" @click="useLogin" /> </pop-button>
       </div>

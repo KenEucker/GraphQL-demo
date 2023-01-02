@@ -1,13 +1,10 @@
 <script setup lang="ts">
 const props = defineProps({
-  author: {
-    type: Object,
-    default: () => {
-      return {}
-    },
-    required: true,
+  handle: {
+    type: String,
+    default: null,
   },
 })
 </script>
 
-<template>@{{ props.author.handle }}</template>
+<template>@{{ props.handle }}</template>

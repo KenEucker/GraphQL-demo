@@ -71,7 +71,9 @@ const getPostInteractionsQuery = gql`
     }
   }
 `
-const { result, load } = useLazyQuery(getPostInteractionsQuery, { id: props.postId })
+const { result, load } = useLazyQuery(getPostInteractionsQuery, {
+  id: props.postId,
+})
 watch(result, ({ getPostInteractions }: any) => {
   interactions.likes = getPostInteractions.likes
   interactions.loves = getPostInteractions.loves

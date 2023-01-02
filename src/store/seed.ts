@@ -129,7 +129,7 @@ export const posts = [
     title: 'Portrait Photography by Jane',
     published: true,
     text: `My artwork is available at mycoolartwork.com`,
-    link: 'http://mycoolartwork.com',
+    website: 'http://mycoolartwork.com',
     media: [
       'https://picsum.photos/id/90/200/300',
       'https://picsum.photos/id/91/200/300',

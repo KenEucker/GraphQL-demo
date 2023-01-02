@@ -61,9 +61,14 @@ const Mutation = {
       author: author.id,
     }
 
-    const interactionCreated = await prisma.interaction.create({ data: newInteraction })
+    const interactionCreated = await prisma.interaction.create({
+      data: newInteraction,
+    })
 
-    pubsub.publish(`interaction`, { mutation: 'CREATED', data: interactionCreated })
+    pubsub.publish(`interaction`, {
+      mutation: 'CREATED',
+      data: interactionCreated,
+    })
 
     return interactionCreated
   },
@@ -187,7 +192,10 @@ const Mutation = {
 
     const deletedInteraction = await prisma.interaction.delete({ where })
 
-    pubsub.publish(`interaction`, { mutation: 'DELETED', data: deletedInteraction })
+    pubsub.publish(`interaction`, {
+      mutation: 'DELETED',
+      data: deletedInteraction,
+    })
 
     return deletedInteraction
   },
@@ -227,7 +235,9 @@ const Mutation = {
     }
 
     if (typeof data.email === 'string' && data.email !== authorToUpdate.email) {
-      const emailTaken = await prisma.author.findUnique({ where: { email: authorToUpdate.email } })
+      const emailTaken = await prisma.author.findUnique({
+        where: { email: authorToUpdate.email },
+      })
 
       if (emailTaken) {
         throw new GraphQLError(`Email already taken.`)
@@ -239,13 +249,16 @@ const Mutation = {
     authorToUpdate.name = data.name ?? authorToUpdate.name
     authorToUpdate.banner = data.banner ?? authorToUpdate.banner
     authorToUpdate.avatar = data.avatar ?? authorToUpdate.avatar
-    authorToUpdate.link = data.link ?? authorToUpdate.link
+    authorToUpdate.website = data.website ?? authorToUpdate.website
     authorToUpdate.location = data.location ?? authorToUpdate.location
     authorToUpdate.birthday = data.birthday ?? authorToUpdate.birthday
     authorToUpdate.bio = data.bio ?? authorToUpdate.bio
     authorToUpdate.status = data.status ?? authorToUpdate.status
 
-    const updatedAuthor = await prisma.author.update({ where: { id }, data: authorToUpdate })
+    const updatedAuthor = await prisma.author.update({
+      where: { id },
+      data: authorToUpdate,
+    })
     pubsub.publish('author', { mutation: 'UPDATED', data: updatedAuthor })
 
     return updatedAuthor
@@ -253,9 +266,14 @@ const Mutation = {
   // @ts-ignore
   async toggleInteraction(parent, args, { prisma, pubsub }, info) {
     const findInteractionWhere = {
-      authorId_postId: { postId: args.data.postId, authorId: args.data.authorId },
+      authorId_postId: {
+        postId: args.data.postId,
+        authorId: args.data.authorId,
+      },
     }
-    let updatedInteraction = await prisma.interaction.findUnique({ where: findInteractionWhere })
+    let updatedInteraction = await prisma.interaction.findUnique({
+      where: findInteractionWhere,
+    })
     const { like, love, repost, share } = args.data
     const interactionDelta = {
       id: 0,
@@ -306,8 +324,14 @@ const Mutation = {
     interactionDelta.postId = updatedInteraction.postId
     interactionDelta.authorId = updatedInteraction.authorId
 
-    pubsub.publish('interactionDelta', { mutation: 'DELTA', data: interactionDelta })
-    pubsub.publish('interaction', { mutation: 'UPDATED', data: updatedInteraction })
+    pubsub.publish('interactionDelta', {
+      mutation: 'DELTA',
+      data: interactionDelta,
+    })
+    pubsub.publish('interaction', {
+      mutation: 'UPDATED',
+      data: updatedInteraction,
+    })
 
     return updatedInteraction
   },

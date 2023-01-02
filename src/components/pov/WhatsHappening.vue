@@ -18,7 +18,9 @@ const povState = usePovState()
     </li>
     <li v-for="(trend, index) in povState.getTrending" :key="index" class="mb-4">
       <p class="text-xs">{{ trend.title }}</p>
-      <p class="text-lg dark:text-gray-200 text-gray-700 font-bold">{{ trend.label }}</p>
+      <p class="text-lg dark:text-gray-200 text-gray-700 font-bold">
+        {{ trend.label }}
+      </p>
       <p class="text-xs">{{ trend.stats }}</p>
     </li>
   </ul>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PovAuthor from '../author/PovAuthor.vue'
+import FollowAuthor from '../author/FollowAuthor.vue'
 import { usePovState } from '../../store/state'
 import { onMounted } from 'vue'
 
@@ -23,7 +23,7 @@ onMounted(() => {
       :key="author.handle"
       class="flex items-center mb-4"
     >
-      <pov-author :author="author" />
+      <follow-author :author="author" />
     </div>
   </ul>
 </template>

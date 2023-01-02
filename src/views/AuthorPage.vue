@@ -4,6 +4,7 @@ import PovPost from '../components/post/PovPost.vue'
 import LoadingSpinner from '../components/atomic/LoadingSpinner.vue'
 import ErrorMessage from '../components/atomic/ErrorMessage.vue'
 import PovAuthor from '../components/author/PovAuthor.vue'
+import FollowAuthor from '../components/author/FollowAuthor.vue'
 import { reactive, watch, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuery } from '@vue/apollo-composable'
@@ -27,6 +28,7 @@ const authorByHandleQuery = gql`
       status
       verified
       banner
+      website
       posts {
         id
         title
@@ -102,9 +104,19 @@ function selected(idx: number) {
           <img :src="author?.banner" class="w-[100%]" />
         </div>
         <pov-author
+          v-if="isOwnPage"
           :author="author"
           size="medium"
-          class="-ml-10 -mt-18"
+          class="-ml-10 -mt-4"
+          :full="true"
+          :go-to-author-page="false"
+        />
+        <follow-author
+          v-else
+          :author="author"
+          size="medium"
+          class="-ml-10 -mt-4"
+          :full="true"
           :go-to-author-page="false"
         />
         <div class="flex">

@@ -34,9 +34,10 @@ type Author {
   banner: String
   status: String
   bio: String
-  link: String
+  website: String
   location: String
   birthday: String
+  joined: String
 }
 
 type Interaction {
@@ -214,7 +215,7 @@ input UpdateAuthorInput {
   banner: String
   status: String
   bio: String
-  link: String
+  website: String
   location: String
   birthday: String
 }

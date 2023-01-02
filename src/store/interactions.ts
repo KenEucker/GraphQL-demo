@@ -3,7 +3,9 @@ import { defineStore } from 'pinia'
 import { gql } from '@apollo/client/core'
 import { Interaction } from '../schema/generated/types.d'
 
-export const getInitialInteractionsState = (): { interactions: Interaction[] } => ({
+export const getInitialInteractionsState = (): {
+  interactions: Interaction[]
+} => ({
   interactions: [],
 })
 

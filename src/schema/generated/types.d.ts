@@ -25,13 +25,14 @@ export type Author = {
   readonly handle: Scalars['String'];
   readonly id: Scalars['Int'];
   readonly interactions?: Maybe<ReadonlyArray<Interaction>>;
-  readonly link?: Maybe<Scalars['String']>;
+  readonly joined?: Maybe<Scalars['String']>;
   readonly location?: Maybe<Scalars['String']>;
   readonly name: Scalars['String'];
   readonly permissions?: Maybe<ReadonlyArray<Permissions>>;
   readonly posts?: Maybe<ReadonlyArray<Post>>;
   readonly status?: Maybe<Scalars['String']>;
   readonly verified?: Maybe<Scalars['Boolean']>;
+  readonly website?: Maybe<Scalars['String']>;
 };
 
 export type AuthorByInput = {
@@ -376,10 +377,10 @@ export type UpdateAuthorInput = {
   readonly bio?: InputMaybe<Scalars['String']>;
   readonly birthday?: InputMaybe<Scalars['String']>;
   readonly email?: InputMaybe<Scalars['String']>;
-  readonly link?: InputMaybe<Scalars['String']>;
   readonly location?: InputMaybe<Scalars['String']>;
   readonly name?: InputMaybe<Scalars['String']>;
   readonly status?: InputMaybe<Scalars['String']>;
+  readonly website?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateInteractionInput = {
@@ -546,13 +547,14 @@ export type AuthorResolvers<ContextType = any, ParentType extends ResolversParen
   handle?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   interactions?: Resolver<Maybe<ReadonlyArray<ResolversTypes['Interaction']>>, ParentType, ContextType>;
-  link?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  joined?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   location?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   permissions?: Resolver<Maybe<ReadonlyArray<ResolversTypes['Permissions']>>, ParentType, ContextType>;
   posts?: Resolver<Maybe<ReadonlyArray<ResolversTypes['Post']>>, ParentType, ContextType>;
   status?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   verified?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  website?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

@@ -52,7 +52,7 @@ export class Author {
 
   @IsDefined()
   @IsString()
-  link!: string
+  website!: string
 
   @IsDefined()
   @IsString()

@@ -3,7 +3,8 @@ import { Interaction, Post } from '../generated/types'
 const Author = {
   // @ts-ignore
   // email: (parent, args, { prisma, auth0 }, info) => {
-  //   if (parent.id === auth0?.author.id) {
+  //   console.log({ parent, auth0 })
+  //   if (parent.id === auth0?.author?.id) {
   //     return parent.email
   //   }
   //   return null

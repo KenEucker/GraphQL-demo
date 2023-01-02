@@ -43,7 +43,7 @@ model Author {
   banner       String        @default("")
   status       String        @default("")
   bio          String        @default("")
-  link         String        @default("")
+  website         String        @default("")
   location     String        @default("")
   birthday     String        @default("")
 }

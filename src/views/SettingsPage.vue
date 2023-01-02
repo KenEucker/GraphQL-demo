@@ -13,7 +13,7 @@ const loadingRef = ref(false)
 const emailRef = ref()
 const handleRef = ref()
 const nameRef = ref()
-const linkRef = ref()
+const websiteRef = ref()
 const birthdayRef = ref()
 const locationRef = ref()
 const bioRef = ref()
@@ -84,12 +84,12 @@ const fields = computed(() => [
     ref: bannerRef,
   },
   {
-    name: 'link',
+    name: 'website',
     label: 'Website',
-    value: authorState.getAuthor.link,
+    value: authorState.getAuthor.website,
     placeholder: 'website',
     fullWidth: true,
-    ref: linkRef,
+    ref: websiteRef,
   },
   {
     name: 'bio',
@@ -119,7 +119,7 @@ async function saveFields(e: Event) {
     avatar: setValueIfChanged(avatarRef, authorState.getAuthor.avatar),
     banner: setValueIfChanged(bannerRef, authorState.getAuthor.banner),
     name: setValueIfChanged(nameRef, authorState.getAuthor.name),
-    link: setValueIfChanged(linkRef, authorState.getAuthor.link),
+    website: setValueIfChanged(websiteRef, authorState.getAuthor.website),
     birthday: setValueIfChanged(birthdayRef, authorState.getAuthor.birthday),
     location: setValueIfChanged(locationRef, authorState.getAuthor.location),
     bio: setValueIfChanged(bioRef, authorState.getAuthor.bio),
@@ -131,7 +131,7 @@ async function saveFields(e: Event) {
     avatarRef.value.value = updateResult.avatar
     bannerRef.value.value = updateResult.banner
     nameRef.value.value = updateResult.name
-    linkRef.value.value = updateResult.link
+    websiteRef.value.value = updateResult.website
     birthdayRef.value.value = updateResult.birthday
     locationRef.value.value = updateResult.location
     bioRef.value.value = updateResult.bio
@@ -145,7 +145,9 @@ async function saveFields(e: Event) {
   <div class="" @click="errors = false">
     <section
       class="max-w-4xl p-6 mx-auto rounded-md shadow-md mx-auto dark:bg-gray-800 mt-20"
-      :style="{ background: `url(${authorState.getAuthor.banner}) no-repeat right` }"
+      :style="{
+        background: `url(${authorState.getAuthor.banner}) no-repeat right`,
+      }"
     >
       <pov-author :author="authorState.getAuthor" size="large" :go-to-author-page="false" />
     </section>
