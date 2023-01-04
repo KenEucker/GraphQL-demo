@@ -46,6 +46,8 @@ model Author {
   website         String        @default("")
   location     String        @default("")
   birthday     String        @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Interaction {
@@ -59,6 +61,8 @@ model Interaction {
   love     Boolean @default(false)
   repost   Boolean @default(false)
   share    Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([authorId, postId])
 }
@@ -74,6 +78,8 @@ model Post {
   status       String        @default("")
   media        String[]      @default([])
   TagsOnPosts  TagsOnPosts[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([authorId, title])
 }
@@ -83,6 +89,8 @@ model Tag {
   text              String      @unique
   posts             TagsOnPosts @relation(fields: [tagsOnPostsPostId], references: [postId])
   tagsOnPostsPostId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model TagsOnPosts {

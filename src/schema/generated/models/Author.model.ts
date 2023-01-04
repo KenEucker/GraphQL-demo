@@ -1,4 +1,4 @@
-import { IsInt, IsDefined, IsString, IsBoolean, IsIn } from 'class-validator'
+import { IsInt, IsDefined, IsString, IsBoolean, IsIn, IsDate } from 'class-validator'
 import { Post, Interaction } from './'
 import { getEnumValues } from '../helpers'
 import { Permissions } from '../enums'
@@ -61,4 +61,12 @@ export class Author {
   @IsDefined()
   @IsString()
   birthday!: string
+
+  @IsDefined()
+  @IsDate()
+  createdAt!: Date
+
+  @IsDefined()
+  @IsDate()
+  updatedAt!: Date
 }

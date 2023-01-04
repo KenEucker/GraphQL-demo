@@ -3,6 +3,7 @@
 
 import { Resolvers } from '../generated/types'
 import Query from './Query'
+import Date from './Date'
 import Mutation from './Mutation'
 import Subscription from './Subscription'
 import Author from './Author'
@@ -14,6 +15,7 @@ import Post from './Post'
 /// from a scalar value. This breaks our codegen types for the
 /// return of these reducers, but works at runtime.
 export const resolvers: Resolvers = {
+  Date,
   Query,
   Mutation,
   Subscription,

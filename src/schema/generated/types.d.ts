@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { GraphQLResolveInfo } from 'graphql';
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -13,6 +13,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Date: any;
 };
 
 export type Author = {
@@ -21,6 +22,7 @@ export type Author = {
   readonly banner?: Maybe<Scalars['String']>;
   readonly bio?: Maybe<Scalars['String']>;
   readonly birthday?: Maybe<Scalars['String']>;
+  readonly createdAt?: Maybe<Scalars['Date']>;
   readonly email: Scalars['String'];
   readonly handle: Scalars['String'];
   readonly id: Scalars['Int'];
@@ -31,14 +33,17 @@ export type Author = {
   readonly permissions?: Maybe<ReadonlyArray<Permissions>>;
   readonly posts?: Maybe<ReadonlyArray<Post>>;
   readonly status?: Maybe<Scalars['String']>;
+  readonly updatedAt?: Maybe<Scalars['Date']>;
   readonly verified?: Maybe<Scalars['Boolean']>;
   readonly website?: Maybe<Scalars['String']>;
 };
 
 export type AuthorByInput = {
   readonly email?: InputMaybe<Scalars['String']>;
+  readonly first?: InputMaybe<Scalars['Int']>;
   readonly handle?: InputMaybe<Scalars['String']>;
   readonly id?: InputMaybe<Scalars['Int']>;
+  readonly skip?: InputMaybe<Scalars['Int']>;
 };
 
 export type AuthorInput = {
@@ -81,6 +86,13 @@ export type CreatePostInput = {
   readonly title: Scalars['String'];
 };
 
+export type ForOptionsInput = {
+  readonly cursor?: InputMaybe<Scalars['String']>;
+  readonly orderById?: InputMaybe<Scalars['String']>;
+  readonly skip?: InputMaybe<Scalars['Int']>;
+  readonly take?: InputMaybe<Scalars['Int']>;
+};
+
 export type GetPostInteractionsPayload = {
   readonly __typename?: 'GetPostInteractionsPayload';
   readonly likes?: Maybe<Scalars['Int']>;
@@ -92,6 +104,7 @@ export type GetPostInteractionsPayload = {
 export type Interaction = {
   readonly __typename?: 'Interaction';
   readonly author: Author;
+  readonly createdAt?: Maybe<Scalars['Date']>;
   readonly id: Scalars['Int'];
   readonly like?: Maybe<Scalars['Boolean']>;
   readonly love?: Maybe<Scalars['Boolean']>;
@@ -99,11 +112,14 @@ export type Interaction = {
   readonly repost?: Maybe<Scalars['Boolean']>;
   readonly share?: Maybe<Scalars['Boolean']>;
   readonly text?: Maybe<Scalars['String']>;
+  readonly updatedAt?: Maybe<Scalars['Date']>;
 };
 
 export type InteractionByInput = {
   readonly author?: InputMaybe<AuthorInput>;
+  readonly first?: InputMaybe<Scalars['Int']>;
   readonly post?: InputMaybe<PostInput>;
+  readonly skip?: InputMaybe<Scalars['Int']>;
 };
 
 export type InteractionDelta = {
@@ -245,6 +261,7 @@ export type Permissions =
 export type Post = {
   readonly __typename?: 'Post';
   readonly author: Author;
+  readonly createdAt?: Maybe<Scalars['Date']>;
   readonly id: Scalars['Int'];
   readonly interactions?: Maybe<ReadonlyArray<Interaction>>;
   readonly media?: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
@@ -253,11 +270,14 @@ export type Post = {
   readonly tags?: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
   readonly text?: Maybe<Scalars['String']>;
   readonly title: Scalars['String'];
+  readonly updatedAt?: Maybe<Scalars['Date']>;
 };
 
 export type PostByInput = {
   readonly author?: InputMaybe<AuthorInput>;
+  readonly first?: InputMaybe<Scalars['Int']>;
   readonly id?: InputMaybe<Scalars['Int']>;
+  readonly skip?: InputMaybe<Scalars['Int']>;
   readonly title?: InputMaybe<Scalars['String']>;
 };
 
@@ -293,6 +313,7 @@ export type QueryAuthorArgs = {
 
 
 export type QueryAuthorsArgs = {
+  by?: InputMaybe<ForOptionsInput>;
   where?: InputMaybe<AuthorByInput>;
 };
 
@@ -309,6 +330,7 @@ export type QueryInteractionArgs = {
 
 
 export type QueryInteractionsArgs = {
+  by?: InputMaybe<ForOptionsInput>;
   where?: InputMaybe<InteractionByInput>;
 };
 
@@ -320,11 +342,13 @@ export type QueryPostArgs = {
 
 
 export type QueryPostsArgs = {
+  by?: InputMaybe<ForOptionsInput>;
   where?: InputMaybe<PostByInput>;
 };
 
 
 export type QuerySearchPostsArgs = {
+  by?: InputMaybe<ForOptionsInput>;
   search: SearchPostsInput;
 };
 
@@ -479,6 +503,8 @@ export type ResolversTypes = {
   CreateAuthorInput: CreateAuthorInput;
   CreateInteractionInput: CreateInteractionInput;
   CreatePostInput: CreatePostInput;
+  Date: ResolverTypeWrapper<Scalars['Date']>;
+  ForOptionsInput: ForOptionsInput;
   GetPostInteractionsPayload: ResolverTypeWrapper<GetPostInteractionsPayload>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Interaction: ResolverTypeWrapper<Interaction>;
@@ -515,6 +541,8 @@ export type ResolversParentTypes = {
   CreateAuthorInput: CreateAuthorInput;
   CreateInteractionInput: CreateInteractionInput;
   CreatePostInput: CreatePostInput;
+  Date: Scalars['Date'];
+  ForOptionsInput: ForOptionsInput;
   GetPostInteractionsPayload: GetPostInteractionsPayload;
   Int: Scalars['Int'];
   Interaction: Interaction;
@@ -543,6 +571,7 @@ export type AuthorResolvers<ContextType = any, ParentType extends ResolversParen
   banner?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   bio?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   birthday?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  createdAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   handle?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -553,6 +582,7 @@ export type AuthorResolvers<ContextType = any, ParentType extends ResolversParen
   permissions?: Resolver<Maybe<ReadonlyArray<ResolversTypes['Permissions']>>, ParentType, ContextType>;
   posts?: Resolver<Maybe<ReadonlyArray<ResolversTypes['Post']>>, ParentType, ContextType>;
   status?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  updatedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   verified?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   website?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -564,6 +594,10 @@ export type AuthorSubscriptionPayloadResolvers<ContextType = any, ParentType ext
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
+  name: 'Date';
+}
+
 export type GetPostInteractionsPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['GetPostInteractionsPayload'] = ResolversParentTypes['GetPostInteractionsPayload']> = {
   likes?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   loves?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
@@ -574,6 +608,7 @@ export type GetPostInteractionsPayloadResolvers<ContextType = any, ParentType ex
 
 export type InteractionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Interaction'] = ResolversParentTypes['Interaction']> = {
   author?: Resolver<ResolversTypes['Author'], ParentType, ContextType>;
+  createdAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   like?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   love?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
@@ -581,6 +616,7 @@ export type InteractionResolvers<ContextType = any, ParentType extends Resolvers
   repost?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   share?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   text?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  updatedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -624,6 +660,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {
   author?: Resolver<ResolversTypes['Author'], ParentType, ContextType>;
+  createdAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   interactions?: Resolver<Maybe<ReadonlyArray<ResolversTypes['Interaction']>>, ParentType, ContextType>;
   media?: Resolver<Maybe<ReadonlyArray<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
@@ -632,6 +669,7 @@ export type PostResolvers<ContextType = any, ParentType extends ResolversParentT
   tags?: Resolver<Maybe<ReadonlyArray<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
   text?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -668,6 +706,7 @@ export type SubscriptionResolvers<ContextType = any, ParentType extends Resolver
 export type Resolvers<ContextType = any> = {
   Author?: AuthorResolvers<ContextType>;
   AuthorSubscriptionPayload?: AuthorSubscriptionPayloadResolvers<ContextType>;
+  Date?: GraphQLScalarType;
   GetPostInteractionsPayload?: GetPostInteractionsPayloadResolvers<ContextType>;
   Interaction?: InteractionResolvers<ContextType>;
   InteractionDelta?: InteractionDeltaResolvers<ContextType>;

@@ -1,4 +1,4 @@
-import { IsInt, IsDefined, IsString } from 'class-validator'
+import { IsInt, IsDefined, IsString, IsDate } from 'class-validator'
 import { TagsOnPosts } from './'
 
 export class Tag {
@@ -16,4 +16,12 @@ export class Tag {
   @IsDefined()
   @IsInt()
   tagsOnPostsPostId!: number
+
+  @IsDefined()
+  @IsDate()
+  createdAt!: Date
+
+  @IsDefined()
+  @IsDate()
+  updatedAt!: Date
 }

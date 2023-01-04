@@ -1,6 +1,15 @@
-import { Author, Interaction, Post } from '../generated/types'
+import { ForOptionsInput } from '../generated/types.d'
 import { GraphQLError } from 'graphql'
 import { Prisma } from '@prisma/client'
+
+const getDefaultQueryOptions = (by: ForOptionsInput) => ({
+  take: by?.take ?? 20,
+  skip: by?.skip ?? 0,
+  cursor: by?.cursor,
+  orderBy: {
+    id: by?.orderById ?? 'desc',
+  },
+})
 
 const Query = {
   author: (parent: never, args: { where: { id: any }; id: any }, { prisma }: any, info: any) => {
@@ -54,19 +63,17 @@ const Query = {
     })
   },
 
-  authors: (parent: never, { where }: any, { prisma }: any, info: any) => {
+  authors: (parent: never, { where, by }: any, { prisma }: any, info: any) => {
     if (where?.id || where?.name || where?.email || where?.handle) {
       return prisma.author.findMany({
         where,
-        orderBy: {
-          id: 'desc',
-        },
+        ...getDefaultQueryOptions(by),
       })
     }
-    return prisma.author.findMany()
+    return prisma.author.findMany(getDefaultQueryOptions(by))
   },
 
-  posts: (parent: never, { where }: any, { prisma }: any, info: any) => {
+  posts: (parent: never, { where, by }: any, { prisma }: any, info: any) => {
     if (where?.id || where?.title || where?.text) {
       return prisma.post.findMany({
         where: {
@@ -78,20 +85,14 @@ const Query = {
             search: where.text,
           },
         },
-        orderBy: {
-          id: 'desc',
-        },
+        ...getDefaultQueryOptions(by),
       })
     }
 
-    return prisma.post.findMany({
-      orderBy: {
-        id: 'desc',
-      },
-    })
+    return prisma.post.findMany(getDefaultQueryOptions(by))
   },
 
-  interactions: (parent: never, { where }: any, { prisma }: any, info: any) => {
+  interactions: (parent: never, { where, by }: any, { prisma }: any, info: any) => {
     const foundInteractions: any = []
 
     if (where?.author) {
@@ -102,9 +103,7 @@ const Query = {
               id: where.author.id ?? 0,
             },
           },
-          orderBy: {
-            id: 'desc',
-          },
+          ...getDefaultQueryOptions(by),
         })
       )
     }
@@ -117,9 +116,7 @@ const Query = {
               search: where.text,
             },
           },
-          orderBy: {
-            id: 'desc',
-          },
+          ...getDefaultQueryOptions(by),
         })
       )
     }
@@ -131,11 +128,7 @@ const Query = {
       // return foundInteractions.filter((o: any, i: number) => foundInteractions.indexOf(o) === i)
     }
 
-    return prisma.interactions.findMany({
-      orderBy: {
-        id: 'desc',
-      },
-    })
+    return prisma.interaction.findMany(getDefaultQueryOptions(by))
   },
 
   getPostInteractions: async (parent: never, { id }: any, { prisma }: any, info: any) => {
@@ -167,7 +160,7 @@ const Query = {
 
   searchPosts: async (
     parent: never,
-    { search }: { search: string },
+    { search, by }: { search: string; by: ForOptionsInput },
     { prisma }: any,
     info: any
   ) => {
@@ -177,6 +170,7 @@ const Query = {
           search,
         },
       },
+      ...getDefaultQueryOptions(by),
     })
   },
 }

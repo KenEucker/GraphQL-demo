@@ -74,7 +74,7 @@ eventsource.onmessage = function (event) {
   const { data: post, mutation } = data.data.post
 
   if (mutation === 'CREATED') {
-    if (leftPosts.length < rightPosts.length) {
+    if (leftPosts.length > rightPosts.length) {
       leftPosts.unshift(post)
     } else {
       rightPosts.unshift(post)

@@ -1,4 +1,4 @@
-import { IsInt, IsDefined, IsString, IsBoolean } from 'class-validator'
+import { IsInt, IsDefined, IsString, IsBoolean, IsDate } from 'class-validator'
 import { Author, Interaction, TagsOnPosts } from './'
 
 export class Post {
@@ -38,4 +38,12 @@ export class Post {
 
   @IsDefined()
   TagsOnPosts!: TagsOnPosts[]
+
+  @IsDefined()
+  @IsDate()
+  createdAt!: Date
+
+  @IsDefined()
+  @IsDate()
+  updatedAt!: Date
 }

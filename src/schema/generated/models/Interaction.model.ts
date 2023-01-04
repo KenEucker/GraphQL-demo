@@ -1,4 +1,4 @@
-import { IsInt, IsDefined, IsString, IsBoolean } from 'class-validator'
+import { IsInt, IsDefined, IsString, IsBoolean, IsDate } from 'class-validator'
 import { Author, Post } from './'
 
 export class Interaction {
@@ -39,4 +39,12 @@ export class Interaction {
   @IsDefined()
   @IsBoolean()
   share!: boolean
+
+  @IsDefined()
+  @IsDate()
+  createdAt!: Date
+
+  @IsDefined()
+  @IsDate()
+  updatedAt!: Date
 }

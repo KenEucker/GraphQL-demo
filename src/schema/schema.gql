@@ -1,3 +1,5 @@
+scalar Date
+
 enum Permissions {
   READ
   WRITE
@@ -38,6 +40,8 @@ type Author {
   location: String
   birthday: String
   joined: String
+  createdAt: Date
+  updatedAt: Date
 }
 
 type Interaction {
@@ -49,6 +53,8 @@ type Interaction {
   love: Boolean
   repost: Boolean
   share: Boolean
+  createdAt: Date
+  updatedAt: Date
 }
 
 type Post {
@@ -61,18 +67,20 @@ type Post {
   status: String
   media: [String]
   tags: [String]
+  createdAt: Date
+  updatedAt: Date
 }
 
 type Query {
   author(where: AuthorByInput, id: Int): Author
-  authors(where: AuthorByInput): [Author]
+  authors(where: AuthorByInput, by: ForOptionsInput): [Author]
   interaction(where: InteractionByInput, id: Int): Interaction
-  interactions(where: InteractionByInput): [Interaction]
+  interactions(where: InteractionByInput, by: ForOptionsInput): [Interaction]
   post(where: PostByInput, id: Int): Post
-  posts(where: PostByInput): [Post]
+  posts(where: PostByInput, by: ForOptionsInput): [Post]
 
   getPostInteractions(id: Int!): GetPostInteractionsPayload
-  searchPosts(search: SearchPostsInput!): SearchPostsPayload
+  searchPosts(search: SearchPostsInput!, by: ForOptionsInput): SearchPostsPayload
 }
 
 type Mutation {
@@ -99,6 +107,13 @@ type Subscription {
   interaction(where: InteractionByInput): InteractionSubscriptionPayload
   interactionDelta(where: InteractionByInput): InteractionDeltaSubscriptionPayload
   post(where: PostByInput): PostSubscriptionPayload
+}
+
+input ForOptionsInput {
+  take: Int
+  skip: Int
+  cursor: String
+  orderById: String
 }
 
 type SearchPostsPayload {
@@ -149,17 +164,23 @@ input AuthorByInput {
   email: String
   handle: String
   id: Int
+  first: Int
+  skip: Int
 }
 
 input InteractionByInput {
   author: AuthorInput
   post: PostInput
+  first: Int
+  skip: Int
 }
 
 input PostByInput {
   id: Int
   author: AuthorInput
   title: String
+  first: Int
+  skip: Int
 }
 
 input AuthorInput {
