@@ -25,9 +25,9 @@ This is a rough draft giude to setting up Point-Of-Vue on your machine for local
 
 1. Install Node Modules
 
-```
-npm install
-```
+    ```
+    npm install
+    ```
 
 2. Configure your environment variables by creating a .env file with the following variable:
 - `DATABASE_URL="YOUR_POSTGRES_URL"`
@@ -35,22 +35,24 @@ npm install
     2a. you can spin up a local postgres database using the docker-compose.yml file included in this project, by running the command: `docker-compose up -d` before spinning up any of the following programs. If you do, this is your DATABASE_URL: `postgresql://postgres:postgres@localhost:5438/postgres`
 
 3. These are other environment variables that can be configured:
-- `ORIGIN="http://localhost"`
-- `ORIGIN_PORT=8080`
-- `GRAPH_URL="http://localhost"`
-- `GRAPH_PORT=8100`
-- `GRAPH_PATH="graphql"`
-- `STUDIO_URL="http://localhost:8200"`
-- `AUTH0_DOMAIN="some-domain.us.auth0.com"`
-- `AUTH0_CID="YOUR_CLIENT_ID"`
+    ```
+    ORIGIN="http://localhost"
+    ORIGIN_PORT=8080
+    GRAPH_URL="http://localhost"
+    GRAPH_PORT=8100
+    GRAPH_PATH="graphql"
+    STUDIO_URL="http://localhost:8200"
+    AUTH0_DOMAIN="some-domain.us.auth0.com"
+    AUTH0_CID="YOUR_CLIENT_ID"
+    ```
 
     3b. The ORIGIN is the vite server or static webserver for the client app. If port 80 is used for any of the PORT variables, it will be omitted from the constructred url. The STUDIO_URL is for Prisma Studio and I don't know of a way to change this value or port.
 
 4. Run the application(s). There are three programs that run this application for local development. There is the server (apollo/graphql-yoga + playground), client (vite powered frontend), studio (prisma studio for editing data tables). The command below will run all three applications simultaneously with live reload. Any changes made to the files in schema will trigger a reload of the server and client applications.
 
-```
-npm run dev
-```
+    ```
+    npm run dev
+    ```
 
 5. If you run the defaults, the following urls are reachable:
 - http://localhost:8080          -- [client]
