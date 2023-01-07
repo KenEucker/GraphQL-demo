@@ -46,7 +46,7 @@ This is a rough draft giude to setting up Point-Of-Vue on your machine for local
     AUTH0_CID="YOUR_CLIENT_ID"
     ```
 
-    3b. The ORIGIN is the vite server or static webserver for the client app. If port 80 is used for any of the PORT variables, it will be omitted from the constructred url. The STUDIO_URL is for Prisma Studio and I don't know of a way to change this value or port.
+    3b. The ORIGIN is the vite server or static webserver for the client app. If port 80 is used for any of the PORT variables, it will be omitted from the constructred url. The GRAPH_URL is the graph-ql server and STUDIO_URL is for Prisma Studio.
 
 4. Run the application(s). There are three programs that run this application for local development. There is the server (apollo/graphql-yoga + playground), client (vite powered frontend), studio (prisma studio for editing data tables). The command below will run all three applications simultaneously with live reload. Any changes made to the files in schema will trigger a reload of the server and client applications.
 
