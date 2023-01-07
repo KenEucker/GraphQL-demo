@@ -7,7 +7,7 @@ import Repost from 'vue-ionicons/dist/md-sync.vue'
 import PopButton from '../atomic/PopButton.vue'
 import { gql } from '@apollo/client/core'
 import { useMutation } from '@vue/apollo-composable'
-import { variableDeclaration } from '@babel/types'
+import { computed } from 'vue'
 
 const props = defineProps({
   count: {
@@ -40,6 +40,8 @@ const props = defineProps({
   },
 })
 
+// const authorId = computed(() => props.authorId)
+
 const mutation = gql`
   mutation UpdateInteractionPovPost($data: UpdateInteractionInput!) {
     toggleInteraction(data: $data) {
@@ -51,7 +53,7 @@ const mutation = gql`
 const { mutate: useUpdateInteractionMutation } = useMutation(mutation)
 
 async function onPostInteraction() {
-  if (props.authorId === 0 || props.disableInteraction) {
+  if (props.authorId < 1 || props.disableInteraction) {
     return
   }
 
@@ -89,10 +91,20 @@ async function onPostInteraction() {
 }
 
 const emit = defineEmits(['onInteraction'])
+
+const popoverContent = computed(() =>
+  props.disableInteraction
+    ? 'you cannot do that'
+    : props.authorId < 0
+    ? 'complete your signup'
+    : props.authorId < 1
+    ? 'you must be logged in'
+    : `${props.variant}d`
+)
 </script>
 
 <template>
-  <pop-button :variant="variant" @click="onPostInteraction">
+  <pop-button :variant="variant" :popover-content="popoverContent" @click="onPostInteraction">
     <div v-if="props.variant === 'like'">
       <points w="25" h="25" :class="props.active ? 'text-yellow-600' : ''" class="align-middle" />
       <span v-show="!props.hideCount" class="ml-1 align-middle">{{ props.count }}</span>

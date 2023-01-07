@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import PovPostInteraction from './PovPostInteraction.vue'
 import { gql } from '@apollo/client/core'
-import { reactive, watch } from 'vue'
+import { reactive, watch, computed } from 'vue'
 import { useLazyQuery } from '@vue/apollo-composable'
 import { useSubscription } from '../../utilities'
 

@@ -29,7 +29,7 @@ const signUp = async (e: Event) => {
 </script>
 <template>
   <div class="w-full px-8 pt-6 pb-8 mb-4 bg-gray-900 rounded-lg shadow-lg">
-    <div v-if="authorState.isLoggedIn && authorState.getAuthor.id !== 0">
+    <div v-if="authorState.isLoggedIn && authorState.getAuthor.id < 1">
       <div class="mb-4 text-center">
         <label class="block py-2 mb-2 text-2xl font-bold text-green-300">
           Thank you for signing up!

@@ -78,7 +78,7 @@ export const usePovState = defineStore({
     },
     pruneAuthorsToFollow() {
       const authorSate = useAuthorState()
-      if (authorSate.getAuthor?.id !== 0) {
+      if (authorSate.getAuthor?.id > 0) {
         this.authorsToFollow = this.authorsToFollow.filter((a) => a.id === authorSate.getAuthor.id)
       }
     },

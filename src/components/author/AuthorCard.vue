@@ -24,7 +24,7 @@ const { author } = storeToRefs(authorState)
 watch(author, () => {
   if (authorState.isLoggedIn) {
     loggingIn.value = false
-    if (authorState.getAuthorId !== 0) {
+    if (authorState.getAuthorId > 0) {
       menuState.openCreatePost()
     }
   } else {

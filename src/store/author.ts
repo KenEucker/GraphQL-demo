@@ -37,7 +37,7 @@ export const useAuthorState = defineStore({
   state: getInitialAuthorState,
   getters: {
     isAuth0: (s) => s.auth0Configured,
-    isAuthorSignedUp: (s) => s.author?.id !== 0,
+    isAuthorSignedUp: (s) => s.author?.id !== -1,
     isLoggedIn: (s) => s.loggedIn,
     getAuthor: (s) => s.author,
     getAuthorId: (s) => s.author?.id ?? 0,
@@ -98,7 +98,7 @@ export const useAuthorState = defineStore({
           if (auth?.isAuthenticated?.value) {
             this.loggedIn = true
             this.author = {
-              id: 0,
+              id: -1,
               name: user.name,
               email: user.email,
               avatar: user.picture,

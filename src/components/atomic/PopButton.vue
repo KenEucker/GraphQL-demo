@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import { computed, useAttrs } from 'vue'
+import Popper from 'vue3-popper'
+
 const props = defineProps({
   variant: {
     type: String,
     default: 'green',
   },
+  popoverContent: {
+    type: String,
+    default: null,
+  },
 })
+
 const classes = computed(() => {
   const [color, size] = props.variant.split('-')
   let hColor = color
@@ -47,26 +54,46 @@ const attrs = useAttrs()
 </script>
 
 <template>
-  <button
-    v-motion
-    class="flex m-auto transition-transform transform rounded-full active:scale-95"
-    :class="classes"
-    :v-bind="attrs"
-    :initial="{
-      y: 4,
-      scale: 1,
-    }"
-    :enter="{
-      y: 0,
-      scale: 1,
-    }"
-    :tapped="{
-      scale: 1.5,
-    }"
+  <popper
+    :content="props.popoverContent"
+    placement="top"
+    :arrow="true"
+    :close-delay="200"
+    :disable-click-away="false"
   >
-    <slot></slot>
-  </button>
+    <button
+      v-motion
+      class="flex m-auto transition-transform transform rounded-full active:scale-95"
+      :class="classes"
+      :v-bind="attrs"
+      :initial="{
+        y: 4,
+        scale: 1,
+      }"
+      :enter="{
+        y: 0,
+        scale: 1,
+      }"
+      :tapped="{
+        scale: 1.5,
+      }"
+    >
+      <slot></slot>
+    </button>
+  </popper>
 </template>
+<style>
+:root {
+  --popper-theme-background-color: #ffffff;
+  --popper-theme-background-color-hover: #ffffff;
+  --popper-theme-text-color: #333333;
+  --popper-theme-border-width: 0px;
+  --popper-theme-border-style: solid;
+  --popper-theme-border-radius: 6px;
+  --popper-theme-padding: 5px;
+  --popper-theme-box-shadow: 0 6px 30px -6px rgba(0, 0, 0, 0.25);
+}
+</style>
 <style lang="scss" scoped>
 .h-blue {
   &-active {
