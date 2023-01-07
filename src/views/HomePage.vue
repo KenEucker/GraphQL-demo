@@ -72,7 +72,7 @@ const location = useBrowserLocation()
         </div>
       </div>
 
-      <div class="mx-auto md:pt-16">
+      <!-- <div class="mx-auto md:pt-16">
         <p class="pb-8 font-bold text-center text-ll-primary lg:pb-6">Download our app:</p>
         <div class="flex justify-center w-full pb-24 md:justify-start lg:pb-0 fade-in">
           <img
@@ -84,11 +84,11 @@ const location = useBrowserLocation()
             class="h-12 duration-300 ease-in-out transform hover:scale-125"
           />
         </div>
-      </div>
+      </div> -->
 
       <!--Footer-->
       <div class="w-full pt-16 pb-6 text-sm text-center md:text-left fade-in">
-        <a class="text-gray-500 no-underline hover:no-underline" href="#">&copy; POV 2022</a>
+        <a class="text-gray-500 no-underline hover:no-underline" href="#">&copy; POV 2023</a>
         - Template by
         <a
           class="text-gray-500 no-underline hover:no-underline"

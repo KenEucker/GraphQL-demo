@@ -6,6 +6,7 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "strict": true,
+    "strictNullChecks": true,
     "jsx": "preserve",
     "resolveJsonModule": true,
     "experimentalDecorators": true,

@@ -56,7 +56,13 @@ https://dev.to/the-guild/graphql-authentication-with-envelop-and-auth0-2cie
 
 I am using an Auth0 application to handle login for authors of the application and incorporating both google login and passwordless email login. Both lead the end user to create an author account and finish their signup upon logging in before allowing them to post. Only one mutation is unauthenticated: signupAuthor. The rest of the mutations: createPost, updateInteraction, etc... all require an authorization header. I am using an Auth0 api to handle this authentication which is rolled into the graphql-yoga server and uses the token provided upon login.
 
+Adding testing with Jest appears to track current state of the graphql best practices.
 
+- I have completed all of the coding for this project but have run into an issue, immediately this week, with the testing side that is the last 5 hours of the Udemy course. 
+- I will continue to work into the next week on this project to overcome this issue or move on. 
+- The notes contained within this file act as a final summary of my work this week while the final draft will come next week.
+- The github project and demo url are complete and ready for review: (github)[https://github.com/KenEucker/GraphQL-demo] (demo)[https://point-of-vue-web.onrender.com/]
+- I will not be demoing on a lunch and learn this week (first week of the year is not great timing.)
 
 # potential hosting solutions
 
