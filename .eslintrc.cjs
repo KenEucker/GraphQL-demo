@@ -7,6 +7,12 @@ module.exports = {
 
   // the ts-eslint recommended ruleset sets the parser so we need to set it back
   parser: 'vue-eslint-parser',
+  extends: [
+    'plugin:vue/vue3-recommended',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended',
+  ],
 
   parserOptions: {
     ecmaVersion: 2020,
@@ -19,13 +25,6 @@ module.exports = {
   },
 
   plugins: ['@typescript-eslint'],
-
-  extends: [
-    'plugin:vue/vue3-recommended',
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
-  ],
 
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',

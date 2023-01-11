@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import AppLayout from './components/layout/AppLayout.vue'
 import HeaderBar from './components/menu/HeaderBar.vue'
 import SlideMenuLeft from './components/menu/SlideMenuLeft.vue'

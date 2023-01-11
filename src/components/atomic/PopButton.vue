@@ -84,14 +84,14 @@ const attrs = useAttrs()
 </template>
 <style>
 :root {
-  --popper-theme-background-color: #ffffff;
-  --popper-theme-background-color-hover: #ffffff;
-  --popper-theme-text-color: #333333;
-  --popper-theme-border-width: 0px;
+  --popper-theme-background-color: #fff;
+  --popper-theme-background-color-hover: #fff;
+  --popper-theme-text-color: #333;
+  --popper-theme-border-width: 0;
   --popper-theme-border-style: solid;
   --popper-theme-border-radius: 6px;
   --popper-theme-padding: 5px;
-  --popper-theme-box-shadow: 0 6px 30px -6px rgba(0, 0, 0, 0.25);
+  --popper-theme-box-shadow: 0 6px 30px -6px rgb(0 0 0 / 25%);
 }
 </style>
 <style lang="scss" scoped>
