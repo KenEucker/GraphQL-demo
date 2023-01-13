@@ -14,8 +14,6 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['onSignup'])
-
 const { width } = useWindowSize()
 const label = ref('Signup for your own Point Of Vue!')
 const signUpForm = ref()

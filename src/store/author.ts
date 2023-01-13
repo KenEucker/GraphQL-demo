@@ -1,4 +1,3 @@
-import { UpdateAuthorInput } from './../schema/generated/types.d'
 import { apolloClient } from './'
 import { defineStore } from 'pinia'
 import { gql } from '@apollo/client/core'

@@ -29,7 +29,6 @@ watch(postsLoaded, () => {
   }
 })
 postsState.getAllPosts()
-// postsState.watchPosts()
 
 const newPostSubscription = `
   subscription NewPostPostFeed {
