@@ -6,11 +6,11 @@ const isAuthenticated = rule({ cache: 'contextual' })(async (parent, args, ctx, 
 })
 
 const isAdmin = rule({ cache: 'contextual' })(async (parent, args, ctx, info) => {
-  return ctx.user.role === 'admin'
+  return ctx.auth0.role === 'admin'
 })
 
 const isEditor = rule({ cache: 'contextual' })(async (parent, args, ctx, info) => {
-  return ctx.user.role === 'editor'
+  return ctx.auth0.role === 'editor'
 })
 
 // Permissions
