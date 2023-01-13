@@ -2,12 +2,12 @@
 import MoreIcon from 'vue-ionicons/dist/md-more.vue'
 import PovPostInteractionsBar from './PovPostInteractionsBar.vue'
 import PostText from './PostText.vue'
-import PovAuthor from '../author/PovAuthor.vue'
+import PovCreator from '../creator/CreateCreator.vue'
 import PovPostMedia from './PovPostMedia.vue'
-import { usePovState, useAuthorState } from '../../store/state'
+import { usePovState, useCreatorState } from '../../store/state'
 
 const povStore = usePovState()
-const authorState = useAuthorState()
+const creatorState = useCreatorState()
 
 const props = defineProps({
   post: {
@@ -23,7 +23,7 @@ const props = defineProps({
 <template>
   <div class="flex flex-col w-full p-5 mb-4 rounded-md bg-ll-neutral dark:bg-ld-neutral relative">
     <div class="flex justify-between">
-      <pov-author :author="props.post?.author" />
+      <pov-creator :creator="props.post?.creator" />
       <button class="relative transition-transform transform active:scale-95">
         <more-icon h="30" w="30" class="absolute top-0 right-0" />
       </button>
@@ -36,7 +36,7 @@ const props = defineProps({
     <pov-post-media :media="props.post?.media" />
     <pov-post-interactions-bar
       v-if="!povStore.isSimpleMode"
-      :author-id="authorState.getAuthorId"
+      :creator-id="creatorState.getCreatorId"
       :post-id="props.post.id"
       :disable-interaction="true"
     />

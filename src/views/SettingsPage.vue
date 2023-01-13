@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import PovAuthor from '../components/author/PovAuthor.vue'
+import PovCreator from '../components/creator/CreateCreator.vue'
 import { ref, computed } from 'vue'
-import { useAuthorState } from '../store/state'
-import { Author } from '../schema/generated/types.d'
+import { useCreatorState } from '../store/state'
+import { Creator } from '../schema/generated/types.d'
 import { useRouter } from 'vue-router'
 import LoadingSpinner from '../components/atomic/LoadingSpinner.vue'
 import ErrorMessage from '../components/atomic/ErrorMessage.vue'
 
-const authorState = useAuthorState()
+const creatorState = useCreatorState()
 const router = useRouter()
 const loadingRef = ref(false)
 const emailRef = ref()
@@ -23,7 +23,7 @@ const errors = ref()
 const errorMessage = ref('')
 const dirty = ref(false)
 
-if (authorState.isLoggedIn && !authorState.isAuthorSignedUp) {
+if (creatorState.isLoggedIn && !creatorState.isCreatorSignedUp) {
   router.push('/')
 }
 
@@ -32,7 +32,7 @@ const fields = computed(() => [
     name: 'email',
     label: 'Email Address',
     type: 'email',
-    value: authorState.getAuthor.email,
+    value: creatorState.getCreator.email,
     required: true,
     placeholder: 'email',
     ref: emailRef,
@@ -43,21 +43,21 @@ const fields = computed(() => [
     label: '@handle',
     readonly: true,
     prefix: '@',
-    value: authorState.getAuthor.handle,
+    value: creatorState.getCreator.handle,
     placeholder: 'handle',
     ref: handleRef,
   },
   {
     name: 'name',
     label: 'Display Name',
-    value: authorState.getAuthor.name,
+    value: creatorState.getCreator.name,
     placeholder: 'name',
     ref: nameRef,
   },
   {
     name: 'location',
     label: 'Location',
-    value: authorState.getAuthor.location,
+    value: creatorState.getCreator.location,
     placeholder: 'location',
     ref: locationRef,
   },
@@ -65,28 +65,28 @@ const fields = computed(() => [
     name: 'birthday',
     type: 'date',
     label: 'Birthday',
-    value: authorState.getAuthor.birthday,
+    value: creatorState.getCreator.birthday,
     placeholder: 'birthday',
     ref: birthdayRef,
   },
   {
     name: 'avatar',
     label: 'Avatar URL',
-    value: authorState.getAuthor.avatar,
+    value: creatorState.getCreator.avatar,
     placeholder: 'http://example.com',
     ref: avatarRef,
   },
   {
     name: 'banner',
     label: 'Banner URL',
-    value: authorState.getAuthor.banner,
+    value: creatorState.getCreator.banner,
     placeholder: 'http://example.com',
     ref: bannerRef,
   },
   {
     name: 'website',
     label: 'Website',
-    value: authorState.getAuthor.website,
+    value: creatorState.getCreator.website,
     placeholder: 'website',
     fullWidth: true,
     ref: websiteRef,
@@ -95,7 +95,7 @@ const fields = computed(() => [
     name: 'bio',
     label: 'Biography',
     type: 'textarea',
-    value: authorState.getAuthor.bio,
+    value: creatorState.getCreator.bio,
     placeholder: 'bio',
     ref: bioRef,
     fullWidth: true,
@@ -115,18 +115,18 @@ async function saveFields(e: Event) {
   e.preventDefault()
 
   loadingRef.value = true
-  const authorFieldsToUpdate = {
-    avatar: setValueIfChanged(avatarRef, authorState.getAuthor.avatar),
-    banner: setValueIfChanged(bannerRef, authorState.getAuthor.banner),
-    name: setValueIfChanged(nameRef, authorState.getAuthor.name),
-    website: setValueIfChanged(websiteRef, authorState.getAuthor.website),
-    birthday: setValueIfChanged(birthdayRef, authorState.getAuthor.birthday),
-    location: setValueIfChanged(locationRef, authorState.getAuthor.location),
-    bio: setValueIfChanged(bioRef, authorState.getAuthor.bio),
-    email: setValueIfChanged(emailRef, authorState.getAuthor.email),
+  const creatorFieldsToUpdate = {
+    avatar: setValueIfChanged(avatarRef, creatorState.getCreator.avatar),
+    banner: setValueIfChanged(bannerRef, creatorState.getCreator.banner),
+    name: setValueIfChanged(nameRef, creatorState.getCreator.name),
+    website: setValueIfChanged(websiteRef, creatorState.getCreator.website),
+    birthday: setValueIfChanged(birthdayRef, creatorState.getCreator.birthday),
+    location: setValueIfChanged(locationRef, creatorState.getCreator.location),
+    bio: setValueIfChanged(bioRef, creatorState.getCreator.bio),
+    email: setValueIfChanged(emailRef, creatorState.getCreator.email),
   }
 
-  const updateResult = await authorState.updateAuthor(authorFieldsToUpdate as Author)
+  const updateResult = await creatorState.updateCreator(creatorFieldsToUpdate as Creator)
   if (updateResult) {
     avatarRef.value.value = updateResult.avatar
     bannerRef.value.value = updateResult.banner
@@ -146,10 +146,10 @@ async function saveFields(e: Event) {
     <section
       class="max-w-4xl p-6 mx-auto rounded-md shadow-md mx-auto dark:bg-gray-800 mt-20"
       :style="{
-        background: `url(${authorState.getAuthor.banner}) no-repeat right`,
+        background: `url(${creatorState.getCreator.banner}) no-repeat right`,
       }"
     >
-      <pov-author :author="authorState.getAuthor" size="large" :go-to-author-page="false" />
+      <pov-creator :creator="creatorState.getCreator" size="large" :go-to-creator-page="false" />
     </section>
     <div v-if="loadingRef">
       <loading-spinner :full-screen="false" />

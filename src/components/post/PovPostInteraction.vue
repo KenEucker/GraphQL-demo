@@ -14,7 +14,7 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
-  authorId: {
+  creatorId: {
     type: Number,
     default: 0,
   },
@@ -40,7 +40,7 @@ const props = defineProps({
   },
 })
 
-// const authorId = computed(() => props.authorId)
+// const creatorId = computed(() => props.creatorId)
 
 const mutation = gql`
   mutation UpdateInteractionPovPost($data: UpdateInteractionInput!) {
@@ -53,20 +53,20 @@ const mutation = gql`
 const { mutate: useUpdateInteractionMutation } = useMutation(mutation)
 
 async function onPostInteraction() {
-  if (props.authorId < 1 || props.disableInteraction) {
+  if (props.creatorId < 1 || props.disableInteraction) {
     return
   }
 
   const updatingInteraction: {
     postId: number
-    authorId: number
+    creatorId: number
     like?: boolean
     love?: boolean
     repost?: boolean
     share?: boolean
   } = {
     postId: props.postId,
-    authorId: props.authorId,
+    creatorId: props.creatorId,
   }
   switch (props.variant) {
     case 'like':
@@ -95,9 +95,9 @@ const emit = defineEmits(['onInteraction'])
 const popoverContent = computed(() =>
   props.disableInteraction
     ? 'you cannot do that'
-    : props.authorId < 0
+    : props.creatorId < 0
     ? 'complete your signup'
-    : props.authorId < 1
+    : props.creatorId < 1
     ? 'you must be logged in'
     : `${props.variant}d`
 )

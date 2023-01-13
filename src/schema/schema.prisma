@@ -30,7 +30,7 @@ enum MutationType {
   UNPUBLISHED
 }
 
-model Author {
+model Creator {
   id           Int           @id @default(autoincrement())
   handle       String        @unique
   email        String        @unique
@@ -52,8 +52,8 @@ model Author {
 
 model Interaction {
   id       Int     @id @default(autoincrement())
-  author   Author  @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId Int
+  creator   Creator  @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  creatorId Int
   postId   Int
   post     Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
   text     String  @default("")
@@ -64,14 +64,14 @@ model Interaction {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([authorId, postId])
+  @@unique([creatorId, postId])
 }
 
 model Post {
   id           Int           @id @default(autoincrement())
-  author       Author        @relation(fields: [authorId], references: [id])
+  creator       Creator        @relation(fields: [creatorId], references: [id])
   interactions Interaction[]
-  authorId     Int
+  creatorId     Int
   title        String
   published    Boolean       @default(false)
   text         String        @default("")
@@ -81,7 +81,7 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([authorId, title])
+  @@unique([creatorId, title])
 }
 
 model Tag {

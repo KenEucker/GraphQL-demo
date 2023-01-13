@@ -12,17 +12,17 @@ const getDefaultQueryOptions = (by: ForOptionsInput) => ({
 })
 
 const Query = {
-  author: (parent: never, args: { where: { id: any }; id: any }, { prisma }: any, info: any) => {
+  creator: (parent: never, args: { where: { id: any }; id: any }, { prisma }: any, info: any) => {
     const where = {
       ...args.where,
       id: args?.id ?? args?.where?.id,
     }
 
     if (!where.id && Object.keys(args?.where ?? {}).length == 0) {
-      throw new GraphQLError('You must specify which author to query.')
+      throw new GraphQLError('You must specify which creator to query.')
     }
 
-    return prisma.author.findUnique({ where })
+    return prisma.creator.findUnique({ where })
   },
 
   post: (parent: never, args: { where: { id: any }; id: any }, { prisma }: any, info: any) => {
@@ -63,14 +63,14 @@ const Query = {
     })
   },
 
-  authors: (parent: never, { where, by }: any, { prisma }: any, info: any) => {
+  creators: (parent: never, { where, by }: any, { prisma }: any, info: any) => {
     if (where?.id || where?.name || where?.email || where?.handle) {
-      return prisma.author.findMany({
+      return prisma.creator.findMany({
         where,
         ...getDefaultQueryOptions(by),
       })
     }
-    return prisma.author.findMany(getDefaultQueryOptions(by))
+    return prisma.creator.findMany(getDefaultQueryOptions(by))
   },
 
   posts: (parent: never, { where, by }: any, { prisma }: any, info: any) => {
@@ -95,12 +95,12 @@ const Query = {
   interactions: (parent: never, { where, by }: any, { prisma }: any, info: any) => {
     const foundInteractions: any = []
 
-    if (where?.author) {
+    if (where?.creator) {
       foundInteractions.push(
-        prisma.author.findMany({
+        prisma.creator.findMany({
           where: {
-            author: {
-              id: where.author.id ?? 0,
+            creator: {
+              id: where.creator.id ?? 0,
             },
           },
           ...getDefaultQueryOptions(by),
@@ -110,7 +110,7 @@ const Query = {
 
     if (where?.text) {
       foundInteractions.push(
-        prisma.author.findMany({
+        prisma.creator.findMany({
           where: {
             text: {
               search: where.text,
@@ -121,7 +121,7 @@ const Query = {
       )
     }
 
-    if (where?.author || where?.text) {
+    if (where?.creator || where?.text) {
       /// Do not return duplicates
       /// TODO: Need to dedup here
       return foundInteractions

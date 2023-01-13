@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import ExtraSpecialCheckmark from '../atomic/VerifiedCheckmark.vue'
-import AuthorAvatar from './AuthorAvatar.vue'
-import AuthorHandle from './AuthorHandle.vue'
-import AuthorStatus from './AuthorStatus.vue'
-import AuthorWebsite from './AuthorWebsite.vue'
-import AuthorJoined from './AuthorJoined.vue'
-import AuthorName from './AuthorName.vue'
+import CreatorAvatar from './CreatorAvatar.vue'
+import CreatorHandle from './CreatorHandle.vue'
+import CreatorStatus from './CreatorStatus.vue'
+import CreatorWebsite from './CreatorWebsite.vue'
+import CreatorJoined from './CreatorJoined.vue'
+import CreatorName from './CreatorName.vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
 const props = defineProps({
-  author: {
+  creator: {
     type: Object,
     default: () => {
       return {}
@@ -31,7 +31,7 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  goToAuthorPage: {
+  goToCreatorPage: {
     type: Boolean,
     default: true,
   },
@@ -49,9 +49,9 @@ const classes = computed(() => {
   }
 })
 
-const goToAuthorPage = props.goToAuthorPage
+const goToCreatorPage = props.goToCreatorPage
   ? () => {
-      router.push(`/${props.author.handle}`)
+      router.push(`/${props.creator.handle}`)
     }
   : () => {
       /// nothing to do
@@ -62,28 +62,28 @@ const goToAuthorPage = props.goToAuthorPage
     class="flex relative w-full"
     :class="props.size === 'large' ? 'inline-grid' : 'items-center'"
   >
-    <extra-special-checkmark v-if="author.verified" :size="props.size" class="special-aint-ya" />
-    <author-avatar
-      :avatar="props.author.avatar"
-      :class="`${props.goToAuthorPage ? 'cursor-pointer' : ''} ${classes}`"
-      @click="goToAuthorPage"
+    <extra-special-checkmark v-if="creator.verified" :size="props.size" class="special-aint-ya" />
+    <creator-avatar
+      :avatar="props.creator.avatar"
+      :class="`${props.goToCreatorPage ? 'cursor-pointer' : ''} ${classes}`"
+      @click="goToCreatorPage"
     />
     <div v-if="!props.imageOnly" class="justify-center w-1/2 pl-4">
       <div>
         <h2 class="text-xl leading-6 font-bold dark:text-white">
-          <author-name :name="props.author.name" />
+          <creator-name :name="props.creator.name" />
         </h2>
         <p class="text-sm leading-5 font-medium text-gray-600">
-          <author-handle :handle="props.author.handle" />
+          <creator-handle :handle="props.creator.handle" />
         </p>
       </div>
       <div v-if="props.full" class="mt-3">
         <p class="text-white leading-tight mb-2">
-          <author-status :status="props.author.status" />
+          <creator-status :status="props.creator.status" />
         </p>
         <div class="text-gray-600 flex">
-          <author-website :website="props.author.website" :show-icon="true" />
-          <author-joined :joined="props.author.joined" :show-icon="true" />
+          <creator-website :website="props.creator.website" :show-icon="true" />
+          <creator-joined :joined="props.creator.joined" :show-icon="true" />
         </div>
       </div>
       <div

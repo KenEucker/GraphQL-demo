@@ -1,4 +1,4 @@
-export const authors = [
+export const creators = [
   {
     id: '0001',
     email: 'john@no.one',
@@ -30,43 +30,43 @@ export const authors = [
 export const interactions = [
   {
     id: '1000',
-    author: '0001',
+    creator: '0001',
     post: '0100',
     text: 'Good for finding out what a dragon really is.',
   },
   {
     id: '1001',
-    author: '0001',
+    creator: '0001',
     post: '0100',
     text: 'I now know what dragons are, thanks!',
   },
   {
     id: '1002',
-    author: '0001',
+    creator: '0001',
     post: '0101',
     text: "Read this book you know what dragons are and you've decided to feed one.",
   },
   {
     id: '1003',
-    author: '0001',
+    creator: '0001',
     post: '0101',
     text: 'Wait... what did I just read??',
   },
   {
     id: '1004',
-    author: '0001',
+    creator: '0001',
     post: '0102',
     text: "For when you've given up on your dragon, or are very hungry.",
   },
   {
     id: '1005',
-    author: '002',
+    creator: '002',
     post: '0103',
     text: 'Do you ever ask yourself what people are talking about when they say dragons? This book helps demystify the problem.',
   },
   {
     id: '1006',
-    author: '0002',
+    creator: '0002',
     post: '0104',
     text: 'Look, everyone knows that dragons are dangerous. This is nothing new.',
   },
@@ -75,7 +75,7 @@ export const interactions = [
 export const posts = [
   {
     id: '0100',
-    author: '0001',
+    creator: '0001',
     title: 'December 7 2022 @ 17:42',
     interactions: ['1000', '1001'],
     published: false,
@@ -84,7 +84,7 @@ export const posts = [
   },
   {
     id: '0101',
-    author: '0001',
+    creator: '0001',
     title: 'December 11 2022 @ 7:20',
     interactions: ['1002', '1003'],
     published: true,
@@ -93,7 +93,7 @@ export const posts = [
   },
   {
     id: '0102',
-    author: '0001',
+    creator: '0001',
     title: 'Old Timey Beach Photo',
     interactions: ['1004'],
     published: true,
@@ -101,7 +101,7 @@ export const posts = [
   },
   {
     id: '0103',
-    author: '0003',
+    creator: '0003',
     title: 'December 10, 2020 @ 17:20',
     interactions: ['1005'],
     published: true,
@@ -111,7 +111,7 @@ export const posts = [
   },
   {
     id: '0104',
-    author: '0003',
+    creator: '0003',
     title: 'All The 🌸 On Christmas',
     interactions: ['1006'],
     published: true,
@@ -125,7 +125,7 @@ export const posts = [
   },
   {
     id: '0105',
-    author: '0002',
+    creator: '0002',
     title: 'Portrait Photography by Jane',
     published: true,
     text: `My artwork is available at mycoolartwork.com`,
@@ -143,7 +143,7 @@ export const posts = [
 const db = {
   posts,
   interactions,
-  authors,
+  creators,
 }
 
 export default db

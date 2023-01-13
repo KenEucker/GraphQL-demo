@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import PovAuthor from './PovAuthor.vue'
+import PovCreator from './CreateCreator.vue'
 
 const followed = ref(true)
 const props = defineProps({
-  author: {
+  creator: {
     type: Object,
     default: () => {
       return {}
@@ -21,7 +21,7 @@ const props = defineProps({
   },
 })
 
-function followAuthor() {
+function followCreator() {
   if (followed.value === true) {
     followed.value = false
   } else {
@@ -34,8 +34,8 @@ function followAuthor() {
     class="flex relative justify-between w-full"
     :class="props.size === 'large' ? 'inline-grid' : 'items-center'"
   >
-    <pov-author
-      :author="author"
+    <pov-creator
+      :creator="creator"
       :size="props.size"
       :image-only="props.imageOnly"
       class="inlife-flex"
@@ -53,7 +53,7 @@ function followAuthor() {
         :class="
           followed ? 'group-hover:bg-opacity-0' : 'bg-gradient-to-br from-pink-500 to-orange-400'
         "
-        @click="followAuthor"
+        @click="followCreator"
       >
         {{ followed ? 'Following' : 'Follow' }}
       </span>

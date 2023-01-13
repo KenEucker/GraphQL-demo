@@ -1,7 +1,7 @@
-import { useAuthorState } from './author'
+import { useCreatorState } from './creator'
 import { useMenuState } from './menu'
 import { usePostsState } from './posts'
 import { usePovState } from './pov'
 import { useInteractionsState } from './interactions'
 
-export { useAuthorState, useMenuState, usePovState, usePostsState, useInteractionsState }
+export { useCreatorState, useMenuState, usePovState, usePostsState, useInteractionsState }

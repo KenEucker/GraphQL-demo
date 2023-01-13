@@ -2,12 +2,12 @@
 import PostFeed from '../components/post/PostFeed.vue'
 import CreatePost from '../components/post/CreatePost.vue'
 import { useWindowSize } from '@vueuse/core'
-import { useMenuState, usePostsState, useAuthorState } from '../store/state'
+import { useMenuState, usePostsState, useCreatorState } from '../store/state'
 import { ref, reactive } from 'vue'
 
 const { width } = useWindowSize()
 const menuState = useMenuState()
-const authorState = useAuthorState()
+const creatorState = useCreatorState()
 // const postsState = usePostsState()
 // postsState.getAllPosts()
 // console.log(postsState.init)

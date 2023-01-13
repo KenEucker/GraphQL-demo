@@ -13,7 +13,7 @@ const interactions = reactive({
 })
 
 const props = defineProps({
-  authorId: {
+  creatorId: {
     type: Number,
     default: 0,
   },
@@ -104,14 +104,14 @@ const onInteractionSuccess = (interaction: string) => {
   <div class="flex justify-between pt-4 mt-4 border-t border-ll-border dark:border-ld-border">
     <pov-post-interaction
       variant="like"
-      :author-id="props.authorId"
+      :creator-id="props.creatorId"
       :post-id="props.postId"
       :count="interactions.likes"
       :disable-interaction="props.isSelfPost"
     />
     <pov-post-interaction
       variant="love"
-      :author-id="props.authorId"
+      :creator-id="props.creatorId"
       :post-id="props.postId"
       :count="interactions.loves"
       :disable-interaction="props.isSelfPost"
@@ -119,14 +119,14 @@ const onInteractionSuccess = (interaction: string) => {
     <pov-post-interaction
       variant="repost"
       :post-id="props.postId"
-      :author-id="props.authorId"
+      :creator-id="props.creatorId"
       :count="interactions.reposts"
       :disable-interaction="props.isSelfPost"
     />
     <pov-post-interaction
       variant="share"
       :post-id="props.postId"
-      :author-id="props.authorId"
+      :creator-id="props.creatorId"
       :count="interactions.shares"
       :hide-count="!props.isSelfPost"
       :disable-interaction="props.isSelfPost"

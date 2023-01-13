@@ -2,24 +2,24 @@ import { apolloClient } from './'
 import { defineStore } from 'pinia'
 import { gql } from '@apollo/client/core'
 import { useStorage } from '@vueuse/core'
-import { Author } from '../schema/generated/types.d'
+import { Creator } from '../schema/generated/types.d'
 import auth from '../auth'
 import { watch } from 'vue'
 
 // Local storage state
-const storedEmail = useStorage('author-email', '')
-const storedId = useStorage('author-id', 0)
-const storedToken = useStorage('author-token', '')
+const storedEmail = useStorage('creator-email', '')
+const storedId = useStorage('creator-id', 0)
+const storedToken = useStorage('creator-token', '')
 
-export const getInitialAuthorState = (): {
+export const getInitialCreatorState = (): {
   loggedIn: boolean
-  author: Author
+  creator: Creator
   auth0Configured: boolean
   auth0Token: string
 } => ({
   loggedIn: false,
   auth0Configured: auth.initialized,
-  author: {
+  creator: {
     id: 0,
     avatar: '',
     banner: '',
@@ -31,21 +31,21 @@ export const getInitialAuthorState = (): {
   auth0Token: '',
 })
 
-export const useAuthorState = defineStore({
-  id: 'useAuthorState',
-  state: getInitialAuthorState,
+export const useCreatorState = defineStore({
+  id: 'useCreatorState',
+  state: getInitialCreatorState,
   getters: {
     isAuth0: (s) => s.auth0Configured,
-    isAuthorSignedUp: (s) => s.author?.id !== -1,
+    isCreatorSignedUp: (s) => s.creator?.id !== -1,
     isLoggedIn: (s) => s.loggedIn,
-    getAuthor: (s) => s.author,
-    getAuthorId: (s) => s.author?.id ?? 0,
+    getCreator: (s) => s.creator,
+    getCreatorId: (s) => s.creator?.id ?? 0,
   },
   actions: {
-    async authorSignup(author: Author) {
-      const SignUpAuthorQuery = gql`
-        mutation SignUpAuthor($author: CreateAuthorInput!) {
-          createAuthor(author: $author) {
+    async creatorSignup(creator: Creator) {
+      const SignUpCreatorQuery = gql`
+        mutation SignUpCreator($creator: CreateCreatorInput!) {
+          createCreator(creator: $creator) {
             id
             name
             email
@@ -67,14 +67,14 @@ export const useAuthorState = defineStore({
 
       try {
         const { data, errors } = await apolloClient.mutate({
-          mutation: SignUpAuthorQuery,
-          variables: { author },
+          mutation: SignUpCreatorQuery,
+          variables: { creator },
         })
 
-        if (data?.createAuthor) {
-          this.author = data.createAuthor
-          storedId.value = this.author.id
-          storedEmail.value = this.author.email
+        if (data?.createCreator) {
+          this.creator = data.createCreator
+          storedId.value = this.creator.id
+          storedEmail.value = this.creator.email
           this.loggedIn = true
         } else {
           return errors ?? data.error ?? 'unknown error'
@@ -89,14 +89,14 @@ export const useAuthorState = defineStore({
       auth.loginWithRedirect()
     },
     loginWithEmail(email: string) {
-      return this.fetchAuthor({ email } as Author)
+      return this.fetchCreator({ email } as Creator)
     },
     async checkLogin() {
       if (this.auth0Configured) {
         watch(auth.user, async (user) => {
           if (auth?.isAuthenticated?.value) {
             this.loggedIn = true
-            this.author = {
+            this.creator = {
               id: -1,
               name: user.name,
               email: user.email,
@@ -112,7 +112,7 @@ export const useAuthorState = defineStore({
               }
             }
 
-            this.fetchAuthor(this.author)
+            this.fetchCreator(this.creator)
           } else if (storedId.value !== 0 || storedEmail.value.length) {
             this.logout()
           }
@@ -127,14 +127,14 @@ export const useAuthorState = defineStore({
       if (this.auth0Configured && auth?.isAuthenticated?.value) {
         return this.loginWithAuth0()
       } else {
-        return this.fetchAuthor()
+        return this.fetchCreator()
       }
     },
-    async fetchAuthor(author?: Author) {
-      author = author ?? ({ id: storedId.value, email: storedEmail.value } as Author)
+    async fetchCreator(creator?: Creator) {
+      creator = creator ?? ({ id: storedId.value, email: storedEmail.value } as Creator)
       const loginViaEmailQuery = gql`
-        query StoreFetchAuthor($email: String!) {
-          author(where: { email: $email }) {
+        query StoreFetchCreator($email: String!) {
+          creator(where: { email: $email }) {
             id
             name
             email
@@ -155,27 +155,27 @@ export const useAuthorState = defineStore({
       `
       const { data, error: queryError } = await apolloClient.query({
         query: loginViaEmailQuery,
-        variables: { email: author.email },
+        variables: { email: creator.email },
       })
       let error = null
 
-      if (data?.author) {
-        this.author = data.author
-        storedId.value = this.author.id
-        storedEmail.value = this.author.email
+      if (data?.creator) {
+        this.creator = data.creator
+        storedId.value = this.creator.id
+        storedEmail.value = this.creator.email
         this.loggedIn = true
       } else if (queryError) {
         error = queryError.message
       } else {
-        error = 'no author found with that email address'
+        error = 'no creator found with that email address'
       }
 
       return error
     },
-    async updateAuthor(author: Author) {
-      const updateAuthorMutation = gql`
-        mutation StoreUpdateAuthor($data: UpdateAuthorInput!, $id: Int!) {
-          updateAuthor(data: $data, id: $id) {
+    async updateCreator(creator: Creator) {
+      const updateCreatorMutation = gql`
+        mutation StoreUpdateCreator($data: UpdateCreatorInput!, $id: Int!) {
+          updateCreator(data: $data, id: $id) {
             id
             name
             email
@@ -193,32 +193,32 @@ export const useAuthorState = defineStore({
       `
 
       const data = await apolloClient.mutate({
-        mutation: updateAuthorMutation,
-        variables: { data: author, id: this.author.id },
+        mutation: updateCreatorMutation,
+        variables: { data: creator, id: this.creator.id },
       })
 
-      if (data.data.updateAuthor) {
-        const author = data.data.updateAuthor
-        this.author = {
-          id: author.id,
-          name: author.name,
-          handle: author.name,
-          avatar: author.avatar,
-          banner: author.banner,
-          location: author.location,
-          website: author.website,
-          email: author.email,
-          bio: author.bio,
-          birthday: author.birthday,
+      if (data.data.updateCreator) {
+        const creator = data.data.updateCreator
+        this.creator = {
+          id: creator.id,
+          name: creator.name,
+          handle: creator.name,
+          avatar: creator.avatar,
+          banner: creator.banner,
+          location: creator.location,
+          website: creator.website,
+          email: creator.email,
+          bio: creator.bio,
+          birthday: creator.birthday,
         }
 
-        return data.data.updateAuthor
+        return data.data.updateCreator
       }
 
       return data
     },
     logout() {
-      this.author = getInitialAuthorState().author
+      this.creator = getInitialCreatorState().creator
       this.loggedIn = false
       storedId.value = null
       storedEmail.value = null
@@ -230,8 +230,8 @@ export const useAuthorState = defineStore({
     },
     async isEmailInUse(email: string) {
       const checkForEmailInUseQuery = gql`
-        query StoreAuthorEmailInUse($email: String!) {
-          author(where: { email: $email }) {
+        query StoreCreatorEmailInUse($email: String!) {
+          creator(where: { email: $email }) {
             email
           }
         }
@@ -241,7 +241,7 @@ export const useAuthorState = defineStore({
         variables: { email },
       })
 
-      return error ?? data?.author
+      return error ?? data?.creator
     },
   },
 })

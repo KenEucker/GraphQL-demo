@@ -3,21 +3,21 @@ import PostOptions from './PostOptions.vue'
 import PovPostInteractionsBar from './PovPostInteractionsBar.vue'
 import LoadingSpinner from '../atomic/LoadingSpinner.vue'
 import PostText from './PostText.vue'
-import PovAuthor from '../author/PovAuthor.vue'
+import PovCreator from '../creator/CreateCreator.vue'
 import PovPostMedia from './PovPostMedia.vue'
 import { useRouter } from 'vue-router'
-import { usePovState, useAuthorState } from '../../store/state'
+import { usePovState, useCreatorState } from '../../store/state'
 import { useMutation } from '@vue/apollo-composable'
 import { gql } from '@apollo/client/core'
 import { ref } from 'vue'
 
 const povStore = usePovState()
-const authorState = useAuthorState()
+const creatorState = useCreatorState()
 const router = useRouter()
 const isLoading = ref(false)
 
 const mutation = gql`
-  mutation AuthorDeletePost($id: Int!) {
+  mutation CreatorDeletePost($id: Int!) {
     deletePost(id: $id) {
       id
     }
@@ -25,8 +25,8 @@ const mutation = gql`
 `
 const { mutate: useDeletePostMutation } = useMutation(mutation)
 
-function goToAuthorPage() {
-  router.push(`/${props.post.author.handle}`)
+function goToCreatorPage() {
+  router.push(`/${props.post.creator.handle}`)
 }
 
 const props = defineProps({
@@ -56,14 +56,14 @@ async function deletePost() {
     <loading-spinner v-if="isLoading" :full-screen="false" />
     <div v-else>
       <div class="flex justify-between">
-        <button @click="goToAuthorPage">
-          <pov-author :author="props.post?.author" />
+        <button @click="goToCreatorPage">
+          <pov-creator :creator="props.post?.creator" />
         </button>
         <post-options
           class="absolute top-4 right-2"
-          :author-id="authorState.getAuthorId"
+          :creator-id="creatorState.getCreatorId"
           :post-id="props.post.id"
-          :can-edit="authorState.isLoggedIn && props.isSelfPost"
+          :can-edit="creatorState.isLoggedIn && props.isSelfPost"
           @on-delete="deletePost"
         />
       </div>
@@ -75,7 +75,7 @@ async function deletePost() {
       <pov-post-media :media="props.post?.media" />
       <pov-post-interactions-bar
         v-if="!povStore.isSimpleMode"
-        :author-id="authorState.getAuthorId"
+        :creator-id="creatorState.getCreatorId"
         :post-id="props.post.id"
       />
     </div>

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import LoadingSpinner from '../atomic/LoadingSpinner.vue'
-import PovAuthor from '../author/PovAuthor.vue'
-import { useAuthorState } from '../../store/state'
+import PovCreator from '../creator/CreateCreator.vue'
+import { useCreatorState } from '../../store/state'
 import { ref, reactive } from 'vue'
-import { Author } from '../../schema/generated/types'
+import { Creator } from '../../schema/generated/types'
 import { useWindowSize } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 
@@ -21,21 +21,21 @@ const handleRef = ref()
 const loadingRef = ref(false)
 const errors = ref()
 const showSignupModal = ref(false)
-const authorState = useAuthorState()
+const creatorState = useCreatorState()
 const router = useRouter()
-const author = reactive({ ...authorState.getAuthor, email: props.email })
+const creator = reactive({ ...creatorState.getCreator, email: props.email })
 
 const completeSignup = async (e: Event) => {
   e.preventDefault()
   e.stopPropagation()
 
   loadingRef.value = true
-  const result = await authorState.authorSignup({
-    email: author.email,
-    name: author.name,
-    handle: author.handle,
-    avatar: author.avatar,
-  } as Author)
+  const result = await creatorState.creatorSignup({
+    email: creator.email,
+    name: creator.name,
+    handle: creator.handle,
+    avatar: creator.avatar,
+  } as Creator)
   if (result) {
     errors.value = result
   } else {
@@ -55,10 +55,10 @@ const completeSignup = async (e: Event) => {
       class="w-full p-4 border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700"
       @submit="completeSignup"
     >
-      <pov-author
+      <pov-creator
         :size="width < 500 ? 'medium' : 'large'"
-        :author="author"
-        :go-to-author-page="false"
+        :creator="creator"
+        :go-to-creator-page="false"
       />
       <div
         v-if="errors"
@@ -85,7 +85,7 @@ const completeSignup = async (e: Event) => {
         <p>
           <label class="block mb-2 text-sm font-medium text-white" for="email">Email Address</label>
           <input
-            v-model="author.email"
+            v-model="creator.email"
             type="email"
             name="email"
             required
@@ -97,7 +97,7 @@ const completeSignup = async (e: Event) => {
           <label class="block mb-2 text-sm font-medium text-white" for="handle">Handle</label>
           <input
             :ref="handleRef"
-            v-model="author.handle"
+            v-model="creator.handle"
             type="handle"
             name="handle"
             required
@@ -108,7 +108,7 @@ const completeSignup = async (e: Event) => {
         <p>
           <label class="block mb-2 text-sm font-medium text-white" for="name">Avatar URL</label>
           <input
-            v-model="author.avatar"
+            v-model="creator.avatar"
             type="avatar"
             name="avatar"
             required
@@ -118,7 +118,7 @@ const completeSignup = async (e: Event) => {
         <p>
           <label class="block mb-2 text-sm font-medium text-white" for="name">Name</label>
           <input
-            v-model="author.name"
+            v-model="creator.name"
             type="name"
             name="name"
             required
@@ -133,7 +133,7 @@ const completeSignup = async (e: Event) => {
                 id="verified"
                 type="checkbox"
                 class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-green-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-green-600 dark:ring-offset-gray-800"
-                @click="(e: Event) => (author.verified = (e.target as HTMLInputElement).checked)"
+                @click="(e: Event) => (creator.verified = (e.target as HTMLInputElement).checked)"
               />
             </div>
             <label for="verify" class="ml-2 text-sm font-medium text-gray-300">Verify me</label>

@@ -1,9 +1,9 @@
 const Interaction = {
   // @ts-ignore
-  author: async (parent, args, { prisma }, info) =>
-    prisma.author.findMany({
+  creator: async (parent, args, { prisma }, info) =>
+    prisma.creator.findMany({
       where: {
-        id: parent.authorId,
+        id: parent.creatorId,
       },
     }),
   // @ts-ignore

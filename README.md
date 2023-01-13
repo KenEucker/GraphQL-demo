@@ -15,9 +15,9 @@ contributors at the moment. If someone is feeling adventurous you're welcomed to
 
 Right now it has two modes: demo (unauthenticated) and authenticated (using Auth0).
 
-With the authenticated mode you will need both an Auth0 application as well as an Auth0 API, the settings of which are included below. In demo mode you can login with an email for an existing author (which requires creating an author with Prisma Studio) and create posts. 
+With the authenticated mode you will need both an Auth0 application as well as an Auth0 API, the settings of which are included below. In demo mode you can login with an email for an existing creator (which requires creating an creator with Prisma Studio) and create posts. 
 
-The post interactions are fully wired up. You can register a new author and update author settings. You can create and delete posts but you cannot edit or share posts.
+The post interactions are fully wired up. You can register a new creator and update creator settings. You can create and delete posts but you cannot edit or share posts.
 
 # Setup
 

@@ -1,10 +1,10 @@
 const Post = {
   // @ts-ignore
-  author: (parent, args, { prisma }, info) => {
-    return prisma.author.findFirst({
+  creator: (parent, args, { prisma }, info) => {
+    return prisma.creator.findFirst({
       where: {
-        id: parent.authorId,
-        posts: parent.author
+        id: parent.creatorId,
+        posts: parent.creator
           ? {
               some: {
                 id: parent.id,

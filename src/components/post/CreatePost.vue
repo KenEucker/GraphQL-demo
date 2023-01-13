@@ -6,7 +6,7 @@ import ErrorMessage from '../atomic/ErrorMessage.vue'
 import EmojiPicker from 'vue3-emoji-picker'
 import { useMutation } from '@vue/apollo-composable'
 import { gql } from '@apollo/client/core'
-import { useAuthorState } from '../../store/state'
+import { useCreatorState } from '../../store/state'
 import CloseIcon from 'vue-ionicons/dist/md-close-circle-outline.vue'
 import ImagesIcon from 'vue-ionicons/dist/md-images.vue'
 import AddIcon from 'vue-ionicons/dist/md-add-circle-outline.vue'
@@ -15,7 +15,7 @@ import CheckMark from 'vue-ionicons/dist/md-checkmark-circle.vue'
 import PovPostMedia from './PovPostMedia.vue'
 import Popper from 'vue3-popper'
 
-const authorState = useAuthorState()
+const creatorState = useCreatorState()
 let newPostLoading = ref(false)
 const props = defineProps({
   isOpen: {
@@ -76,7 +76,7 @@ const openCreatePost = () => {
 async function createNewPost() {
   newPostLoading.value = true
   const newPostData = {
-    authorId: authorState.getAuthorId,
+    creatorId: creatorState.getCreatorId,
     text: textRef.value.value,
     status: statusRef.value.value,
     title: titleRef.value.value,

@@ -24,7 +24,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/profile',
     name: 'Profile',
-    component: () => import('../views/AuthorPage.vue'),
+    component: () => import('../views/CreatorPage.vue'),
     meta: {
       protected: true,
       mainMenu: true,
@@ -78,8 +78,8 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/:handle',
-    name: 'Author',
-    component: () => import('../views/AuthorPage.vue'),
+    name: 'Creator',
+    component: () => import('../views/CreatorPage.vue'),
     meta: {},
   },
   {

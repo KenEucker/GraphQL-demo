@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import FollowAuthor from '../author/FollowAuthor.vue'
+import FollowCreator from '../creator/FollowCreator.vue'
 import { usePovState } from '../../store/state'
 import { onMounted } from 'vue'
 
 const povState = usePovState()
 onMounted(() => {
-  povState.pruneAuthorsToFollow()
+  povState.pruneCreatorsToFollow()
 })
 </script>
 <template>
   <ul
-    v-if="povState.getAuthorsToFollow"
+    v-if="povState.getCreatorsToFollow"
     class="w-full bg-ll-neutral dark:bg-ld-neutral p-5 rounded-md mb-5"
   >
     <li
@@ -19,11 +19,11 @@ onMounted(() => {
       <p>Who to follow</p>
     </li>
     <div
-      v-for="author in povState.getAuthorsToFollow"
-      :key="author.handle"
+      v-for="creator in povState.getCreatorsToFollow"
+      :key="creator.handle"
       class="flex items-center mb-4"
     >
-      <follow-author :author="author" />
+      <follow-creator :creator="creator" />
     </div>
   </ul>
 </template>

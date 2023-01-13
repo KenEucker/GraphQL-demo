@@ -1,6 +1,6 @@
 import { GraphQLError } from 'graphql'
 import { pipe, filter } from 'graphql-yoga'
-import { Author, AuthorByInput, InteractionByInput, PostByInput } from '../generated/types'
+import { Creator, CreatorByInput, InteractionByInput, PostByInput } from '../generated/types'
 
 const Subscription = {
   countdown: {
@@ -15,24 +15,24 @@ const Subscription = {
     },
     resolve: (data: any) => data,
   },
-  author: {
+  creator: {
     subscribe: async (
       parent: never,
-      { where }: { where: AuthorByInput },
+      { where }: { where: CreatorByInput },
       { prisma, pubsub }: any
     ) => {
       if (where && (where.id || where.email || where.handle)) {
-        const author = await prisma.author.findUnique({ where })
+        const creator = await prisma.creator.findUnique({ where })
 
-        if (!author) {
-          throw new GraphQLError('author does not exist')
+        if (!creator) {
+          throw new GraphQLError('creator does not exist')
         }
       }
 
       return pipe(
-        pubsub.subscribe('author'),
-        filter((a: { data: Author }) => (where?.email ? a.data.email === where.email : true)),
-        filter((a: { data: Author }) => (where?.id ? a.data.id === where.id : true))
+        pubsub.subscribe('creator'),
+        filter((a: { data: Creator }) => (where?.email ? a.data.email === where.email : true)),
+        filter((a: { data: Creator }) => (where?.id ? a.data.id === where.id : true))
       )
     },
     resolve: (data: any) => data,
@@ -43,17 +43,17 @@ const Subscription = {
       { where }: { where: InteractionByInput },
       { pubsub, prisma }: any
     ) => {
-      // if (where && (where.author?.id || where.post?.id)) {
+      // if (where && (where.creator?.id || where.post?.id)) {
       //   const interaction = await prisma.interaction.findFirst({ where })
 
       //   if (!interaction) {
-      //     throw new GraphQLError('post interaction does not exist for author')
+      //     throw new GraphQLError('post interaction does not exist for creator')
       //   }
       // }
 
       return pipe(
         pubsub.subscribe('interactionDelta'),
-        filter((i: any) => (where?.author?.id ? i.data.authorId === where.author.id : true)),
+        filter((i: any) => (where?.creator?.id ? i.data.creatorId === where.creator.id : true)),
         filter((i) => (where?.post?.id ? i.data.postId === where.post.id : true))
       )
     },
@@ -65,17 +65,17 @@ const Subscription = {
       { where }: { where: InteractionByInput },
       { pubsub, prisma }: any
     ) => {
-      // if (where && (where.author?.id || where.post?.id)) {
+      // if (where && (where.creator?.id || where.post?.id)) {
       //   const interaction = await prisma.interaction.findFirst({ where })
 
       //   if (!interaction) {
-      //     throw new GraphQLError('post interaction does not exist for author')
+      //     throw new GraphQLError('post interaction does not exist for creator')
       //   }
       // }
 
       return pipe(
         pubsub.subscribe('interaction'),
-        filter((i: any) => (where?.author?.id ? i.data.authorId === where.author.id : true)),
+        filter((i: any) => (where?.creator?.id ? i.data.creatorId === where.creator.id : true)),
         filter((i) => (where?.post?.id ? i.data.postId === where.post.id : true))
       )
     },
@@ -87,19 +87,21 @@ const Subscription = {
       { where }: { where: PostByInput },
       { pubsub, prisma }: any
     ) => {
-      if (where && where.author) {
-        const author = await prisma.author.findUnique({ where: where.author })
+      if (where && where.creator) {
+        const creator = await prisma.creator.findUnique({ where: where.creator })
 
-        if (!author) {
-          throw new GraphQLError('author does not exist')
+        if (!creator) {
+          throw new GraphQLError('creator does not exist')
         }
       }
 
       return pipe(
         pubsub.subscribe('post'),
-        filter((p: any) => (where?.author?.id ? p.data.authorId === where.author.id : true)),
-        filter((p: any) => (where?.author?.email ? p.data.email === where.author.email : true)),
-        filter((p: any) => (where?.author?.handle ? p.data.handle === where.author.handle : true)),
+        filter((p: any) => (where?.creator?.id ? p.data.creatorId === where.creator.id : true)),
+        filter((p: any) => (where?.creator?.email ? p.data.email === where.creator.email : true)),
+        filter((p: any) =>
+          where?.creator?.handle ? p.data.handle === where.creator.handle : true
+        ),
         filter((p: any) => (p.mutation !== 'UNPUBLISHED' ? p.data.published : true))
       )
     },

@@ -5,9 +5,9 @@ import LoadingSpinner from '../atomic/LoadingSpinner.vue'
 import ErrorMessage from '../atomic/ErrorMessage.vue'
 import { Post } from '../../schema/generated/types.d'
 import { graphUrl } from '../../utilities'
-import { usePostsState, useAuthorState } from '../../store/state'
+import { usePostsState, useCreatorState } from '../../store/state'
 
-const authorState = useAuthorState()
+const creatorState = useCreatorState()
 
 const props = defineProps({
   oneColumn: {
@@ -37,7 +37,7 @@ const newPostSubscription = `
       data {
         id
         title
-        author {
+        creator {
           id
           name
           handle
@@ -98,7 +98,7 @@ function getRandomIntInclusive(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min // The maximum is inclusive and the minimum is inclusive
 }
 
-const isPostSelfPost = (post: Post) => post.author?.handle === authorState.author?.handle
+const isPostSelfPost = (post: Post) => post.creator?.handle === creatorState.creator?.handle
 </script>
 
 <template>

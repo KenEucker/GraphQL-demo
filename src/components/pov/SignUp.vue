@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import SignUpForm from './SignUpForm.vue'
-import { useAuthorState } from '../../store/state'
+import { useCreatorState } from '../../store/state'
 import { ref } from 'vue'
 import { useWindowSize } from '@vueuse/core'
 
 const label = ref('Signup for your own Point Of Vue!')
 const formRef = ref()
 const showSignupModal = ref(false)
-const authorState = useAuthorState()
+const creatorState = useCreatorState()
 const emailRef = ref()
 
-if (authorState.isLoggedIn && !authorState.isAuthorSignedUp) {
-  emailRef.value = { value: authorState.getAuthor.email }
+if (creatorState.isLoggedIn && !creatorState.isCreatorSignedUp) {
+  emailRef.value = { value: creatorState.getCreator.email }
   showSignupModal.value = true
 }
 
@@ -19,7 +19,7 @@ const signUp = async (e: Event) => {
   e.preventDefault()
 
   const email = emailRef.value.value
-  const emailInUse = await authorState.isEmailInUse(email)
+  const emailInUse = await creatorState.isEmailInUse(email)
   if (emailInUse) {
     label.value = `email address [${email}] is already signed up.`
   } else {
@@ -29,7 +29,7 @@ const signUp = async (e: Event) => {
 </script>
 <template>
   <div class="w-full px-8 pt-6 pb-8 mb-4 bg-gray-900 rounded-lg shadow-lg">
-    <div v-if="authorState.isLoggedIn && authorState.getAuthor.id < 1">
+    <div v-if="creatorState.isLoggedIn && creatorState.getCreator.id < 1">
       <div class="mb-4 text-center">
         <label class="block py-2 mb-2 text-2xl font-bold text-green-300">
           Thank you for signing up!

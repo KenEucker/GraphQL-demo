@@ -32,7 +32,7 @@ export const usePostsState = defineStore({
             data {
               id
               title
-              author {
+              creator {
                 id
                 name
                 handle
@@ -71,7 +71,7 @@ export const usePostsState = defineStore({
           posts {
             id
             title
-            author {
+            creator {
               name
               handle
               verified

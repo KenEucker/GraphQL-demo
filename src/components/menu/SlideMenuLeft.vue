@@ -4,14 +4,14 @@ import { useRouter } from 'vue-router'
 import PostPov from 'vue-ionicons/dist/md-bonfire.vue'
 import CloseIcon from 'vue-ionicons/dist/md-close-circle-outline.vue'
 import RouteButton from '../atomic/RouteButton.vue'
-import AuthorCard from '../author/AuthorCard.vue'
-import { useMenuState, useAuthorState } from '../../store/state'
+import CreatorCard from '../creator/CreatorCard.vue'
+import { useMenuState, useCreatorState } from '../../store/state'
 
 const menuState = useMenuState()
-const authorState = useAuthorState()
+const creatorState = useCreatorState()
 const router = useRouter()
 const routes = computed(() =>
-  router.getRoutes().filter((r) => r.meta.mainMenu && (authorState.isLoggedIn || !r.meta.protected))
+  router.getRoutes().filter((r) => r.meta.mainMenu && (creatorState.isLoggedIn || !r.meta.protected))
 )
 const currentRoute = router.currentRoute
 
@@ -30,7 +30,7 @@ function postButtonClick() {
   router.push('/posts')
 }
 
-const authorPanelClick = () => {
+const creatorPanelClick = () => {
   if (!menuState.isLeftMenuOpen) {
     menuState.openLeftMenu()
   }
@@ -41,11 +41,11 @@ const authorPanelClick = () => {
     class="relative flex flex-col items-center w-full h-full overflow-x-hidden overflow-y-auto"
     :class="props.isExpanded ? 'p-10 px-5' : 'p-2'"
   >
-    <author-card
+    <creator-card
       class="cursor-pointer"
       :is-expanded="props.isExpanded"
-      :use-auth0="authorState.isAuth0"
-      @click="authorPanelClick"
+      :use-auth0="creatorState.isAuth0"
+      @click="creatorPanelClick"
     />
     <ul class="flex flex-col pt-5" :class="props.isExpanded ? '' : 'justify-center flex '">
       <li
@@ -67,7 +67,7 @@ const authorPanelClick = () => {
     </ul>
 
     <button
-      v-if="authorState.isLoggedIn"
+      v-if="creatorState.isLoggedIn"
       class="flex items-center justify-center w-full px-2 py-3 text-white transition-transform transform rounded-lg max-w-50 md:max-w-90 bg-ll-primary dark:bg-ld-primary active:scale-95"
       @click="postButtonClick"
     >

@@ -1,17 +1,17 @@
 import { apolloClient } from '.'
 import { defineStore } from 'pinia'
 import { gql } from '@apollo/client/core'
-import { Author } from '../schema/generated/types'
-import { useAuthorState } from './author'
+import { Creator } from '../schema/generated/types'
+import { useCreatorState } from './creator'
 
 export const getInitialPovState = (): {
-  authorsToFollow: Author[]
+  creatorsToFollow: Creator[]
   trending: any[]
   trendingTitle: string
   topTrending: any
   simple: boolean
 } => ({
-  authorsToFollow: [],
+  creatorsToFollow: [],
   trending: [
     {
       index: 0,
@@ -46,19 +46,19 @@ export const usePovState = defineStore({
   getters: {
     isSimpleMode: (s) => s.simple,
     getTrending: (s) => s.trending,
-    getAuthorsToFollow: (s) => s.authorsToFollow,
+    getCreatorsToFollow: (s) => s.creatorsToFollow,
     getTrendingTitle: (s) => s.trendingTitle,
     getTopTrendingTitle: (s) => s.topTrending?.title,
     getTopTrendingText: (s) => s.topTrending?.text,
   },
   actions: {
     async initPovState() {
-      await this.fetchAuthorsToFollow()
+      await this.fetchCreatorsToFollow()
     },
-    async fetchAuthorsToFollow() {
-      const getAuthorsToFollowQuery = gql`
-        query FollowMoreAuthors {
-          authors {
+    async fetchCreatorsToFollow() {
+      const getCreatorsToFollowQuery = gql`
+        query FollowMoreCreators {
+          creators {
             email
             name
             verified
@@ -69,17 +69,19 @@ export const usePovState = defineStore({
       `
 
       const queryResult = await apolloClient.query({
-        query: getAuthorsToFollowQuery,
+        query: getCreatorsToFollowQuery,
       })
 
-      if (queryResult.data?.authors?.length) {
-        this.authorsToFollow = queryResult.data.authors
+      if (queryResult.data?.creators?.length) {
+        this.creatorsToFollow = queryResult.data.creators
       }
     },
-    pruneAuthorsToFollow() {
-      const authorSate = useAuthorState()
-      if (authorSate.getAuthor?.id > 0) {
-        this.authorsToFollow = this.authorsToFollow.filter((a) => a.id === authorSate.getAuthor.id)
+    pruneCreatorsToFollow() {
+      const creatorSate = useCreatorState()
+      if (creatorSate.getCreator?.id > 0) {
+        this.creatorsToFollow = this.creatorsToFollow.filter(
+          (a) => a.id === creatorSate.getCreator.id
+        )
       }
     },
   },

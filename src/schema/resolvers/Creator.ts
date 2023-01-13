@@ -1,10 +1,10 @@
 import { Interaction, Post } from '../generated/types'
 
-const Author = {
+const Creator = {
   // @ts-ignore
   // email: (parent, args, { prisma, auth0 }, info) => {
   //   console.log({ parent, auth0 })
-  //   if (parent.id === auth0?.author?.id) {
+  //   if (parent.id === auth0?.creator?.id) {
   //     return parent.email
   //   }
   //   return null
@@ -13,7 +13,7 @@ const Author = {
   interactions: (parent, args, { prisma }, info) =>
     prisma.interaction.findMany({
       where: {
-        author: {
+        creator: {
           id: parent.id,
         },
         post: {
@@ -21,7 +21,7 @@ const Author = {
         },
       },
       include: {
-        author: true,
+        creator: true,
       },
       orderBy: {
         id: 'desc',
@@ -31,7 +31,7 @@ const Author = {
   posts: (parent, args, { prisma }, info) =>
     prisma.post.findMany({
       where: {
-        author: {
+        creator: {
           id: parent.id,
         },
       },
@@ -41,4 +41,4 @@ const Author = {
     }),
 }
 
-export default Author
+export default Creator

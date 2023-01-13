@@ -23,7 +23,7 @@ enum InteractionType {
   share
 }
 
-type Author {
+type Creator {
   id: Int!
   handle: String!
   verified: Boolean
@@ -46,7 +46,7 @@ type Author {
 
 type Interaction {
   id: Int!
-  author: Author!
+  creator: Creator!
   post: Post!
   text: String
   like: Boolean
@@ -59,7 +59,7 @@ type Interaction {
 
 type Post {
   id: Int!
-  author: Author!
+  creator: Creator!
   published: Boolean
   interactions: [Interaction!]
   title: String!
@@ -72,8 +72,8 @@ type Post {
 }
 
 type Query {
-  author(where: AuthorByInput, id: Int): Author
-  authors(where: AuthorByInput, by: ForOptionsInput): [Author]
+  creator(where: CreatorByInput, id: Int): Creator
+  creators(where: CreatorByInput, by: ForOptionsInput): [Creator]
   interaction(where: InteractionByInput, id: Int): Interaction
   interactions(where: InteractionByInput, by: ForOptionsInput): [Interaction]
   post(where: PostByInput, id: Int): Post
@@ -84,11 +84,11 @@ type Query {
 }
 
 type Mutation {
-  createAuthor(author: CreateAuthorInput!): Author!
-  updateAuthor(data: UpdateAuthorInput!, id: Int): Author!
-  deleteAuthor(authorId: Int, where: AuthorByInput): Author!
-  verifyAuthor(id: Int!): Author!
-  unVerifyAuthor(id: Int!): Author!
+  createCreator(creator: CreateCreatorInput!): Creator!
+  updateCreator(data: UpdateCreatorInput!, id: Int): Creator!
+  deleteCreator(creatorId: Int, where: CreatorByInput): Creator!
+  verifyCreator(id: Int!): Creator!
+  unVerifyCreator(id: Int!): Creator!
 
   createInteraction(interaction: CreateInteractionInput!): Interaction!
   toggleInteraction(data: UpdateInteractionInput!, id: Int): Interaction!
@@ -103,7 +103,7 @@ type Mutation {
 
 type Subscription {
   countdown(from: Int): Int!
-  author(where: AuthorByInput): AuthorSubscriptionPayload
+  creator(where: CreatorByInput): CreatorSubscriptionPayload
   interaction(where: InteractionByInput): InteractionSubscriptionPayload
   interactionDelta(where: InteractionByInput): InteractionDeltaSubscriptionPayload
   post(where: PostByInput): PostSubscriptionPayload
@@ -120,9 +120,9 @@ type SearchPostsPayload {
   posts: [Post!]
 }
 
-type AuthorSubscriptionPayload {
+type CreatorSubscriptionPayload {
   mutation: MutationType!
-  data: Author
+  data: Creator
 }
 
 type InteractionSubscriptionPayload {
@@ -160,7 +160,7 @@ input SearchPostsInput {
   text: String!
 }
 
-input AuthorByInput {
+input CreatorByInput {
   email: String
   handle: String
   id: Int
@@ -169,7 +169,7 @@ input AuthorByInput {
 }
 
 input InteractionByInput {
-  author: AuthorInput
+  creator: CreatorInput
   post: PostInput
   first: Int
   skip: Int
@@ -177,13 +177,13 @@ input InteractionByInput {
 
 input PostByInput {
   id: Int
-  author: AuthorInput
+  creator: CreatorInput
   title: String
   first: Int
   skip: Int
 }
 
-input AuthorInput {
+input CreatorInput {
   id: Int
   handle: String
   email: String
@@ -192,16 +192,16 @@ input AuthorInput {
 input InteractionInput {
   id: Int
   post: PostInput
-  author: AuthorInput
+  creator: CreatorInput
 }
 
 input PostInput {
   id: Int
   title: String
-  author: AuthorInput
+  creator: CreatorInput
 }
 
-input CreateAuthorInput {
+input CreateCreatorInput {
   name: String!
   handle: String!
   email: String!
@@ -211,7 +211,7 @@ input CreateAuthorInput {
 }
 
 input CreateInteractionInput {
-  authorId: Int!
+  creatorId: Int!
   postId: Int!
   text: String
   like: Boolean
@@ -221,7 +221,7 @@ input CreateInteractionInput {
 }
 
 input CreatePostInput {
-  authorId: Int!
+  creatorId: Int!
   title: String!
   text: String
   published: Boolean
@@ -229,7 +229,7 @@ input CreatePostInput {
   media: [String!]
 }
 
-input UpdateAuthorInput {
+input UpdateCreatorInput {
   email: String
   name: String
   avatar: String
@@ -242,7 +242,7 @@ input UpdateAuthorInput {
 }
 
 input UpdateInteractionInput {
-  authorId: Int!
+  creatorId: Int!
   postId: Int!
   text: String
   like: Boolean
@@ -252,7 +252,7 @@ input UpdateInteractionInput {
 }
 
 input UpdatePostInput {
-  authorId: Int!
+  creatorId: Int!
   postId: Int!
   title: String
   text: String

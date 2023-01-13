@@ -4,14 +4,14 @@ import LoginIcon from 'vue-ionicons/dist/md-log-in.vue'
 import LogoutIcon from 'vue-ionicons/dist/md-log-out.vue'
 import PointOfVue from '../atomic/PointOfVue.vue'
 import PopButton from '../atomic/PopButton.vue'
-import PovAuthor from './PovAuthor.vue'
-import { useMenuState, useAuthorState } from '../../store/state'
+import PovCreator from './CreateCreator.vue'
+import { useMenuState, useCreatorState } from '../../store/state'
 import { storeToRefs } from 'pinia'
 import LoadingSpinner from '../atomic/LoadingSpinner.vue'
 import { watch } from 'vue'
 const emailInput = ref()
 const menuState = useMenuState()
-const authorState = useAuthorState()
+const creatorState = useCreatorState()
 const loggingIn = ref()
 const errorMessage = ref()
 
@@ -20,11 +20,11 @@ const props = defineProps({
   useAuth0: Boolean,
 })
 
-const { author } = storeToRefs(authorState)
-watch(author, () => {
-  if (authorState.isLoggedIn) {
+const { creator } = storeToRefs(creatorState)
+watch(creator, () => {
+  if (creatorState.isLoggedIn) {
     loggingIn.value = false
-    if (authorState.getAuthorId > 0) {
+    if (creatorState.getCreatorId > 0) {
       menuState.openCreatePost()
     }
   } else {
@@ -34,32 +34,32 @@ watch(author, () => {
 
 const loginWithEmail = async () => {
   loggingIn.value = true
-  errorMessage.value = await authorState.loginWithEmail(emailInput.value.value)
+  errorMessage.value = await creatorState.loginWithEmail(emailInput.value.value)
   loggingIn.value = false
 }
 
 const logout = () => {
-  authorState.logout()
+  creatorState.logout()
 }
 
-authorState.checkLogin()
+creatorState.checkLogin()
 
 const useLogin = async () => {
-  await authorState.loginWithAuth0()
+  await creatorState.loginWithAuth0()
 }
 </script>
 
 <template>
   <div class="flex items-center justify-center">
-    <div v-if="authorState.isLoggedIn" class="relative flex flex-col profile">
+    <div v-if="creatorState.isLoggedIn" class="relative flex flex-col profile">
       <button v-if="props.isExpanded" class="absolute -top-1/5 left-1/2" @click="logout()">
         <logout-icon h="32" w="32" />
       </button>
-      <pov-author
-        :author="author"
+      <pov-creator
+        :creator="creator"
         size="small"
         :image-only="!props.isExpanded"
-        :go-to-author-page="false"
+        :go-to-creator-page="false"
       />
       <div
         v-if="props.isExpanded"
@@ -67,7 +67,7 @@ const useLogin = async () => {
       >
         <div class="flex flex-col items-center justify-center">
           <p class="text-lg font-bold text-gray-800 dark:text-gray-300">
-            {{ author.posts?.length ?? 0 }}
+            {{ creator.posts?.length ?? 0 }}
           </p>
           <p class="-mt-1 text-xs">Posts</p>
         </div>
