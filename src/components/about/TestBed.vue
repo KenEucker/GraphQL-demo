@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useMouse, useCounter, useDark, useToggle, useFps } from '@vueuse/core'
 import { UseNetwork } from '@vueuse/components'
 import { useMotion } from '@vueuse/motion'
-import { graphUrl } from '../../utilities'
+import { getGraphUrl } from '../../utilities'
 
 let counting = false
 
@@ -46,7 +46,7 @@ const beginCountdown = () => {
   apply('glowing')
   counting = true
 
-  const url = new URL(graphUrl)
+  const url = new URL(getGraphUrl())
 
   url.searchParams.append(
     'query',

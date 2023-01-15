@@ -4,7 +4,7 @@ import PovPost from './PovPost.vue'
 import LoadingSpinner from '../atomic/LoadingSpinner.vue'
 import ErrorMessage from '../atomic/ErrorMessage.vue'
 import { Post } from '../../schema/generated/types.d'
-import { graphUrl } from '../../utilities'
+import { getGraphUrl } from '../../utilities'
 import { usePostsState, useCreatorState } from '../../store/state'
 
 const creatorState = useCreatorState()
@@ -61,7 +61,7 @@ const injectPosts = () => {
   })
 }
 
-const url = new URL(graphUrl)
+const url = new URL(getGraphUrl())
 
 url.searchParams.append('query', newPostSubscription)
 const eventsource = new EventSource(url.toString(), {

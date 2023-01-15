@@ -2,7 +2,7 @@ import { apolloClient } from './'
 import { defineStore } from 'pinia'
 import { gql } from '@apollo/client/core'
 import { Post } from '../schema/generated/types.d'
-import { graphUrl } from '../utilities'
+import { getGraphUrl } from '../utilities'
 
 export const getInitialPostsState = (): {
   posts: Post[]
@@ -45,7 +45,7 @@ export const usePostsState = defineStore({
           }
         }
       `
-      const url = new URL(graphUrl)
+      const url = new URL(getGraphUrl())
 
       url.searchParams.append('query', newPostSubscription)
       const eventsource = new EventSource(url.toString(), {
